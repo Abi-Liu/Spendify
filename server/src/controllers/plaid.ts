@@ -33,21 +33,7 @@ export default {
       const createTokenResponse = await plaidClient.linkTokenCreate(
         plaidRequest
       );
-      console.log("createTokenResponse:", createTokenResponse);
-
-      if (createTokenResponse && createTokenResponse.data) {
-        console.log(
-          "Link token created successfully:",
-          createTokenResponse.data
-        );
-        response.status(200).json(createTokenResponse.data);
-      } else {
-        console.error(
-          "Failed to create link token. Response:",
-          createTokenResponse
-        );
-        response.status(500).send("Failed to create link token");
-      }
+      response.status(200).json(createTokenResponse.data);
     } catch (error) {
       console.error(error.response.data);
       response.status(500).send("failure");
