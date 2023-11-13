@@ -77,6 +77,7 @@ export default {
       const { data } = await plaidClient.accountsGet({
         access_token: accessToken,
       });
+      console.log(data);
       const accounts = data.accounts;
       const response = await createOrUpdateAccounts(itemId, accounts);
       console.log(response, "accounts data");

@@ -28,16 +28,25 @@ function App() {
   }, []);
 
   useEffect(() => {
+    let ignore = false;
     async function createLinkToken() {
-      const response = await api.post("/plaid/createLinkToken", {
-        id: `${user?.user_id}`,
-      });
-      console.log(response);
-      setLinkToken(response.data.link_token);
+      try {
+        const response = await api.post("/plaid/createLinkToken", {
+          id: `${user?.user_id}`,
+        });
+        console.log(response);
+        setLinkToken(response.data.link_token);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    if (user) {
+    if (user && !ignore) {
       createLinkToken();
     }
+
+    return () => {
+      ignore = true;
+    };
   }, [user]);
 
   return (
