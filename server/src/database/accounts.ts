@@ -30,7 +30,7 @@ export async function createOrUpdateAccounts(
     INSERT INTO Account
     (
         item_id,
-        plaid_account_id,
+        account_id,
         name,
         mask,
         official_name,
