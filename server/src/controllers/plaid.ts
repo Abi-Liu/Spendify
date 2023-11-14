@@ -3,7 +3,8 @@ import { plaidClient } from "../config/plaid";
 import { CountryCode, Products } from "plaid";
 import { createItem } from "../database/items";
 import { createOrUpdateAccounts } from "../database/accounts";
-import { sanitizeItems } from "src/utils/sanitize";
+import { sanitizeItems } from "../utils/sanitize";
+import { updateTransactions } from "../utils/updateTransactions";
 // import { updateTransactions } from "../utils/updateTransactions";
 
 const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:5173/";
@@ -67,7 +68,7 @@ export default {
       await createOrUpdateAccounts(itemId, accounts);
 
       // fetch and store transactions
-      //   await updateTransactions(itemId);
+      await updateTransactions(itemId);
 
       res.status(200).json(sanitizeItems(item));
     } catch (error) {

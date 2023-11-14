@@ -11,8 +11,9 @@ import {
 } from "../database/transactions";
 
 async function fetchTransactionUpdates(itemId: string) {
-  const { accessToken, transactions_cursor: lastCursor } =
+  const { access_token: accessToken, transactions_cursor: lastCursor } =
     await getItemsByPlaidItemId(itemId);
+  console.log(accessToken);
   let cursor = lastCursor;
 
   // New transaction updates since "cursor"
@@ -41,6 +42,9 @@ async function fetchTransactionUpdates(itemId: string) {
       // Update cursor to the next cursor
       cursor = data.next_cursor;
     }
+    console.log("added", added);
+    console.log("modified", modified);
+    console.log("removed", removed);
   } catch (error) {
     cursor = lastCursor;
     console.error(`Error fetching transactions: ${error.message}`);
