@@ -8,7 +8,7 @@ services:
     ports:
       - "5173:5173" # Map port 5173 on host to port 5173 in container
     volumes:
-      - ./client:/app/client # Mount the client directory to the container
+      - ./client/src:/app/client/src # Mount the client directory to the container
 
   server:
     build:
