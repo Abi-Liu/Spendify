@@ -21,7 +21,7 @@ export async function createItem(
   }
 }
 
-export async function getItemsByItemId(itemId: string) {
+export async function getItemsByPlaidItemId(itemId: string) {
   try {
     const query = `SELECT * FROM Plaid_Items WHERE item_id = ?;`;
     const values = [itemId];
@@ -30,4 +30,11 @@ export async function getItemsByItemId(itemId: string) {
   } catch (error) {
     console.error(error);
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updateItemCursor(itemId: string, cursor: any) {
+  const query = `UPDATE Plaid_Items SET transactions_cursor = ? WHERE item_id = ?`;
+  const values = [cursor, itemId];
+  await connection.query(query, values);
 }

@@ -1,5 +1,5 @@
 import { connection } from "../index";
-import { Transaction } from "plaid";
+import { RemovedTransaction, Transaction } from "plaid";
 import { getAccountByPlaidAccountId } from "./accounts";
 
 export async function createOrUpdateTransactions(
@@ -70,6 +70,15 @@ export async function createOrUpdateTransactions(
     } catch (error) {
       console.error(error);
     }
+  });
+  await Promise.all(queries);
+}
+
+export async function deleteTransactions(removed: RemovedTransaction[]) {
+  const queries = removed.map(async (id) => {
+    const query = `DELETE FROM Transactions WHERE plaid_transaction_id = ?`;
+    const values = [id];
+    await connection.query(query, values);
   });
   await Promise.all(queries);
 }

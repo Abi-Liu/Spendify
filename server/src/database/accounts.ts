@@ -1,13 +1,13 @@
 import { connection } from "../index";
 import { AccountBase } from "plaid";
-import { getItemsByItemId } from "./items";
+import { getItemsByPlaidItemId } from "./items";
 
 export async function createOrUpdateAccounts(
   itemId: string,
   accounts: AccountBase[]
 ) {
   try {
-    const { id } = await getItemsByItemId(itemId);
+    const { id } = await getItemsByPlaidItemId(itemId);
     console.log(id);
     const queries = accounts.map(async (account) => {
       // destructuring the variables out of the account object
@@ -71,7 +71,7 @@ export async function createOrUpdateAccounts(
 
 export async function getAccountsByItemId(itemId: string) {
   try {
-    const { id } = await getItemsByItemId(itemId);
+    const { id } = await getItemsByPlaidItemId(itemId);
     const query = `SELECT * FROM Account WHERE item_id = ?;`;
     const values = [id];
     const [data] = await connection.query(query, values);

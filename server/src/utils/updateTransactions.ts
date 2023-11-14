@@ -1,13 +1,18 @@
-import { getItemsByItemId } from "src/database/items";
+import { getItemsByPlaidItemId, updateItemCursor } from "../database/items";
 import { plaidClient } from "../config/plaid";
 import {
   RemovedTransaction,
   Transaction,
   TransactionsSyncRequest,
 } from "plaid";
+import {
+  createOrUpdateTransactions,
+  deleteTransactions,
+} from "../database/transactions";
 
 async function fetchTransactionUpdates(itemId: string) {
-  const { accessToken, cursor: lastCursor } = await getItemsByItemId(itemId);
+  const { accessToken, transactions_cursor: lastCursor } =
+    await getItemsByPlaidItemId(itemId);
   let cursor = lastCursor;
 
   // New transaction updates since "cursor"
@@ -40,12 +45,14 @@ async function fetchTransactionUpdates(itemId: string) {
     cursor = lastCursor;
     console.error(`Error fetching transactions: ${error.message}`);
   }
+
+  return { added, modified, removed, cursor };
 }
 
 export async function updateTransactions(itemId: string) {
   // Fetch new transactions from plaid api.
   const { added, modified, removed, cursor } = await fetchTransactionUpdates(
-    plaidItemId
+    itemId
   );
 
   // update the db
