@@ -25,6 +25,7 @@ export interface PlaidAccount {
   item_id: number;
   account_id: string;
   name: string;
+  mask: string;
   official_name?: string | null;
   current_balance?: number | null;
   available_balance?: number | null;

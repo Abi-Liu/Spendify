@@ -29,7 +29,6 @@ export default {
       country_codes: [CountryCode.Us],
     };
     try {
-      console.log("before request");
       const createTokenResponse = await plaidClient.linkTokenCreate(
         plaidRequest
       );
@@ -58,12 +57,12 @@ export default {
         itemId,
         institutionId
       );
+      console.log(item);
 
       // fetch and store the accounts that are associated with the item:
       const { data } = await plaidClient.accountsGet({
         access_token: accessToken,
       });
-      console.log(data);
       const accounts = data.accounts;
       const response = await createOrUpdateAccounts(itemId, accounts);
       console.log(response, "accounts data");
@@ -73,7 +72,7 @@ export default {
 
       res.json(item);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error);
       res.status(500).send("Exchange Failed");
     }
   },

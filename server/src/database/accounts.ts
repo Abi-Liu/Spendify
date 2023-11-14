@@ -63,7 +63,6 @@ export async function createOrUpdateAccounts(
     });
     await Promise.all(queries);
     const newAccounts = await getAccountsByItemId(itemId);
-    console.log(newAccounts);
     return newAccounts;
   } catch (error) {
     console.error(error);
@@ -72,8 +71,9 @@ export async function createOrUpdateAccounts(
 
 export async function getAccountsByItemId(itemId: string) {
   try {
+    const { id } = await getItemsByItemId(itemId);
     const query = `SELECT * FROM Account WHERE item_id = ?;`;
-    const values = [itemId];
+    const values = [id];
     const [data] = await connection.query(query, values);
     return data;
   } catch (error) {

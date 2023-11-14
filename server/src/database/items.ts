@@ -12,7 +12,10 @@ export async function createItem(
       "INSERT INTO Plaid_Items (user_id, access_token, item_id, institution_id) VALUES (?, ?, ?, ?);";
     const values = [userId, accessToken, itemId, institutionId];
     const [rows] = await connection.query(query, values);
-    return rows;
+    const getQuery = `SELECT * FROM Plaid_Items WHERE id = ?`;
+    const getValues = [rows.insertId];
+    const [item] = await connection.query(getQuery, getValues);
+    return item;
   } catch (error) {
     console.error(error);
   }
