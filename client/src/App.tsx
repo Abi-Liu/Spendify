@@ -51,6 +51,7 @@ function App() {
 
   return (
     <>
+      <h1>hello</h1>
       {user && <h1>Welcome {user.first_name}</h1>}
       <Login />
       {user && <PlaidLink linkToken={linkToken} userId={user?.user_id} />}
