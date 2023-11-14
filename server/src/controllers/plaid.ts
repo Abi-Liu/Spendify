@@ -3,6 +3,7 @@ import { plaidClient } from "../config/plaid";
 import { CountryCode, Products } from "plaid";
 import { createItem } from "../database/items";
 import { createOrUpdateAccounts } from "../database/accounts";
+import { sanitizeItems } from "src/utils/sanitize";
 // import { updateTransactions } from "../utils/updateTransactions";
 
 const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:5173/";
@@ -57,20 +58,18 @@ export default {
         itemId,
         institutionId
       );
-      console.log(item);
 
       // fetch and store the accounts that are associated with the item:
       const { data } = await plaidClient.accountsGet({
         access_token: accessToken,
       });
       const accounts = data.accounts;
-      const response = await createOrUpdateAccounts(itemId, accounts);
-      console.log(response, "accounts data");
+      await createOrUpdateAccounts(itemId, accounts);
 
       // fetch and store transactions
       //   await updateTransactions(itemId);
 
-      res.json(item);
+      res.status(200).json(sanitizeItems(item));
     } catch (error) {
       console.log(error);
       res.status(500).send("Exchange Failed");

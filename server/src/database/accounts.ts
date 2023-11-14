@@ -80,3 +80,14 @@ export async function getAccountsByItemId(itemId: string) {
     console.error(error);
   }
 }
+
+export async function getAccountByPlaidAccountId(accountId: string) {
+  try {
+    const query = `SELECT * FROM Account WHERE account_id = ?`;
+    const values = [accountId];
+    const [rows] = await connection.query(query, values);
+    return rows[0];
+  } catch (error) {
+    console.error(error);
+  }
+}
