@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173" # Map port 5173 on host to port 5173 in container
+    volumes:
+      - ./client:/app/client # Mount the client directory to the container
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000" # Map port 8000 on host to port 8000 in container
+    env_file:
+      - ./server/.env # Include the path to your .env file for server-specific environment variables
+    volumes:
+      - ./server:/app/server # Mount the server directory to the container
+    environment:
+      - NODE_ENV=development
