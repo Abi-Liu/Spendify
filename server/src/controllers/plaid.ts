@@ -12,7 +12,7 @@ const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:5173/";
 // only used for development. allows the local server to receive plaid webhooks
 // must be changed to match each new ngrok url
 const WEBHOOK_URL =
-  "https://f56f-2600-1700-a410-90b0-e0a4-8a4c-bff2-1d40.ngrok-free.app/webhook/";
+  "https://f56f-2600-1700-a410-90b0-e0a4-8a4c-bff2-1d40.ngrok-free.app/webhook";
 
 export default {
   // start the link flow by sending client a public token.

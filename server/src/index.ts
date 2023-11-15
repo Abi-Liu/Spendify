@@ -8,6 +8,7 @@ import session from "express-session"; // Import express-session
 import passport from "./config/passport";
 // import transactionsRoutes from "./routes/transactions";
 import authRoutes from "./routes/auth";
+import webhookRoutes from "./routes/webhook";
 
 const app = express();
 app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
@@ -39,6 +40,7 @@ connect();
 
 app.use("/plaid", plaidRoutes);
 app.use("/auth", authRoutes);
+app.use("/webhook", webhookRoutes);
 // app.use("/transactions", transactionsRoutes);
 
 app.listen(process.env.PORT || 8000, () =>

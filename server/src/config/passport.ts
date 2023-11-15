@@ -2,7 +2,7 @@
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import passport from "passport";
 import { getUser, createUser } from "../database/users";
-import { User } from "src/interfaces/databaseTypes";
+import { User } from "../interfaces/databaseTypes";
 
 // Passport configuration
 
