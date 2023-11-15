@@ -73,13 +73,21 @@ export async function updateTransactions(itemId: string) {
   );
   const formattedStartDate = startDate.toISOString().split("T")[0];
   const formattedEndDate = currentDate.toISOString().split("T")[0];
+
+  // retrieve the most recent years worth of transactions for an item from the db
   const itemTransactionsToCache = await getItemTransactionsFromDates(
     formattedStartDate,
     formattedEndDate,
     itemId
   );
 
-  // cache all transactions for the plaid_account_id
+  // cache the data in redis
+  redis.set(
+    `itemTransactions:${itemId}`,
+    JSON.stringify(itemTransactionsToCache)
+  );
+
+  // cache all transactions for the plaid_account_id: unneeded?
 
   return {
     addedLength: added.length,
