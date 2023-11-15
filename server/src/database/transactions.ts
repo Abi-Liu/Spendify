@@ -84,10 +84,50 @@ export async function createOrUpdateTransactions(
 }
 
 export async function deleteTransactions(removed: RemovedTransaction[]) {
-  const queries = removed.map(async (id) => {
-    const query = `DELETE FROM Transactions WHERE plaid_transaction_id = ?`;
-    const values = [id];
-    await connection.query(query, values);
-  });
-  await Promise.all(queries);
+  try {
+    const queries = removed.map(async (id) => {
+      const query = `DELETE FROM Transactions WHERE plaid_transaction_id = ?`;
+      const values = [id];
+      await connection.query(query, values);
+    });
+    await Promise.all(queries);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// start is the date futher back in time, end is the more recent date
+// aka starting from 2022 ending at 2023
+export async function getItemTransactionsFromDates(
+  start: string,
+  end: string,
+  itemId: string
+) {
+  try {
+    const query = `SELECT * FROM Transactions WHERE plaid_item_id = ? AND date BETWEEN ? AND ?`;
+    const values = [itemId, start, end];
+    console.log(query, values);
+    const [rows] = await connection.query(query, values);
+    console.log("rows: ", rows);
+    return rows;
+  } catch (error) {
+    console.error("error fetching item transactions from dates", error);
+  }
+}
+
+export async function getAccountTransactionsFromDates(
+  start: string,
+  end: string,
+  accountId: string
+) {
+  try {
+    const query = `SELECT * FROM Transactions WHERE plaid_account_id = ? AND date BETWEEN ? AND ?`;
+    const values = [accountId, start, end];
+    console.log(query, values);
+    const [rows] = await connection.query(query, values);
+    console.log("rows: ", rows);
+    return rows;
+  } catch (error) {
+    console.error("error fetching account transactions from dates", error);
+  }
 }

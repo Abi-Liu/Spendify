@@ -8,7 +8,9 @@ import {
 import {
   createOrUpdateTransactions,
   deleteTransactions,
+  getItemTransactionsFromDates,
 } from "../database/transactions";
+import { redis } from "../config/redis";
 
 async function fetchTransactionUpdates(itemId: string) {
   const { access_token: accessToken, transactions_cursor: lastCursor } =
@@ -61,6 +63,23 @@ export async function updateTransactions(itemId: string) {
   updateItemCursor(itemId, cursor);
 
   // update the redis cache
+  // cache all transactions for the plaid_item_id
+  // grab the most recent 1 years worth of transactions for the plaid item and cache those transactions
+  const currentDate = new Date();
+  const startDate = new Date(
+    currentDate.getFullYear() - 1,
+    currentDate.getMonth(),
+    currentDate.getDate()
+  );
+  const formattedStartDate = startDate.toISOString().split("T")[0];
+  const formattedEndDate = currentDate.toISOString().split("T")[0];
+  const itemTransactionsToCache = await getItemTransactionsFromDates(
+    formattedStartDate,
+    formattedEndDate,
+    itemId
+  );
+
+  // cache all transactions for the plaid_account_id
 
   return {
     addedLength: added.length,
