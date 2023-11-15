@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { plaidClient } from "../config/plaid";
 import { CountryCode, Products } from "plaid";
 import { createItem } from "../database/items";
-import { createOrUpdateAccounts } from "../database/accounts";
 import { sanitizeItems } from "../utils/sanitize";
 import { updateTransactions } from "../utils/updateTransactions";
 // import { updateTransactions } from "../utils/updateTransactions";
@@ -62,13 +61,6 @@ export default {
         itemId,
         institutionId
       );
-
-      // fetch and store the accounts that are associated with the item:
-      const { data } = await plaidClient.accountsGet({
-        access_token: accessToken,
-      });
-      const accounts = data.accounts;
-      await createOrUpdateAccounts(itemId, accounts);
 
       // fetch and store transactions
       await updateTransactions(itemId);

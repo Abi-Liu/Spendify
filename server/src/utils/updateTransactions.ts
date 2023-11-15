@@ -10,6 +10,7 @@ import {
   deleteTransactions,
   getItemTransactionsFromDates,
 } from "../database/transactions";
+import { createOrUpdateAccounts } from "../database/accounts";
 import { redis } from "../config/redis";
 
 async function fetchTransactionUpdates(itemId: string) {
@@ -48,19 +49,26 @@ async function fetchTransactionUpdates(itemId: string) {
     console.error(`Error fetching transactions: ${error.message}`);
   }
 
-  return { added, modified, removed, cursor };
+  return { added, modified, removed, cursor, accessToken };
 }
 
 export async function updateTransactions(itemId: string) {
   // Fetch new transactions from plaid api.
-  const { added, modified, removed, cursor } = await fetchTransactionUpdates(
-    itemId
-  );
+  const { added, modified, removed, cursor, accessToken } =
+    await fetchTransactionUpdates(itemId);
+
+  // get accounts here so that the balance is updated everytime we update the transactions via webhooks.
+  const { data } = await plaidClient.accountsGet({
+    access_token: accessToken,
+  });
+  const accounts = data.accounts;
 
   // update the db
-  createOrUpdateTransactions(added, modified);
-  deleteTransactions(removed);
-  updateItemCursor(itemId, cursor);
+  // fetch and store the accounts that are associated with the item:
+  await createOrUpdateAccounts(itemId, accounts);
+  await createOrUpdateTransactions(added, modified);
+  await deleteTransactions(removed);
+  await updateItemCursor(itemId, cursor);
 
   // update the redis cache
   // cache all transactions for the plaid_item_id
