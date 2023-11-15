@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PlaidLink from "./components/PlaidLink";
 import api from "./utils/axios";
 import Login from "./pages/Login";
+import FireWebhookTest from "./components/FireWebhookTest";
 
 interface User {
   user_id: number;
@@ -54,6 +55,7 @@ function App() {
       {user && <h1>Welcome {user.first_name}</h1>}
       <Login />
       {user && <PlaidLink linkToken={linkToken} userId={user?.user_id} />}
+      <FireWebhookTest />
     </>
   );
 }
