@@ -9,15 +9,17 @@ import { updateTransactions } from "../utils/updateTransactions";
 
 const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:5173/";
 
+// only used for development. allows the local server to receive plaid webhooks
+// must be changed to match each new ngrok url
+const WEBHOOK_URL =
+  "https://f56f-2600-1700-a410-90b0-e0a4-8a4c-bff2-1d40.ngrok-free.app/webhook/";
+
 export default {
   // start the link flow by sending client a public token.
   // They can then use that public token to request for an access token that will allow us to connect their accounts
   createLinkToken: async (request: Request, response: Response) => {
     //   Get the client_user_id by searching for the current user);
     const clientUserId = request.body.id;
-
-    // const webhookUrl =
-    //   process.env.WEBHOOK_URL || "http://localhost:8000/webhook";
 
     // Configuring plaid request
     const plaidRequest = {
@@ -29,6 +31,7 @@ export default {
       language: "en",
       redirect_uri: REDIRECT_URI,
       country_codes: [CountryCode.Us],
+      webhook: WEBHOOK_URL,
     };
     try {
       const createTokenResponse = await plaidClient.linkTokenCreate(
