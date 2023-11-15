@@ -38,3 +38,10 @@ export async function updateItemCursor(itemId: string, cursor: any) {
   const values = [cursor, itemId];
   await connection.query(query, values);
 }
+
+export async function getItemById(itemId: string) {
+  const query = `SELECT * FROM Plaid_Items WHERE id = ?`;
+  const values = [itemId];
+  const [rows] = await connection.query(query, values);
+  return rows[0];
+}

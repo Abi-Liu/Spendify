@@ -60,6 +60,8 @@ export async function updateTransactions(itemId: string) {
   deleteTransactions(removed);
   updateItemCursor(itemId, cursor);
 
+  // update the redis cache
+
   return {
     addedLength: added.length,
     modifiedLength: modified.length,

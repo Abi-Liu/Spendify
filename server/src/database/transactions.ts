@@ -1,6 +1,7 @@
 import { connection } from "../index";
 import { RemovedTransaction, Transaction } from "plaid";
 import { getAccountByPlaidAccountId } from "./accounts";
+import { getItemById } from "./items";
 
 export async function createOrUpdateTransactions(
   added: Transaction[],
@@ -22,12 +23,19 @@ export async function createOrUpdateTransactions(
       pending,
       account_owner: accountOwner,
     } = transaction;
-    const { id } = await getAccountByPlaidAccountId(accountId);
+    const { id: aid, item_id: itemId } = await getAccountByPlaidAccountId(
+      accountId
+    );
+
+    const { id: iid, item_id: plaidItemId } = await getItemById(itemId);
 
     try {
       const query = `
       INSERT INTO Transactions (
           account_id,
+          plaid_account_id,
+          item_id,
+          plaid_item_id,
           plaid_transaction_id,
           personal_finance_category,
           payment_channel,
@@ -38,7 +46,7 @@ export async function createOrUpdateTransactions(
           date,
           pending,
           account_owner
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE
           personal_finance_category = VALUES(personal_finance_category),
           payment_channel = VALUES(payment_channel),
@@ -51,7 +59,10 @@ export async function createOrUpdateTransactions(
           account_owner = VALUES(account_owner);
   `;
       const values = [
-        id,
+        aid,
+        accountId,
+        iid,
+        plaidItemId,
         transactionId,
         personalFinanceCategory?.primary,
         paymentChannel,
