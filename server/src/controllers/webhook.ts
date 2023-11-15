@@ -9,9 +9,10 @@ import {
 const accessToken = "access-sandbox-966460a7-f1b2-4668-b5a2-cbfdf6e8036d";
 
 export default {
-  // handleWebhook: async (req: Request, res: Response) => {
-
-  // },
+  handleWebhook: async (req: Request, res: Response) => {
+    console.log(req.body);
+    res.status(200).json({ status: "ok" });
+  },
 
   // ONLY USED DURING DEVELOPMENT MODE IN SANDBOX
   fireTestWebhook: async (req: Request, res: Response) => {
