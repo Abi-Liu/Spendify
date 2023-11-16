@@ -6,7 +6,7 @@ import { sanitizeItems } from "../utils/sanitize";
 import { updateTransactions } from "../utils/updateTransactions";
 // import { updateTransactions } from "../utils/updateTransactions";
 
-const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:5173/";
+const REDIRECT_URI = process.env.CLIENT_URL || "http://localhost:5173/";
 
 // only used for development. allows the local server to receive plaid webhooks
 // must be changed to match each new ngrok url
@@ -64,6 +64,8 @@ export default {
 
       // fetch and store transactions
       await updateTransactions(itemId);
+
+      // cache items?
 
       res.status(200).json(sanitizeItems(item));
     } catch (error) {

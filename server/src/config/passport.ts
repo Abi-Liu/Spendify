@@ -7,7 +7,7 @@ import { User } from "../interfaces/databaseTypes";
 // Passport configuration
 
 const callbackURL = `${
-  process.env.CALLBACKURL || "http://localhost:8000"
+  process.env.CALLBACK_URL || "http://localhost:8000"
 }/auth/google/callback`;
 
 passport.use(

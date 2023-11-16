@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./config/db";
 import plaidRoutes from "./routes/plaid";
-import session from "express-session"; // Import express-session
+import session from "express-session";
 import passport from "./config/passport";
 // import transactionsRoutes from "./routes/transactions";
 import authRoutes from "./routes/auth";

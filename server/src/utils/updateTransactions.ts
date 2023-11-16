@@ -97,6 +97,8 @@ export async function updateTransactions(itemId: string) {
 
   // cache all transactions for the plaid_account_id: unneeded?
 
+  // cache account information, to keep balance up to date. unneeded?
+
   return {
     addedLength: added.length,
     modifiedLength: modified.length,
