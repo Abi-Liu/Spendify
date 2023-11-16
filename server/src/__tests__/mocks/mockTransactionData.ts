@@ -131,3 +131,9 @@ export const mockAddedTransactionData: Transaction[] = [
     transaction_type: TransactionTransactionTypeEnum.Place,
   },
 ];
+
+export const mockRemovedTransactionData = [
+  {
+    transaction_id: "CmdQTNgems8BT1B7ibkoUXVPyAeehT3Tmzk0l",
+  },
+];
