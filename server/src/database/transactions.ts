@@ -106,9 +106,7 @@ export async function getItemTransactionsFromDates(
   try {
     const query = `SELECT * FROM Transactions WHERE plaid_item_id = ? AND date BETWEEN ? AND ?`;
     const values = [itemId, start, end];
-    console.log(query, values);
     const [rows] = await connection.query(query, values);
-    console.log("rows: ", rows);
     return rows;
   } catch (error) {
     console.error("error fetching item transactions from dates", error);

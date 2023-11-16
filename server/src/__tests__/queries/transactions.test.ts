@@ -75,7 +75,7 @@ describe.only("Transactions Queries", () => {
     const itemId = "item_id";
 
     // Mock the expected database response for the query
-    (connection.query as jest.Mock).mockResolvedValue([
+    connection.query.mockResolvedValue([
       [
         {
           id: 1000,
