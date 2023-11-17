@@ -6,7 +6,7 @@ import { sanitizeItems } from "../utils/sanitize";
 import { updateTransactions } from "../utils/updateTransactions";
 // import { updateTransactions } from "../utils/updateTransactions";
 
-const REDIRECT_URI = process.env.CLIENT_URL || "http://localhost:5173/";
+const { CLIENT_URL } = process.env;
 
 // only used for development. allows the local server to receive plaid webhooks
 // must be changed to match each new ngrok url
@@ -28,7 +28,7 @@ export default {
       client_name: "BudgetBuddy",
       products: [Products.Transactions],
       language: "en",
-      redirect_uri: REDIRECT_URI,
+      redirect_uri: CLIENT_URL,
       country_codes: [CountryCode.Us],
       webhook: WEBHOOK_URL,
     };

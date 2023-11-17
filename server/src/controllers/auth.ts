@@ -12,8 +12,8 @@ export default {
   },
 
   logout: async (req: Request, res: Response) => {
-    const clientURL = process.env.CLIENT_URL || "http://localhost:5173/";
+    const { CLIENT_URL } = process.env;
     (req.logout as () => void)();
-    res.redirect(clientURL);
+    res.redirect(CLIENT_URL as string);
   },
 };

@@ -3,6 +3,7 @@ import authController from "../controllers/auth";
 import passport from "../config/passport";
 
 const router = express.Router();
+const { CLIENT_URL } = process.env;
 
 router.get("/login/success", authController.getLoginSuccess);
 router.get("/login/failed", authController.getLoginFailed);
@@ -11,7 +12,7 @@ router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: process.env.CLIENT_URL || "http://localhost:5173/",
+    successRedirect: CLIENT_URL,
     failureRedirect: "/login/failed",
   })
 );
