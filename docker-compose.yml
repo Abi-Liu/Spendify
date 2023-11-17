@@ -1,6 +1,27 @@
 version: "3.8"
 
 services:
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=budgetbuddy
+      - POSTGRES_USER=budgetbuddy
+      - PGDATA=/database
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
+      - ./postgres/postgres.conf:/usr/local/share/postgresql/postgresql.conf
+      - ./pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    # volumes:
+    #   - redis_data:/data
+
   client:
     build:
       context: ./client
@@ -16,9 +37,22 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000" # Map port 8000 on host to port 8000 in container
-    env_file:
-      - ./server/.env # Include the path to your .env file for server-specific environment variables
     volumes:
       - ./server:/app/server # Mount the server directory to the container
     environment:
       - NODE_ENV=development
+      - PORT=
+      - PLAID_SECRET=
+      - PLAID_CLIENT_ID=
+      - GOOGLE_CLIENT_ID=
+      - GOOGLE_CLIENT_SECRET=
+      - KEY=
+      - SESSION_SECRET=
+      - CLIENT_URL=
+      - CALLBACK_URL=
+      - PLAID_ENV=
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis

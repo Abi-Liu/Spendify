@@ -4,17 +4,21 @@ import passport from "passport";
 import { getUser, createUser } from "../database/users";
 import { User } from "../interfaces/databaseTypes";
 
-// Passport configuration
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, CALLBACK_URL } = process.env;
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !CALLBACK_URL) {
+  throw new Error("Google Oauth env vars are not properly loading in");
+}
 
+// Passport configuration
 const callbackURL = `${
-  process.env.CALLBACK_URL || "http://localhost:8000"
+  CALLBACK_URL || "http://localhost:8000"
 }/auth/google/callback`;
 
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientID: GOOGLE_CLIENT_ID!,
+      clientSecret: GOOGLE_CLIENT_SECRET!,
       callbackURL,
     },
     async function (

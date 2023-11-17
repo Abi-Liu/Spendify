@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import cors from "cors";
 import connectDB from "./config/db";
@@ -15,9 +13,10 @@ app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
 app.use(express.json());
 
 // Use express-session
+const { SESSION_SECRET, PORT } = process.env;
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "secret", // Set a secret key for session
+    secret: SESSION_SECRET as string, // Set a secret key for session
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -43,6 +42,6 @@ app.use("/auth", authRoutes);
 app.use("/webhook", webhookRoutes);
 // app.use("/transactions", transactionsRoutes);
 
-app.listen(process.env.PORT || 8000, () =>
-  console.log(`Server has started on port: ${process.env.PORT}`)
+app.listen(PORT || 8000, () =>
+  console.log(`Server has started on port: ${PORT}`)
 );
