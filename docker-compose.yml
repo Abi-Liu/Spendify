@@ -39,19 +39,10 @@ services:
       - "8000:8000" # Map port 8000 on host to port 8000 in container
     volumes:
       - ./server:/app/server # Mount the server directory to the container
-    environment:
-      - NODE_ENV=development
-      - PORT=
-      - PLAID_SECRET=
-      - PLAID_CLIENT_ID=
-      - GOOGLE_CLIENT_ID=
-      - GOOGLE_CLIENT_SECRET=
-      - KEY=
-      - SESSION_SECRET=
-      - CLIENT_URL=
-      - PLAID_ENV=
     env_file:
       - .env
     depends_on:
       - db
       - redis
+# volumes:
+#   - redis_data:
