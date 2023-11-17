@@ -49,7 +49,6 @@ services:
       - KEY=
       - SESSION_SECRET=
       - CLIENT_URL=
-      - CALLBACK_URL=
       - PLAID_ENV=
     env_file:
       - .env
