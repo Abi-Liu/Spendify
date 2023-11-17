@@ -8,7 +8,7 @@ CREATE TABLE users_table
   last_name text NOT NULL,
   avatar_url text NOT NULL,
   created_at timestamptz default now(),
-  updated_at timestamptz default now()
+  updated_at timestamptz default now() ON UPDATE now()
 );
 
 
@@ -22,7 +22,7 @@ CREATE TABLE items_table
   plaid_institution_id text NOT NULL,
   status text NOT NULL,
   created_at timestamptz default now(),
-  updated_at timestamptz default now(),
+  updated_at timestamptz default now() ON UPDATE now(),
   transactions_cursor text
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE accounts_table
   type text NOT NULL,
   subtype text NOT NULL,
   created_at timestamptz default now(),
-  updated_at timestamptz default now()
+  updated_at timestamptz default now() ON UPDATE now()
 );
 
 
@@ -66,5 +66,5 @@ CREATE TABLE transactions_table
   pending boolean NOT NULL,
   account_owner text,
   created_at timestamptz default now(),
-  updated_at timestamptz default now()
+  updated_at timestamptz default now() ON UPDATE now()
 );
