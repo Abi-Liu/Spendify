@@ -17,6 +17,7 @@ describe("Item Queries", () => {
     jest.clearAllMocks();
   });
 
+  // test for createItem
   it("should create a new item", async () => {
     // mock insert data
     const userId: number = 1;
@@ -36,15 +37,22 @@ describe("Item Queries", () => {
 
     expect(res).toEqual({ id: 1 });
     // Check if connection.query was called with the expected arguments
-    expect(connection.query as jest.Mock).toHaveBeenCalledWith(
+    expect(connection.query as jest.Mock).toHaveBeenNthCalledWith(
+      1,
       "INSERT INTO Plaid_Items (user_id, access_token, item_id, institution_id) VALUES (?, ?, ?, ?);",
       [userId, accessToken, itemId, institutionId]
     );
 
-    // expect(connection.query).toHaveBeenNthCalledWith(
-    //   2,
-    //   "SELECT * FROM Plaid_Items WHERE id = ?",
-    //   [insertId]
-    // );
+    expect(connection.query as jest.Mock).toHaveBeenNthCalledWith(
+      2,
+      "SELECT * FROM Plaid_Items WHERE id = ?",
+      [rows[0].id]
+    );
   });
+
+  // test for getItemsByPlaidItemId
+
+  // test for getItemById
+
+  // test for updateItemCursor
 });
