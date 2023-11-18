@@ -11,9 +11,8 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !CLIENT_URL) {
 }
 
 // Passport configuration
-const callbackURL = `${
-  CLIENT_URL || "http://localhost:8000"
-}/auth/google/callback`;
+// TODO: fix the callbackURL to be the server env variable not the client
+const callbackURL = `http://localhost:8000/auth/google/callback`;
 
 passport.use(
   new GoogleStrategy(

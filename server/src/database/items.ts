@@ -1,4 +1,4 @@
-import { connection } from "../index";
+import connection from "../config/db";
 
 // creates a new plaid item
 export async function createItem(
@@ -7,41 +7,35 @@ export async function createItem(
   itemId: string,
   institutionId: string
 ) {
-  try {
-    const query =
-      "INSERT INTO Plaid_Items (user_id, access_token, item_id, institution_id) VALUES (?, ?, ?, ?);";
-    const values = [userId, accessToken, itemId, institutionId];
-    const [rows] = await connection.query(query, values);
-    const getQuery = `SELECT * FROM Plaid_Items WHERE id = ?`;
-    const getValues = [rows.insertId];
-    const [item] = await connection.query(getQuery, getValues);
-    return item;
-  } catch (error) {
-    console.error(error);
-  }
+  // only gets called after linking an item from plaid link flow
+  const status = "good";
+  const query = `INSERT INTO items
+        (user_id, plaid_access_token, plaid_item_id, plaid_institution_id, status)
+      VALUES
+        ($1, $2, $3, $4, $5)
+      RETURNING
+        *;`;
+  const values = [userId, accessToken, itemId, institutionId, status];
+  const { rows } = await connection.query(query, values);
+  return rows[0];
 }
 
 export async function getItemsByPlaidItemId(itemId: string) {
-  try {
-    const query = `SELECT * FROM Plaid_Items WHERE item_id = ?;`;
-    const values = [itemId];
-    const [rows] = await connection.query(query, values);
-    return rows[0];
-  } catch (error) {
-    console.error(error);
-  }
+  const query = `SELECT * FROM items WHERE plaid_item_id = $1;`;
+  const values = [itemId];
+  const { rows } = await connection.query(query, values);
+  return rows[0];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function updateItemCursor(itemId: string, cursor: any) {
-  const query = `UPDATE Plaid_Items SET transactions_cursor = ? WHERE item_id = ?`;
+export async function updateItemCursor(itemId: string, cursor: string) {
+  const query = `'UPDATE items SET transactions_cursor = $1 WHERE plaid_item_id = $2'`;
   const values = [cursor, itemId];
   await connection.query(query, values);
 }
 
-export async function getItemById(itemId: string) {
-  const query = `SELECT * FROM Plaid_Items WHERE id = ?`;
+export async function getItemById(itemId: number) {
+  const query = `SELECT * FROM items WHERE id = $1`;
   const values = [itemId];
-  const [rows] = await connection.query(query, values);
+  const { rows } = await connection.query(query, values);
   return rows[0];
 }

@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import connectDB from "./config/db";
 import plaidRoutes from "./routes/plaid";
 import session from "express-session";
 import passport from "./config/passport";
@@ -27,15 +26,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// create a database connection
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export let connection: any;
-async function connect() {
-  connection = await connectDB();
-}
-// creates connection to PlanetScale
-connect();
 
 app.use("/plaid", plaidRoutes);
 app.use("/auth", authRoutes);

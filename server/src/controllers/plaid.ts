@@ -65,7 +65,7 @@ export default {
       // fetch and store transactions
       await updateTransactions(itemId);
 
-      // cache items?
+      // potentially cache items here?
 
       res.status(200).json(sanitizeItems(item));
     } catch (error) {

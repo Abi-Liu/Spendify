@@ -1,4 +1,4 @@
-import { connection } from "../index";
+import connection from "../config/db";
 import { RemovedTransaction, Transaction } from "plaid";
 import { getAccountByPlaidAccountId } from "./accounts";
 import { getItemById } from "./items";
@@ -31,32 +31,38 @@ export async function createOrUpdateTransactions(
 
     try {
       const query = `
-      INSERT INTO Transactions (
-          account_id,
-          plaid_account_id,
-          item_id,
-          plaid_item_id,
-          plaid_transaction_id,
-          personal_finance_category,
-          payment_channel,
-          name,
-          amount,
-          iso_currency_code,
-          unofficial_currency_code,
-          date,
-          pending,
-          account_owner
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      ON DUPLICATE KEY UPDATE
-          personal_finance_category = VALUES(personal_finance_category),
-          payment_channel = VALUES(payment_channel),
-          name = VALUES(name),
-          amount = VALUES(amount),
-          iso_currency_code = VALUES(iso_currency_code),
-          unofficial_currency_code = VALUES(unofficial_currency_code),
-          date = VALUES(date),
-          pending = VALUES(pending),
-          account_owner = VALUES(account_owner);
+      INSERT INTO transactions
+            (
+              account_id,
+              plaid_account_id,
+              item_id,
+              plaid_item_id
+              plaid_transaction_id,
+              personal_finance_category,
+              payment_channel
+              name,
+              amount,
+              iso_currency_code,
+              unofficial_currency_code,
+              date,
+              pending,
+              account_owner
+            )
+          VALUES
+            ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+          ON CONFLICT (plaid_transaction_id) DO UPDATE 
+            SET 
+              plaid_category_id = EXCLUDED.plaid_category_id,
+              category = EXCLUDED.category,
+              subcategory = EXCLUDED.subcategory,
+              type = EXCLUDED.type,
+              name = EXCLUDED.name,
+              amount = EXCLUDED.amount,
+              iso_currency_code = EXCLUDED.iso_currency_code,
+              unofficial_currency_code = EXCLUDED.unofficial_currency_code,
+              date = EXCLUDED.date,
+              pending = EXCLUDED.pending,
+              account_owner = EXCLUDED.account_owner;
   `;
       const values = [
         aid,
@@ -84,16 +90,12 @@ export async function createOrUpdateTransactions(
 }
 
 export async function deleteTransactions(removed: RemovedTransaction[]) {
-  try {
-    const queries = removed.map(async (id) => {
-      const query = `DELETE FROM Transactions WHERE plaid_transaction_id = ?`;
-      const values = [id];
-      await connection.query(query, values);
-    });
-    await Promise.all(queries);
-  } catch (error) {
-    console.error(error);
-  }
+  const queries = removed.map(async (id) => {
+    const query = `DELETE FROM transactions WHERE plaid_transaction_id = $1`;
+    const values = [id];
+    await connection.query(query, values);
+  });
+  await Promise.all(queries);
 }
 
 // start is the date futher back in time, end is the more recent date
@@ -103,14 +105,10 @@ export async function getItemTransactionsFromDates(
   end: string,
   itemId: string
 ) {
-  try {
-    const query = `SELECT * FROM Transactions WHERE plaid_item_id = ? AND date BETWEEN ? AND ?`;
-    const values = [itemId, start, end];
-    const [rows] = await connection.query(query, values);
-    return rows;
-  } catch (error) {
-    console.error("error fetching item transactions from dates", error);
-  }
+  const query = `SELECT * FROM Transactions WHERE plaid_item_id = $1 AND date BETWEEN $2 AND $3`;
+  const values = [itemId, start, end];
+  const { rows } = await connection.query(query, values);
+  return rows;
 }
 
 export async function getAccountTransactionsFromDates(
@@ -118,14 +116,8 @@ export async function getAccountTransactionsFromDates(
   end: string,
   accountId: string
 ) {
-  try {
-    const query = `SELECT * FROM Transactions WHERE plaid_account_id = ? AND date BETWEEN ? AND ?`;
-    const values = [accountId, start, end];
-    console.log(query, values);
-    const [rows] = await connection.query(query, values);
-    console.log("rows: ", rows);
-    return rows;
-  } catch (error) {
-    console.error("error fetching account transactions from dates", error);
-  }
+  const query = `SELECT * FROM Transactions WHERE plaid_account_id = $1 AND date BETWEEN $2 AND $3`;
+  const values = [accountId, start, end];
+  const { rows } = await connection.query(query, values);
+  return rows;
 }
