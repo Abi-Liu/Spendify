@@ -60,8 +60,7 @@ export async function createOrUpdateTransactions(
               unofficial_currency_code = EXCLUDED.unofficial_currency_code,
               date = EXCLUDED.date,
               pending = EXCLUDED.pending,
-              account_owner = EXCLUDED.account_owner
-          RETURNING *;
+              account_owner = EXCLUDED.account_owner;
   `;
       const values = [
         aid,
@@ -80,13 +79,12 @@ export async function createOrUpdateTransactions(
         accountOwner,
       ];
 
-      const { rows } = await connection.query(query, values);
-      return rows[0];
+      await connection.query(query, values);
     } catch (error) {
       console.error(error);
     }
   });
-  return await Promise.all(queries);
+  await Promise.all(queries);
 }
 
 export async function deleteTransactions(removed: RemovedTransaction[]) {

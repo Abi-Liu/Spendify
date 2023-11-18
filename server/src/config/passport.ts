@@ -22,8 +22,8 @@ passport.use(
       callbackURL,
     },
     async function (
-      accessToken: any,
-      refreshToken: any,
+      accessToken: string,
+      refreshToken: string,
       profile: any,
       cb: any
     ) {

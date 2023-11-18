@@ -5,7 +5,8 @@ import Login from "./pages/Login";
 import FireWebhookTest from "./components/FireWebhookTest";
 
 interface User {
-  user_id: number;
+  id: number;
+  google_id: string;
   first_name: string;
   last_name: string;
   avatar_url: string;
@@ -33,7 +34,7 @@ function App() {
     async function createLinkToken() {
       try {
         const response = await api.post("/plaid/createLinkToken", {
-          id: `${user?.user_id}`,
+          id: `${user?.id}`,
         });
         console.log(response);
         setLinkToken(response.data.link_token);
@@ -54,7 +55,7 @@ function App() {
     <>
       {user && <h1>Welcome {user.first_name}</h1>}
       <Login />
-      {user && <PlaidLink linkToken={linkToken} userId={user?.user_id} />}
+      {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
       <FireWebhookTest />
     </>
   );

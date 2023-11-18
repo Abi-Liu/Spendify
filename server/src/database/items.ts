@@ -7,6 +7,7 @@ export async function createItem(
   itemId: string,
   institutionId: string
 ) {
+  console.log(userId);
   // only gets called after linking an item from plaid link flow
   const status = "good";
   const query = `INSERT INTO items

@@ -2,7 +2,7 @@ import connection from "../config/db";
 
 // mysql db queries specific for user functionality.
 
-export async function getUser(id: number) {
+export async function getUser(id: string) {
   const query = "SELECT * from users WHERE google_id = $1;";
   const values = [id];
   const { rows } = await connection.query(query, values);
@@ -10,7 +10,7 @@ export async function getUser(id: number) {
 }
 
 export async function createUser(
-  id: number,
+  id: string,
   givenName: string,
   familyName: string,
   photos: string
