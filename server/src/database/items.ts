@@ -28,7 +28,7 @@ export async function getItemsByPlaidItemId(itemId: string) {
 }
 
 export async function updateItemCursor(itemId: string, cursor: string) {
-  const query = `'UPDATE items SET transactions_cursor = $1 WHERE plaid_item_id = $2'`;
+  const query = `UPDATE items SET transactions_cursor = $1 WHERE plaid_item_id = $2;`;
   const values = [cursor, itemId];
   await connection.query(query, values);
 }

@@ -27,7 +27,7 @@ export async function createOrUpdateTransactions(
       accountId
     );
 
-    const { id: iid, item_id: plaidItemId } = await getItemById(itemId);
+    const { id: iid, plaid_item_id: plaidItemId } = await getItemById(itemId);
 
     try {
       const query = `
@@ -36,10 +36,10 @@ export async function createOrUpdateTransactions(
               account_id,
               plaid_account_id,
               item_id,
-              plaid_item_id
+              plaid_item_id,
               plaid_transaction_id,
               personal_finance_category,
-              payment_channel
+              payment_channel,
               name,
               amount,
               iso_currency_code,
@@ -52,17 +52,16 @@ export async function createOrUpdateTransactions(
             ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
           ON CONFLICT (plaid_transaction_id) DO UPDATE 
             SET 
-              plaid_category_id = EXCLUDED.plaid_category_id,
-              category = EXCLUDED.category,
-              subcategory = EXCLUDED.subcategory,
-              type = EXCLUDED.type,
+             personal_finance_category = EXCLUDED.personal_finance_category,
+              payment_channel = EXCLUDED.payment_channel,
               name = EXCLUDED.name,
               amount = EXCLUDED.amount,
               iso_currency_code = EXCLUDED.iso_currency_code,
               unofficial_currency_code = EXCLUDED.unofficial_currency_code,
               date = EXCLUDED.date,
               pending = EXCLUDED.pending,
-              account_owner = EXCLUDED.account_owner;
+              account_owner = EXCLUDED.account_owner
+          RETURNING *;
   `;
       const values = [
         aid,
@@ -81,12 +80,13 @@ export async function createOrUpdateTransactions(
         accountOwner,
       ];
 
-      await connection.query(query, values);
+      const { rows } = await connection.query(query, values);
+      return rows[0];
     } catch (error) {
       console.error(error);
     }
   });
-  await Promise.all(queries);
+  return await Promise.all(queries);
 }
 
 export async function deleteTransactions(removed: RemovedTransaction[]) {

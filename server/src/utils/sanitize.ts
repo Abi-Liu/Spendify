@@ -37,7 +37,7 @@ export function sanitizeItems(items: any) {
   return sanitizeWith(items, [
     "id",
     "user_id",
-    "institution_id",
+    "plaid_institution_id",
     "status",
     "created_at",
     "updated_at",

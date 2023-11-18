@@ -55,12 +55,7 @@ export default {
       const accessToken = tokenResponse.data.access_token;
       const itemId = tokenResponse.data.item_id;
       // create the item
-      const [item] = await createItem(
-        userId,
-        accessToken,
-        itemId,
-        institutionId
-      );
+      const item = await createItem(userId, accessToken, itemId, institutionId);
 
       // fetch and store transactions
       await updateTransactions(itemId);

@@ -14,7 +14,7 @@ import { createOrUpdateAccounts } from "../database/accounts";
 import { redis } from "../config/redis";
 
 async function fetchTransactionUpdates(itemId: string) {
-  const { access_token: accessToken, transactions_cursor: lastCursor } =
+  const { plaid_access_token: accessToken, transactions_cursor: lastCursor } =
     await getItemsByPlaidItemId(itemId);
   let cursor = lastCursor;
 
