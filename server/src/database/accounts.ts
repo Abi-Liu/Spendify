@@ -1,4 +1,4 @@
-import { connection } from "../index";
+import connection from "../config/db";
 import { AccountBase } from "plaid";
 import { getItemsByPlaidItemId } from "./items";
 
@@ -6,88 +6,80 @@ export async function createOrUpdateAccounts(
   itemId: string,
   accounts: AccountBase[]
 ) {
-  try {
-    const { id } = await getItemsByPlaidItemId(itemId);
+  const { id } = await getItemsByPlaidItemId(itemId);
 
-    const queries = accounts.map(async (account) => {
-      // destructuring the variables out of the account object
-      const {
-        account_id: aid,
-        name,
-        mask,
-        official_name: officialName,
-        balances: {
-          available: availableBalance,
-          current: currentBalance,
-          iso_currency_code: isoCurrencyCode,
-          unofficial_currency_code: unofficialCurrencyCode,
-        },
-        subtype,
-        type,
-      } = account;
+  const queries = accounts.map(async (account) => {
+    // destructuring the variables out of the account object
+    const {
+      account_id: aid,
+      name,
+      mask,
+      official_name: officialName,
+      balances: {
+        available: availableBalance,
+        current: currentBalance,
+        iso_currency_code: isoCurrencyCode,
+        unofficial_currency_code: unofficialCurrencyCode,
+      },
+      subtype,
+      type,
+    } = account;
 
-      const query = `
-    INSERT INTO Account
-    (
-        item_id,
-        account_id,
-        name,
-        mask,
-        official_name,
-        current_balance,
-        available_balance,
-        iso_currency_code,
-        unofficial_currency_code,
-        type,
-        subtype
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE
-        current_balance = VALUES(current_balance),
-        available_balance = VALUES(available_balance);
+    const query = `
+        INSERT INTO accounts
+          (
+            item_id,
+            plaid_account_id,
+            name,
+            mask,
+            official_name,
+            current_balance,
+            available_balance,
+            iso_currency_code,
+            unofficial_currency_code,
+            type,
+            subtype
+          )
+        VALUES
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        ON CONFLICT
+          (plaid_account_id)
+        DO UPDATE SET
+          current_balance = $6,
+          available_balance = $7
+        RETURNING
+          *
     `;
-      const values = [
-        id,
-        aid,
-        name,
-        mask,
-        officialName,
-        currentBalance,
-        availableBalance,
-        isoCurrencyCode,
-        unofficialCurrencyCode,
-        type,
-        subtype,
-      ];
-      await connection.query(query, values);
-    });
-    await Promise.all(queries);
-    const newAccounts = await getAccountsByItemId(itemId);
-    return newAccounts;
-  } catch (error) {
-    console.error(error);
-  }
+    const values = [
+      id,
+      aid,
+      name,
+      mask,
+      officialName,
+      currentBalance,
+      availableBalance,
+      isoCurrencyCode,
+      unofficialCurrencyCode,
+      type,
+      subtype,
+    ];
+    const { rows } = await connection.query(query, values);
+    return rows;
+  });
+  return await Promise.all(queries);
 }
 
 export async function getAccountsByItemId(itemId: string) {
-  try {
-    const { id } = await getItemsByPlaidItemId(itemId);
-    const query = `SELECT * FROM Account WHERE item_id = ?;`;
-    const values = [id];
-    const [data] = await connection.query(query, values);
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
+  const { id } = await getItemsByPlaidItemId(itemId);
+  const query = `SELECT * FROM accounts WHERE item_id = $1;`;
+  const values = [id];
+  const { rows } = await connection.query(query, values);
+  return rows[0];
 }
 
 export async function getAccountByPlaidAccountId(accountId: string) {
-  try {
-    const query = `SELECT * FROM Account WHERE account_id = ?`;
-    const values = [accountId];
-    const [rows] = await connection.query(query, values);
-    return rows[0];
-  } catch (error) {
-    console.error(error);
-  }
+  const query = `SELECT * FROM accounts WHERE plaid_account_id = $1`;
+  const values = [accountId];
+  const { rows } = await connection.query(query, values);
+  return rows[0];
 }

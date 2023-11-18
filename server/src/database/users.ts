@@ -1,16 +1,12 @@
-import { connection } from "../index";
+import connection from "../config/db";
 
 // mysql db queries specific for user functionality.
 
 export async function getUser(id: number) {
-  try {
-    const query = "SELECT * from Users WHERE google_id = ?;";
-    const values = [id];
-    const [user] = await connection.query(query, values);
-    return user[0];
-  } catch (error) {
-    console.error(error);
-  }
+  const query = "SELECT * from users WHERE google_id = $1;";
+  const values = [id];
+  const { rows } = await connection.query(query, values);
+  return rows[0];
 }
 
 export async function createUser(
@@ -19,16 +15,9 @@ export async function createUser(
   familyName: string,
   photos: string
 ) {
-  try {
-    const insert =
-      "INSERT INTO Users (google_id, first_name, last_name, avatar_url) VALUES (?, ?, ?, ?);";
-    const values = [id, givenName, familyName, photos];
-    const [user] = await connection.query(insert, values);
-    const [data] = await connection.query(`SELECT * FROM Users WHERE id = ?;`, [
-      user.insertId,
-    ]);
-    return data[0];
-  } catch (error) {
-    console.error(error);
-  }
+  const insert =
+    "INSERT INTO users (google_id, first_name, last_name, avatar_url) VALUES ($1, $2, $3, $4) RETURNING *;";
+  const values = [id, givenName, familyName, photos];
+  const { rows } = await connection.query(insert, values);
+  return rows[0];
 }
