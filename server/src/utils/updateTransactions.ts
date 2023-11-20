@@ -52,10 +52,10 @@ async function fetchTransactionUpdates(itemId: string) {
   return { added, modified, removed, cursor, accessToken };
 }
 
-export async function updateTransactions(itemId: string) {
+export async function updateTransactions(plaidItemId: string) {
   // Fetch new transactions from plaid api.
   const { added, modified, removed, cursor, accessToken } =
-    await fetchTransactionUpdates(itemId);
+    await fetchTransactionUpdates(plaidItemId);
 
   // get accounts here so that the balance is updated everytime we update the transactions via webhooks.
   const { data } = await plaidClient.accountsGet({
@@ -65,12 +65,13 @@ export async function updateTransactions(itemId: string) {
 
   // update the db
   // fetch and store the accounts that are associated with the item:
-  await createOrUpdateAccounts(itemId, accounts);
+  await createOrUpdateAccounts(plaidItemId, accounts);
   await createOrUpdateTransactions(added, modified);
   await deleteTransactions(removed);
-  await updateItemCursor(itemId, cursor);
+  await updateItemCursor(plaidItemId, cursor);
 
-  // update the redis cache
+  // update the redis cache ? Is this even necessary? And if so, how would I go about caching the data?
+
   // cache all transactions for the plaid_item_id
   // grab the most recent 1 years worth of transactions for the plaid item and cache those transactions
   // const currentDate = new Date();
