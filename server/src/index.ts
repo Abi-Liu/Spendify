@@ -1,11 +1,14 @@
-import express from "express";
+import express, { Response, NextFunction } from "express";
 import cors from "cors";
+import { Server as SocketIoServer } from "socket.io";
+import http from "http";
 import plaidRoutes from "./routes/plaid";
 import session from "express-session";
 import passport from "./config/passport";
 // import transactionsRoutes from "./routes/transactions";
 import authRoutes from "./routes/auth";
 import webhookRoutes from "./routes/webhook";
+import SocketRequest from "./interfaces/SocketRequest";
 
 const app = express();
 app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
@@ -32,6 +35,24 @@ app.use("/auth", authRoutes);
 app.use("/webhook", webhookRoutes);
 // app.use("/transactions", transactionsRoutes);
 
-app.listen(PORT || 8000, () =>
+// socket initialization
+const server = http.createServer(app);
+const io = new SocketIoServer(server);
+
+// middleware to pass the socket to each request
+app.use((req: SocketRequest, res: Response, next: NextFunction) => {
+  req.io = io;
+  next();
+});
+
+io.on("connection", (socket) => {
+  console.log(`${socket} connected`);
+
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected");
+  });
+});
+
+server.listen(PORT || 8000, () =>
   console.log(`Server has started on port: ${PORT}`)
 );

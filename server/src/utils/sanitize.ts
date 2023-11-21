@@ -49,6 +49,7 @@ export function sanitizeTransactions(transactions: TransactionBase[]) {
   sanitizeWith(transactions, [
     "id",
     "account_id",
+    "user_id",
     "item_id",
     "name",
     "payment_channel",
