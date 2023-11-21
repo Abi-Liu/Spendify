@@ -5,7 +5,7 @@ import {
   WebhookType,
 } from "plaid";
 import { updateTransactions } from "../utils/updateTransactions";
-import { getItemsByPlaidItemId } from "../database/items";
+import { getItemsByPlaidItemId, setItemStatus } from "../database/items";
 import SocketRequest from "../interfaces/SocketRequest";
 
 // using for testing purposes
@@ -38,7 +38,13 @@ export default {
           req.io.emit("SYNC_UPDATES_AVAILABLE", id);
         }
       } else if (webhookType === "ITEM") {
-        // Handle item webhook
+        if (webhookCode === "PENDING_EXPIRATION") {
+          const { id } = await getItemsByPlaidItemId(plaidItemId);
+          // SET ITEM STATUS TO BAD
+          await setItemStatus(id, "bad");
+          console.log(`ITEM ${id} NEEDS TO BE REAUTHENTICATED`);
+          req.io.emit("PENDING_EXPIRATION", id);
+        }
       } else {
         console.log(
           `Unhandled WEBHOOK TYPE: ${webhookType} WEBHOOK CODE: ${webhookCode}, for item ${plaidItemId}`
