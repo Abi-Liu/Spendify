@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { plaidClient } from "../config/plaid";
 import { CountryCode, Products } from "plaid";
-import { createItem } from "../database/items";
+import { createItem, getItemById } from "../database/items";
 import { sanitizeItems } from "../utils/sanitize";
 import { updateTransactions } from "../utils/updateTransactions";
-import SocketRequest from "src/interfaces/SocketRequest";
+import SocketRequest from "../interfaces/SocketRequest";
 // import { updateTransactions } from "../utils/updateTransactions";
 
 const { CLIENT_URL } = process.env;
@@ -19,7 +19,18 @@ export default {
   // They can then use that public token to request for an access token that will allow us to connect their accounts
   createLinkToken: async (request: Request, response: Response) => {
     //   Get the client_user_id by searching for the current user);
-    const clientUserId = request.body.id;
+    const { id: clientUserId, itemId } = request.body;
+
+    let accessToken = null;
+    let products = [Products.Transactions];
+
+    // if itemId exists, that means we are initializing link in update mode.
+    // include the item access token and do not include any products
+    if (itemId) {
+      const item = await getItemById(itemId);
+      accessToken = item.access_token;
+      products = [];
+    }
 
     // Configuring plaid request
     const plaidRequest = {
@@ -27,11 +38,12 @@ export default {
         client_user_id: clientUserId,
       },
       client_name: "BudgetBuddy",
-      products: [Products.Transactions],
+      products,
       language: "en",
       redirect_uri: CLIENT_URL,
       country_codes: [CountryCode.Us],
       webhook: WEBHOOK_URL,
+      access_token: accessToken,
     };
     try {
       const createTokenResponse = await plaidClient.linkTokenCreate(
