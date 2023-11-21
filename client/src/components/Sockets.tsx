@@ -7,6 +7,11 @@ const Sockets = () => {
     socket.on("New Transactions Data", ({ itemId }) => {
       console.log(itemId);
     });
+
+    // close the connection to avoid memory leaks
+    return () => {
+      socket.disconnect();
+    };
   }, []);
   return <div>Sockets</div>;
 };
