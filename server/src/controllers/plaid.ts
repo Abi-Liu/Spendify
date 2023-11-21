@@ -4,6 +4,7 @@ import { CountryCode, Products } from "plaid";
 import { createItem } from "../database/items";
 import { sanitizeItems } from "../utils/sanitize";
 import { updateTransactions } from "../utils/updateTransactions";
+import SocketRequest from "src/interfaces/SocketRequest";
 // import { updateTransactions } from "../utils/updateTransactions";
 
 const { CLIENT_URL } = process.env;
@@ -44,7 +45,7 @@ export default {
   },
   // Exchange token flow - exchange a Link public_token for
   // an API access_token
-  setAccessToken: async (req: Request, res: Response) => {
+  setAccessToken: async (req: SocketRequest, res: Response) => {
     const { publicToken, institutionId, userId } = req.body;
 
     try {
@@ -59,6 +60,9 @@ export default {
 
       // fetch and store transactions
       await updateTransactions(itemId);
+
+      // notify the client that the transactions are ready to be fetched
+      req.io.emit("New Transactions Data", { itemId: item.id });
 
       // potentially cache items here?
 

@@ -3,6 +3,7 @@ import PlaidLink from "./components/PlaidLink";
 import api from "./utils/axios";
 import Login from "./pages/Login";
 import FireWebhookTest from "./components/FireWebhookTest";
+// import Sockets from "./components/Sockets";
 
 interface User {
   id: number;
@@ -53,6 +54,7 @@ function App() {
 
   return (
     <>
+      {/* <Sockets /> */}
       {user && <h1>Welcome {user.first_name}</h1>}
       <Login />
       {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
