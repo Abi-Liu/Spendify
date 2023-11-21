@@ -30,11 +30,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/plaid", plaidRoutes);
-app.use("/auth", authRoutes);
-app.use("/webhook", webhookRoutes);
-// app.use("/transactions", transactionsRoutes);
-
 // socket initialization
 const server = http.createServer(app);
 const io = new SocketIoServer(server);
@@ -44,6 +39,12 @@ app.use((req: SocketRequest, res: Response, next: NextFunction) => {
   req.io = io;
   next();
 });
+
+// moved routes here so that the routes middlewares are set before we initialize the routes
+app.use("/plaid", plaidRoutes);
+app.use("/auth", authRoutes);
+app.use("/webhook", webhookRoutes);
+// app.use("/transactions", transactionsRoutes);
 
 io.on("connection", (socket) => {
   console.log(`${socket} connected`);

@@ -7,8 +7,6 @@ export async function createOrUpdateAccounts(
   accounts: AccountBase[]
 ) {
   const { id } = await getItemsByPlaidItemId(itemId);
-  console.log(id);
-  console.log(accounts);
 
   const queries = accounts.map(async (account) => {
     // destructuring the variables out of the account object
