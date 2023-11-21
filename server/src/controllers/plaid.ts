@@ -62,7 +62,7 @@ export default {
       await updateTransactions(itemId);
 
       // notify the client that the transactions are ready to be fetched
-      req.io.emit("New Transactions Data", { itemId: item.id });
+      req.io.emit("NEW_TRANSACTIONS_DATA", { itemId: item.id });
 
       // potentially cache items here?
 

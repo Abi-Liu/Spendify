@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 const Sockets = () => {
   useEffect(() => {
     const socket = io("http://localhost:8000");
-    socket.on("New Transactions Data", ({ itemId }) => {
+    socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {
       console.log(itemId);
     });
 

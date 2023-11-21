@@ -6,12 +6,13 @@ import {
 } from "plaid";
 import { updateTransactions } from "../utils/updateTransactions";
 import { getItemsByPlaidItemId } from "../database/items";
+import SocketRequest from "../interfaces/SocketRequest";
 
 // using for testing purposes
 const accessToken = "access-sandbox-966460a7-f1b2-4668-b5a2-cbfdf6e8036d";
 
 export default {
-  handleWebhook: async (req: Request, res: Response) => {
+  handleWebhook: async (req: SocketRequest, res: Response) => {
     try {
       const {
         item_id: plaidItemId,
@@ -29,10 +30,12 @@ export default {
           } = await updateTransactions(plaidItemId);
           const { id } = await getItemsByPlaidItemId(plaidItemId);
 
-          // TODO: send data to client via socket so client knows to refetch transactions
           console.log(
             `ITEM ${id} HAS ${added} NEW TRANSACTIONS, ${modified} MODIFIED TRANSACTIONS, AND ${removed} REMOVED TRANSACTIONS`
           );
+
+          // send data to client via socket so client knows to refetch transactions
+          req.io.emit("SYNC_UPDATES_AVAILABLE", id);
         }
       } else if (webhookType === "ITEM") {
         // Handle item webhook
