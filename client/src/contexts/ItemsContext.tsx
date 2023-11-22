@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useReducer, useContext, createContext, Dispatch } from "react";
 import api from "../utils/axios";
 
@@ -44,6 +45,7 @@ const reducer = (state: ItemsState, action: ItemActions) => {
 };
 
 interface ItemsContextShape extends ItemsState {
+  items: ItemsState;
   dispatch: Dispatch<ItemActions>;
   deleteItemById: (id: number) => void;
   getItemById: (id: number) => void;
@@ -60,7 +62,34 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [items, dispatch] = useReducer(reducer, {});
 
   const getItemById = async (id: number) => {
-    const { data } = api.get(`/items/${id}`);
-    dispatch({ type: "SUCCESSFUL_REQUEST", payload: data });
+    const { data } = await api.get(`/items/${id}`);
+    dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
+
+  const getItemsByUser = async (userId: number) => {
+    const { data } = await api.get(`/items/user/${userId}`);
+    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+  };
+
+  const deleteItemById = async (id: number) => {
+    await api.delete(`/items/${id}`);
+    dispatch({ type: "DELETE", payload: id });
+  };
+
+  return (
+    <ItemsContext.Provider
+      value={{ items, deleteItemById, getItemById, getItemsByUser, dispatch }}
+    >
+      {children}
+    </ItemsContext.Provider>
+  );
 };
+
+export default function useItemsContext() {
+  const context = useContext(ItemsContext);
+
+  if (!context) {
+    throw new Error("useUserContext must be used within a UserProvider");
+  }
+  return context;
+}
