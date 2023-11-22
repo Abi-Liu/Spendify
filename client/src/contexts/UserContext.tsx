@@ -28,6 +28,7 @@ const reducer = (state: UserState | null, action: UserActions) => {
       // set user state to null
       return null;
     default:
+      console.log("unknown action");
       return state;
   }
 };
