@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import FireWebhookTest from "./components/FireWebhookTest";
 import Sockets from "./components/Sockets";
 import { MantineProvider } from "@mantine/core";
+import { UserProvider } from "./contexts/UserContext";
 
 interface User {
   id: number;
@@ -54,15 +55,17 @@ function App() {
   }, [user]);
 
   return (
-    <MantineProvider>
-      <>
-        <Sockets />
-        {user && <h1>Welcome {user.first_name}</h1>}
-        <Login />
-        {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
-        <FireWebhookTest />
-      </>
-    </MantineProvider>
+    <UserProvider>
+      <MantineProvider>
+        <>
+          <Sockets />
+          {user && <h1>Welcome {user.first_name}</h1>}
+          <Login />
+          {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
+          <FireWebhookTest />
+        </>
+      </MantineProvider>
+    </UserProvider>
   );
 }
 
