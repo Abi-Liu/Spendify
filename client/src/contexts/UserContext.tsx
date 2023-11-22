@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useReducer, Dispatch, useContext } from "react";
+import api from "../utils/axios";
 
 interface UserState {
   id: number;
@@ -10,14 +11,15 @@ interface UserState {
   updated_at: string;
 }
 
-const initialState: UserState | null = null;
+interface initialStateType {
+  user: UserState | null;
+}
+
+const initialState: initialStateType = { user: null };
 
 type UserActions = { type: "LOGIN"; payload: UserState } | { type: "LOGOUT" };
 
-const reducer = (
-  state: UserState | null,
-  action: UserActions
-): UserState | null => {
+const reducer = (state: UserState | null, action: UserActions) => {
   switch (action.type) {
     case "LOGIN":
       // updates the global user state with the payload data
@@ -30,19 +32,41 @@ const reducer = (
   }
 };
 
-const UserContext = createContext<{
-  userState: UserState | null;
-  userDispatch: Dispatch<UserActions>;
-} | null>(null);
+interface UserContextShape extends initialStateType {
+  dispatch: Dispatch<UserActions>;
+  login: () => void;
+  logout: () => void;
+}
+
+const UserContext = createContext<UserContextShape>({
+  user: null,
+  dispatch: () => {},
+  login: () => {},
+  logout: () => {},
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [userState, userDispatch] = useReducer(reducer, initialState);
+  const [user, dispatch] = useReducer(reducer, initialState.user);
+
+  const login = async () => {
+    const { data } = await api.get("/auth/login/success");
+    const payload = data.user;
+    dispatch({
+      type: "LOGIN",
+      payload: payload,
+    });
+  };
+
+  const logout = async () => {
+    await api.get("/auth/logout");
+    dispatch({ type: "LOGOUT" });
+  };
 
   return (
-    <UserContext.Provider value={{ userState, userDispatch }}>
+    <UserContext.Provider value={{ user, login, logout, dispatch }}>
       {children}
     </UserContext.Provider>
   );

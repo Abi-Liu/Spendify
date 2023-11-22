@@ -3,8 +3,8 @@ import api from "../utils/axios";
 import useUserContext from "../contexts/UserContext";
 
 const FireWebhookTest = () => {
-  const { userState, userDispatch } = useUserContext();
-  console.log(userState);
+  const { user } = useUserContext();
+  console.log(user);
   async function fireTestWebhook() {
     const res = await api.post("/webhook/fireTestWebhook", {});
     console.log(res);

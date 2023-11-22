@@ -5,31 +5,14 @@ import Login from "./pages/Login";
 import FireWebhookTest from "./components/FireWebhookTest";
 import Sockets from "./components/Sockets";
 import { MantineProvider } from "@mantine/core";
-import { UserProvider } from "./contexts/UserContext";
-
-interface User {
-  id: number;
-  google_id: string;
-  first_name: string;
-  last_name: string;
-  avatar_url: string;
-}
+import useUserContext from "./contexts/UserContext";
 
 function App() {
   const [linkToken, setLinkToken] = useState(null);
-  const [user, setUser] = useState<User | null>(null);
+  const { login, user } = useUserContext();
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await api.get("/auth/login/success");
-        const data = res.data.user;
-        setUser(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUser();
+    login();
   }, []);
 
   useEffect(() => {
@@ -55,17 +38,15 @@ function App() {
   }, [user]);
 
   return (
-    <UserProvider>
-      <MantineProvider>
-        <>
-          <Sockets />
-          {user && <h1>Welcome {user.first_name}</h1>}
-          <Login />
-          {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
-          <FireWebhookTest />
-        </>
-      </MantineProvider>
-    </UserProvider>
+    <MantineProvider>
+      <>
+        <Sockets />
+        {user && <h1>Welcome {user.first_name}</h1>}
+        <Login />
+        {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
+        <FireWebhookTest />
+      </>
+    </MantineProvider>
   );
 }
 
