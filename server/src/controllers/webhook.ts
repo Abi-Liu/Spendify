@@ -5,7 +5,11 @@ import {
   WebhookType,
 } from "plaid";
 import { updateTransactions } from "../utils/updateTransactions";
-import { getItemsByPlaidItemId, setItemStatus } from "../database/items";
+import {
+  getItemById,
+  getItemsByPlaidItemId,
+  setItemStatus,
+} from "../database/items";
 import SocketRequest from "../interfaces/SocketRequest";
 
 // using for testing purposes
@@ -71,5 +75,19 @@ export default {
     } catch (error) {
       console.error(error);
     }
+  },
+
+  resetLogin: async (req: Request, res: Response) => {
+    const { id: itemId } = req.body;
+    const { access_token: accessToken } = await getItemById(itemId);
+    const response = plaidClient.sandboxItemResetLogin({
+      access_token: accessToken,
+    });
+
+    const ptResponse = await plaidClient.itemCreatePublicToken({
+      access_token: accessToken,
+    });
+    const { public_token: publicToken } = ptResponse.data;
+    console.log("Public Token: ", publicToken);
   },
 };
