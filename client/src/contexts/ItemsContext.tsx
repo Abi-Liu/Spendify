@@ -59,7 +59,7 @@ const ItemsContext = createContext<ItemsContextShape>(
 export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [items, dispatch] = useReducer(reducer, {});
+  const [items, dispatch] = useReducer(reducer, initialState);
 
   const getItemById = async (id: number) => {
     const { data } = await api.get(`/items/${id}`);
@@ -89,7 +89,7 @@ export default function useItemsContext() {
   const context = useContext(ItemsContext);
 
   if (!context) {
-    throw new Error("useUserContext must be used within a UserProvider");
+    throw new Error("useItemsContext must be used within a ItemsProvider");
   }
   return context;
 }
