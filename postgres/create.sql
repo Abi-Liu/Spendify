@@ -54,6 +54,7 @@ CREATE TABLE accounts
 (
   id SERIAL PRIMARY KEY,
   item_id integer REFERENCES items(id) ON DELETE CASCADE,
+  user_id integer REFERENCES users(id) ON DELETE CASCADE,
   plaid_account_id text UNIQUE NOT NULL,
   name text NOT NULL,
   mask text NOT NULL,
