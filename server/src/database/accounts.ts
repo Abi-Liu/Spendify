@@ -6,7 +6,7 @@ export async function createOrUpdateAccounts(
   itemId: string,
   accounts: AccountBase[]
 ) {
-  const { id } = await getItemsByPlaidItemId(itemId);
+  const { id, user_id } = await getItemsByPlaidItemId(itemId);
 
   const queries = accounts.map(async (account) => {
     // destructuring the variables out of the account object
@@ -29,6 +29,7 @@ export async function createOrUpdateAccounts(
         INSERT INTO accounts
           (
             item_id,
+            user_id,
             plaid_account_id,
             name,
             mask,
@@ -41,7 +42,7 @@ export async function createOrUpdateAccounts(
             subtype
           )
         VALUES
-          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         ON CONFLICT
           (plaid_account_id)
         DO UPDATE SET
@@ -52,6 +53,7 @@ export async function createOrUpdateAccounts(
     `;
     const values = [
       id,
+      user_id,
       aid,
       name,
       mask,
