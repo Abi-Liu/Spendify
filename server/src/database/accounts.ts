@@ -70,11 +70,10 @@ export async function createOrUpdateAccounts(
 }
 
 export async function getAccountsByItemId(itemId: string) {
-  const { id } = await getItemsByPlaidItemId(itemId);
   const query = `SELECT * FROM accounts WHERE item_id = $1;`;
-  const values = [id];
+  const values = [itemId];
   const { rows } = await connection.query(query, values);
-  return rows[0];
+  return rows;
 }
 
 export async function getAccountByPlaidAccountId(accountId: string) {
@@ -82,4 +81,12 @@ export async function getAccountByPlaidAccountId(accountId: string) {
   const values = [accountId];
   const { rows } = await connection.query(query, values);
   return rows[0];
+}
+
+// need to add user_id column to accounts table
+export async function getAccountsByUserId(userId: string) {
+  const query = `SELECT * FROM accounts WHERE user_id = $1`;
+  const values = [userId];
+  const { rows } = await connection.query(query, values);
+  return rows;
 }
