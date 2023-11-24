@@ -90,3 +90,9 @@ export async function getAccountsByUserId(userId: string) {
   const { rows } = await connection.query(query, values);
   return rows;
 }
+
+export async function deleteAccountsByItemId(itemId: string) {
+  const query = `DELETE FROM accounts WHERE item_id = $1`;
+  const values = [itemId];
+  await connection.query(query, values);
+}
