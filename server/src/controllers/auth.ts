@@ -12,8 +12,15 @@ export default {
   },
 
   logout: async (req: Request, res: Response) => {
-    const { CLIENT_URL } = process.env;
-    (req.logout as () => void)();
-    res.redirect(CLIENT_URL as string);
+    req.logout((err) => {
+      if (err) {
+        // Handle any errors that occur during logout
+        return res.status(500).json({ error: "Logout failed" });
+      }
+
+      // Redirect to the client URL upon successful logout
+      const CLIENT_URL = process.env.CLIENT_URL;
+      return res.redirect(CLIENT_URL as string);
+    });
   },
 };

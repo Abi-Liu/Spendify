@@ -62,7 +62,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = async () => {
-    await api.get("/auth/logout");
+    window.open("http://localhost:8000/auth/logout", "_self");
     dispatch({ type: "LOGOUT" });
   };
 
