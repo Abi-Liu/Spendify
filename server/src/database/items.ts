@@ -33,7 +33,7 @@ export async function updateItemCursor(itemId: string, cursor: string) {
   await connection.query(query, values);
 }
 
-export async function getItemById(itemId: number) {
+export async function getItemById(itemId: string) {
   const query = `SELECT * FROM items WHERE id = $1`;
   const values = [itemId];
   const { rows } = await connection.query(query, values);
@@ -43,5 +43,18 @@ export async function getItemById(itemId: number) {
 export async function setItemStatus(itemId: string, status: string) {
   const query = `UPDATE items SET status = $1 where id = $2`;
   const values = [status, itemId];
+  await connection.query(query, values);
+}
+
+export async function getItemsByUserId(userId: string) {
+  const query = "SELECT * FROM items WHERE user_id = $1";
+  const values = [userId];
+  const { rows } = await connection.query(query, values);
+  return rows;
+}
+
+export async function deleteItemByItemId(itemId: string) {
+  const query = "DELETE FROM items WHERE id = $1";
+  const values = [itemId];
   await connection.query(query, values);
 }
