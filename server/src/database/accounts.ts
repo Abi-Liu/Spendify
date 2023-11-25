@@ -42,12 +42,12 @@ export async function createOrUpdateAccounts(
             subtype
           )
         VALUES
-          ($1, $2, $3, $4, $5, $6, CAST($7 AS NUMERIC), CAST($8 AS NUMERIC), $9, $10, $11, $12)
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         ON CONFLICT
           (plaid_account_id)
         DO UPDATE SET
-          current_balance = $6,
-          available_balance = $7
+          current_balance = $7,
+          available_balance = $8
         RETURNING
           *
     `;
