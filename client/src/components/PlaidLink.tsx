@@ -19,13 +19,12 @@ export default function PlaidLink(props: Props) {
     publicToken: string,
     metadata: PlaidLinkOnSuccessMetadata
   ) => {
-    console.log(publicToken);
-    console.log(metadata);
-    await api.post("/plaid/setAccessToken", {
+    const { data } = await api.post("/plaid/setAccessToken", {
       publicToken,
       institutionId: metadata.institution?.institution_id,
       userId: props.userId,
     });
+    console.log(data);
   };
 
   const onExit = async (
