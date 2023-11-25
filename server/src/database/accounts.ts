@@ -42,7 +42,7 @@ export async function createOrUpdateAccounts(
             subtype
           )
         VALUES
-          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+          ($1, $2, $3, $4, $5, $6, CAST($7 AS NUMERIC), CAST($8 AS NUMERIC), $9, $10, $11, $12)
         ON CONFLICT
           (plaid_account_id)
         DO UPDATE SET
@@ -65,6 +65,8 @@ export async function createOrUpdateAccounts(
       type,
       subtype,
     ];
+    console.log(values);
+
     const { rows } = await connection.query(query, values);
     return rows;
   });
