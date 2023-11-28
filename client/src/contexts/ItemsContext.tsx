@@ -62,12 +62,17 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [items, dispatch] = useReducer(reducer, initialState);
 
   const getItemById = async (id: number) => {
-    const { data } = await api.get(`/items/${id}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    try {
+      const { data } = await api.get(`/items/${id}`);
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getItemsByUser = async (userId: number) => {
     const { data } = await api.get(`/items/user/${userId}`);
+    console.log(data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 

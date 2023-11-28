@@ -6,6 +6,7 @@ import FireWebhookTest from "./components/FireWebhookTest";
 import Sockets from "./components/Sockets";
 import { MantineProvider } from "@mantine/core";
 import useUserContext from "./contexts/UserContext";
+import Items from "./components/Items";
 
 function App() {
   const [linkToken, setLinkToken] = useState(null);
@@ -45,6 +46,7 @@ function App() {
         <Login />
         {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
         <FireWebhookTest />
+        <Items />
       </>
     </MantineProvider>
   );

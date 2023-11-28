@@ -21,6 +21,7 @@ export default {
   getItemsByUser: async (req: Request, res: Response) => {
     try {
       const { userId } = req.params;
+      console.log(userId);
       const items = await getItemsByUserId(userId);
       res.status(200).json(sanitizeItems(items));
     } catch (error) {
