@@ -1,10 +1,5 @@
-import React, {
-  useContext,
-  useReducer,
-  Dispatch,
-  createContext,
-  Context,
-} from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { useContext, useReducer, Dispatch, createContext } from "react";
 import { Institution } from "plaid";
 import api from "../utils/axios";
 
@@ -33,15 +28,17 @@ const reducer = (state: InstitutionState, action: InstitutionActions) => {
   }
 };
 
-interface InstitutionsContextShape extends InstitutionState {
+interface InstitutionsContextShape {
   institutions: InstitutionState;
   dispatch: Dispatch<InstitutionActions>;
   getInstitutionById: (id: string) => void;
 }
 
-const InstitutionsContext = createContext<InstitutionsContextShape>(
-  initialState as InstitutionsContextShape
-);
+const InstitutionsContext = createContext<InstitutionsContextShape>({
+  institutions: initialState,
+  dispatch: () => {},
+  getInstitutionById: async () => {},
+});
 
 export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -61,3 +58,14 @@ export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
     </InstitutionsContext.Provider>
   );
 };
+
+export default function useInstitutionsContext() {
+  const context = useContext(InstitutionsContext);
+
+  if (!context) {
+    throw new Error(
+      "useInstitutionsContext must be used within a ItemsProvider"
+    );
+  }
+  return context;
+}
