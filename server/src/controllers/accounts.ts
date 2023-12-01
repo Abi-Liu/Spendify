@@ -4,7 +4,7 @@ import {
   getAccountsByItemId,
   getAccountsByUserId,
 } from "../database/accounts";
-import { sanitizeAccounts } from "src/utils/sanitize";
+import { sanitizeAccounts } from "../utils/sanitize";
 
 export default {
   getAccountsByItemId: async (req: Request, res: Response) => {

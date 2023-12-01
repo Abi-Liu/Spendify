@@ -4,7 +4,7 @@ import {
   getItemById,
   getItemsByUserId,
 } from "../database/items";
-import { sanitizeItems } from "src/utils/sanitize";
+import { sanitizeItems } from "../utils/sanitize";
 
 export default {
   getItemsByItemId: async (req: Request, res: Response) => {
@@ -21,9 +21,10 @@ export default {
   getItemsByUser: async (req: Request, res: Response) => {
     try {
       const { userId } = req.params;
-      console.log(userId);
       const items = await getItemsByUserId(userId);
-      res.status(200).json(sanitizeItems(items));
+      const sanitized = sanitizeItems(items);
+      console.log(sanitized);
+      res.status(200).json(sanitized);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error fetching items" });
