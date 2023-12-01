@@ -6,6 +6,7 @@ import {
   PlaidLinkError,
 } from "react-plaid-link";
 import api from "../utils/axios";
+import useItemsContext from "../contexts/ItemsContext";
 
 interface Props {
   linkToken: string | null;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export default function PlaidLink(props: Props) {
+  const { getItemsByUser } = useItemsContext();
+
   // define onSuccess, onExit and onEvent functions as configs for Plaid Link creation
   const onSuccess = async (
     publicToken: string,
@@ -24,6 +27,7 @@ export default function PlaidLink(props: Props) {
       institutionId: metadata.institution?.institution_id,
       userId: props.userId,
     });
+    await getItemsByUser(props.userId);
     console.log(data);
   };
 
