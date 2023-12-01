@@ -50,6 +50,7 @@ interface ItemsContextShape extends ItemsState {
   deleteItemById: (id: number) => void;
   getItemById: (id: number) => void;
   getItemsByUser: (userId: number) => void;
+  itemsArray: Item[];
 }
 
 const ItemsContext = createContext<ItemsContextShape>(
@@ -83,7 +84,14 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <ItemsContext.Provider
-      value={{ items, deleteItemById, getItemById, getItemsByUser, dispatch }}
+      value={{
+        items,
+        deleteItemById,
+        getItemById,
+        getItemsByUser,
+        dispatch,
+        itemsArray: Object.values(items),
+      }}
     >
       {children}
     </ItemsContext.Provider>

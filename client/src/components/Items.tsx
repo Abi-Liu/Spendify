@@ -3,7 +3,7 @@ import useItemsContext from "../contexts/ItemsContext";
 import useUserContext from "../contexts/UserContext";
 
 const Items = () => {
-  const { getItemsByUser, items } = useItemsContext();
+  const { getItemsByUser, itemsArray } = useItemsContext();
   const { user } = useUserContext();
 
   useEffect(() => {
@@ -13,14 +13,13 @@ const Items = () => {
     }
   }, [user]);
 
-  console.log(items);
+  console.log(itemsArray);
 
   return (
     <div>
-      {Object.keys(items).map((key) => {
-        const numKey = Number(key);
-        return <li>{items[numKey].id}</li>;
-      })}
+      {itemsArray.map((item) => (
+        <li>{item.id}</li>
+      ))}
     </div>
   );
 };
