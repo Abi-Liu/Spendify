@@ -11,6 +11,7 @@ import webhookRoutes from "./routes/webhook";
 import SocketRequest from "./interfaces/SocketRequest";
 import itemsRoutes from "./routes/items";
 import accountsRoutes from "./routes/accounts";
+import institutionsRoutes from "./routes/institutions";
 
 const app = express();
 app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
@@ -53,6 +54,7 @@ app.use("/auth", authRoutes);
 app.use("/webhook", webhookRoutes);
 app.use("/items", itemsRoutes);
 app.use("/accounts", accountsRoutes);
+app.use("/institutions", institutionsRoutes);
 // app.use("/transactions", transactionsRoutes);
 
 io.on("connection", (socket) => {
