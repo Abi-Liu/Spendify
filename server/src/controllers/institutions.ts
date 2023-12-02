@@ -10,7 +10,9 @@ export default {
     const request = {
       institution_id: institutionId,
       country_codes: [CountryCode.Us],
-      include_optional_metadata: true,
+      options: {
+        include_optional_metadata: true,
+      },
     };
     try {
       const { data } = await plaidClient.institutionsGetById(request);
