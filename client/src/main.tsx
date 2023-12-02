@@ -6,6 +6,7 @@ import { UserProvider } from "./contexts/UserContext.tsx";
 import { ItemsProvider } from "./contexts/ItemsContext.tsx";
 import { AccountsProvider } from "./contexts/AccountsContext.tsx";
 import { TransactionsProvider } from "./contexts/TransactionsContext.tsx";
+import { InstitutionsProvider } from "./contexts/InstitutionsContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ItemsProvider>
         <AccountsProvider>
           <TransactionsProvider>
-            <App />
+            <InstitutionsProvider>
+              <App />
+            </InstitutionsProvider>
           </TransactionsProvider>
         </AccountsProvider>
       </ItemsProvider>
