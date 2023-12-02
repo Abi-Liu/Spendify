@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
 import { plaidClient } from "../config/plaid";
-import { CountryCode } from "plaid";
+import { CountryCode, InstitutionsGetByIdRequest } from "plaid";
 
 export default {
   // returns a single institution based on the id given by the client
   getInstitutionById: async (req: Request, res: Response) => {
-    const { institutionId } = req.params;
-
-    const request = {
-      institution_id: institutionId,
+    const { id } = req.params;
+    const request: InstitutionsGetByIdRequest = {
+      institution_id: id,
       country_codes: [CountryCode.Us],
       options: {
         include_optional_metadata: true,
