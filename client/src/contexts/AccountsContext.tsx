@@ -2,7 +2,7 @@
 import React, { useContext, createContext, useReducer, Dispatch } from "react";
 import api from "../utils/axios";
 
-interface Account {
+export interface Account {
   id: number;
   item_id: number;
   user_id: number;
@@ -76,6 +76,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getAccountsByUser = async (userId: number) => {
     const { data } = await api.get(`/accounts/user/${userId}`);
+    console.log("accounts data", data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 
@@ -94,6 +95,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
         result[account.item_id].push(account);
       }
     });
+    console.log("result", result);
     return result;
   };
 

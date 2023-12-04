@@ -7,10 +7,12 @@ import Sockets from "./components/Sockets";
 import { MantineProvider } from "@mantine/core";
 import useUserContext from "./contexts/UserContext";
 import ItemCard from "./components/Items";
+import useAccountsContext from "./contexts/AccountsContext";
 
 function App() {
   const [linkToken, setLinkToken] = useState(null);
   const { login, user } = useUserContext();
+  const { getAccountsByUser } = useAccountsContext();
 
   useEffect(() => {
     login();
@@ -36,6 +38,15 @@ function App() {
     return () => {
       ignore = true;
     };
+  }, [user]);
+
+  useEffect(() => {
+    async function fetch() {
+      if (user) {
+        await getAccountsByUser(user.id);
+      }
+    }
+    fetch();
   }, [user]);
 
   return (
