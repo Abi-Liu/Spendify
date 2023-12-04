@@ -24,18 +24,13 @@ export default function PlaidLink(props: Props) {
     publicToken: string,
     metadata: PlaidLinkOnSuccessMetadata
   ) => {
-    const { data } = await api.post("/plaid/setAccessToken", {
+    await api.post("/plaid/setAccessToken", {
       publicToken,
       institutionId: metadata.institution?.institution_id,
       userId: props.userId,
     });
     // add the new item to the items global state
     await getItemsByUser(props.userId);
-    // add the institution to the global institution state
-    if (metadata?.institution?.institution_id) {
-      await getInstitutionById(metadata?.institution?.institution_id);
-    }
-    console.log(metadata);
   };
 
   const onExit = async (
