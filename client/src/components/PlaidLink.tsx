@@ -35,7 +35,7 @@ export default function PlaidLink(props: Props) {
     if (metadata?.institution?.institution_id) {
       await getInstitutionById(metadata?.institution?.institution_id);
     }
-    console.log(data);
+    console.log(metadata);
   };
 
   const onExit = async (

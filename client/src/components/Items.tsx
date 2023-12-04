@@ -1,7 +1,10 @@
+import useInstitutionsContext from "../contexts/InstitutionsContext";
 import useItemsContext from "../contexts/ItemsContext";
 
 const Items = () => {
   const { itemsArray } = useItemsContext();
+  const { institutions } = useInstitutionsContext();
+  console.log(institutions);
 
   return (
     <div>

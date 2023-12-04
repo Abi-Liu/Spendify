@@ -20,7 +20,11 @@ const reducer = (state: InstitutionState, action: InstitutionActions) => {
       if (!action.payload) {
         return state;
       }
-      return { ...state, [action.payload.institution_id]: action.payload };
+      console.log(action.payload);
+      return {
+        ...state,
+        [action.payload.institution_id]: action.payload,
+      };
     }
     default:
       console.warn("Unkown action");
@@ -47,7 +51,7 @@ export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getInstitutionById = async (id: string) => {
     const { data } = await api.get(`/institutions/${id}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    dispatch({ type: "SUCCESSFUL_GET", payload: data.institution });
   };
 
   return (
