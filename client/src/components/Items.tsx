@@ -1,10 +1,22 @@
+import { useEffect } from "react";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
 import useItemsContext from "../contexts/ItemsContext";
+import useUserContext from "../contexts/UserContext";
 
-const Items = () => {
-  const { itemsArray } = useItemsContext();
+const ItemCard = () => {
+  const { itemsArray, getItemsByUser } = useItemsContext();
+  const { user } = useUserContext();
   const { institutions } = useInstitutionsContext();
-  console.log(institutions);
+
+  // get items
+  useEffect(() => {
+    if (user) {
+      getItemsByUser(user.id);
+    }
+  }, [user]);
+  // get accounts
+
+  // get institutions
 
   return (
     <div>
@@ -15,4 +27,4 @@ const Items = () => {
   );
 };
 
-export default Items;
+export default ItemCard;

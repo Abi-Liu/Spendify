@@ -57,6 +57,7 @@ interface ContextShape extends InitialState {
   getAccountsByItemId: (itemId: number) => void;
   getAccountsByUser: (userId: number) => void;
   deleteAccountsByItemId: (userId: number) => void;
+  groupAccountsByItemId: () => { [itemId: string]: Account[] };
 }
 
 const AccountsContext = createContext<ContextShape>(
@@ -83,6 +84,19 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "DELETE_BY_ITEM", payload: itemId });
   };
 
+  const groupAccountsByItemId = () => {
+    const result: { [itemId: string]: Account[] } = {};
+    const allAccounts = Object.values(accounts);
+    allAccounts.forEach((account) => {
+      if (!result[account.item_id]) {
+        result[account.item_id] = [account];
+      } else {
+        result[account.item_id].push(account);
+      }
+    });
+    return result;
+  };
+
   return (
     <AccountsContext.Provider
       value={{
@@ -91,6 +105,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
         getAccountsByUser,
         deleteAccountsByItemId,
         dispatch,
+        groupAccountsByItemId,
       }}
     >
       {children}
