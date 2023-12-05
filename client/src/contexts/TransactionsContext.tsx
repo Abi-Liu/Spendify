@@ -79,6 +79,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getTransactionsByItemId = async (itemId: number) => {
     const { data } = await api.get(`/transactions/items/${itemId}`);
+    console.log(data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 

@@ -8,6 +8,7 @@ import { MantineProvider } from "@mantine/core";
 import useUserContext from "./contexts/UserContext";
 import ItemCard from "./components/Items";
 import useAccountsContext from "./contexts/AccountsContext";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [linkToken, setLinkToken] = useState(null);
@@ -40,15 +41,6 @@ function App() {
     };
   }, [user]);
 
-  useEffect(() => {
-    async function fetch() {
-      if (user) {
-        await getAccountsByUser(user.id);
-      }
-    }
-    fetch();
-  }, [user]);
-
   return (
     <MantineProvider>
       <>
@@ -57,6 +49,7 @@ function App() {
         <Login />
         {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
         <FireWebhookTest />
+        <Dashboard />
         <ItemCard />
       </>
     </MantineProvider>

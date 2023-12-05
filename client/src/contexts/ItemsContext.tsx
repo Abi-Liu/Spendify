@@ -70,6 +70,7 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
   const getItemsByUser = async (userId: number) => {
     const { data } = await api.get(`/items/user/${userId}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    console.log(items);
   };
 
   const deleteItemById = async (id: number) => {
