@@ -52,6 +52,12 @@ const reducer = (state: TransactionsState, action: TransactionsAction) => {
   }
 };
 
+interface TransactionsGroup {
+  byUserId: { [userId: number]: Transactions[] };
+  byItemId: { [itemId: number]: Transactions[] };
+  byAccountId: { [accountId: number]: Transactions[] };
+}
+
 interface ContextShape extends TransactionsState {
   transactions: TransactionsState;
   dispatch: Dispatch<TransactionsAction>;
@@ -59,6 +65,7 @@ interface ContextShape extends TransactionsState {
   getTransactionsByAccountId: (accountId: number) => void;
   getTransactionsByUserId: (userId: number) => void;
   deleteTransactionsByItemId: (itemId: number) => void;
+  groupTransactions: () => TransactionsGroup;
 }
 
 const TransactionsContext = createContext<ContextShape>(
@@ -90,6 +97,41 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "DELETE_BY_ITEM_ID", payload: itemId });
   };
 
+  // groups all transactions into a map
+  // groups them by userid, accountid, and itemid for easy use.
+  const groupTransactions = () => {
+    const res: TransactionsGroup = {
+      byUserId: {},
+      byItemId: {},
+      byAccountId: {},
+    };
+    const transactionsArray = Object.values(transactions);
+
+    for (const transaction of transactionsArray) {
+      const { user_id, item_id, account_id } = transaction;
+
+      if (res.byUserId[user_id]) {
+        res.byUserId[user_id].push(transaction);
+      } else {
+        res.byUserId[user_id] = [transaction];
+      }
+
+      if (res.byItemId[item_id]) {
+        res.byItemId[item_id].push(transaction);
+      } else {
+        res.byItemId[item_id] = [transaction];
+      }
+
+      if (res.byAccountId[account_id]) {
+        res.byAccountId[account_id].push(transaction);
+      } else {
+        res.byAccountId[account_id] = [transaction];
+      }
+    }
+
+    return res;
+  };
+
   return (
     <TransactionsContext.Provider
       value={{
@@ -99,6 +141,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
         getTransactionsByUserId,
         deleteTransactionsByItemId,
         dispatch,
+        groupTransactions,
       }}
     >
       {children}
