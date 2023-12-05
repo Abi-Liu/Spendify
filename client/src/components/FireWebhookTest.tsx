@@ -1,6 +1,5 @@
 import React from "react";
 import api from "../utils/axios";
-import useUserContext from "../contexts/UserContext";
 
 const FireWebhookTest = () => {
   async function fireTestWebhook() {

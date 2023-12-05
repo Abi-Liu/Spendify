@@ -17,7 +17,6 @@ interface Props {
 
 export default function PlaidLink(props: Props) {
   const { getItemsByUser } = useItemsContext();
-  const { getInstitutionById } = useInstitutionsContext();
 
   // define onSuccess, onExit and onEvent functions as configs for Plaid Link creation
   const onSuccess = async (

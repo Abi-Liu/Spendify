@@ -52,7 +52,7 @@ const reducer = (state: TransactionsState, action: TransactionsAction) => {
   }
 };
 
-interface TransactionsGroup {
+export interface TransactionsGroup {
   byUserId: { [userId: number]: Transactions[] };
   byItemId: { [itemId: number]: Transactions[] };
   byAccountId: { [accountId: number]: Transactions[] };
@@ -90,6 +90,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getTransactionsByUserId = async (userId: number) => {
     const { data } = await api.get(`/transactions/user/${userId}`);
+    console.log(data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 
@@ -129,7 +130,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
         res.byAccountId[account_id] = [transaction];
       }
     }
-
+    console.log(res);
     return res;
   };
 

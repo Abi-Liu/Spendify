@@ -7,6 +7,8 @@ const Sockets = () => {
   useEffect(() => {
     const socket = io("http://localhost:8000");
     socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {
+      // leave a notification that we have new transaction data to be fetched
+
       // fetch new transactions data
       getTransactionsByItemId(itemId);
     });
