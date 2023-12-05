@@ -23,9 +23,11 @@ export async function createOrUpdateTransactions(
       pending,
       account_owner: accountOwner,
     } = transaction;
-    const { id: aid, item_id: itemId } = await getAccountByPlaidAccountId(
-      accountId
-    );
+    const {
+      id: aid,
+      item_id: itemId,
+      user_id: userId,
+    } = await getAccountByPlaidAccountId(accountId);
 
     const { id: iid, plaid_item_id: plaidItemId } = await getItemById(itemId);
 
@@ -47,9 +49,10 @@ export async function createOrUpdateTransactions(
               date,
               pending,
               account_owner
+              user_id
             )
           VALUES
-            ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+            ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
           ON CONFLICT (plaid_transaction_id) DO UPDATE 
             SET 
              personal_finance_category = EXCLUDED.personal_finance_category,
@@ -77,6 +80,7 @@ export async function createOrUpdateTransactions(
         transactionDate,
         pending,
         accountOwner,
+        userId,
       ];
 
       await connection.query(query, values);
@@ -119,3 +123,5 @@ export async function getAccountTransactionsFromDates(
   const { rows } = await connection.query(query, values);
   return rows;
 }
+
+// export async function get
