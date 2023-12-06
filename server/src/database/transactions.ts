@@ -128,10 +128,10 @@ export async function getAccountTransactionsFromDates(
 export async function getUserTransactionsFromDates(
   start: string,
   end: string,
-  accountId: string
+  userId: number
 ) {
   const query = `SELECT * FROM Transactions WHERE user_id = $1 AND date BETWEEN $2 AND $3`;
-  const values = [accountId, start, end];
+  const values = [userId, start, end];
   const { rows } = await connection.query(query, values);
   return rows;
 }
