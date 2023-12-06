@@ -4,11 +4,11 @@ import api from "./utils/axios";
 import Login from "./pages/Login";
 import FireWebhookTest from "./components/FireWebhookTest";
 import Sockets from "./components/Sockets";
-import { MantineProvider } from "@mantine/core";
 import useUserContext from "./contexts/UserContext";
 import ItemCard from "./components/Items";
 import Dashboard from "./pages/Dashboard";
 
+import Demo from "./components/Appshell";
 function App() {
   const [linkToken, setLinkToken] = useState(null);
   const { login, user } = useUserContext();
@@ -40,17 +40,16 @@ function App() {
   }, [user]);
 
   return (
-    <MantineProvider>
-      <>
-        <Sockets />
-        {user && <h1>Welcome {user.first_name}</h1>}
-        <Login />
-        {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
-        <FireWebhookTest />
-        <Dashboard />
-        <ItemCard />
-      </>
-    </MantineProvider>
+    <>
+      {/* <Sockets />
+      {user && <h1>Welcome {user.first_name}</h1>}
+      <Login />
+      {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
+      <FireWebhookTest />
+      <Dashboard />
+      <ItemCard /> */}
+      <Demo />
+    </>
   );
 }
 

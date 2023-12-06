@@ -7,6 +7,7 @@ import { ItemsProvider } from "./contexts/ItemsContext.tsx";
 import { AccountsProvider } from "./contexts/AccountsContext.tsx";
 import { TransactionsProvider } from "./contexts/TransactionsContext.tsx";
 import { InstitutionsProvider } from "./contexts/InstitutionsContext.tsx";
+import { MantineProvider } from "@mantine/core";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <AccountsProvider>
           <TransactionsProvider>
             <InstitutionsProvider>
-              <App />
+              <MantineProvider>
+                <App />
+              </MantineProvider>
             </InstitutionsProvider>
           </TransactionsProvider>
         </AccountsProvider>

@@ -87,7 +87,6 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getTransactionsByItemId = async (itemId: number) => {
     const { data } = await api.get(`/transactions/items/${itemId}`);
-    console.log(data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 
@@ -101,11 +100,9 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
     startDate: string,
     endDate: string
   ) => {
-    console.log(userId, startDate, endDate);
     const { data } = await api.get(
       `/transactions/user/${userId}?startDate=${startDate}&endDate=${endDate}`
     );
-    console.log(data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 
@@ -145,7 +142,6 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
         res.byAccountId[account_id] = [transaction];
       }
     }
-    console.log(res);
     return res;
   };
 

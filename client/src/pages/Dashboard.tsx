@@ -15,6 +15,7 @@ const Dashboard = () => {
   const { groupAccountsByItemId, getAccountsByUser } = useAccountsContext();
   const { getTransactionsByUserId, groupTransactions } =
     useTransactionsContext();
+
   // get items
   useEffect(() => {
     async function fetch() {
@@ -36,7 +37,7 @@ const Dashboard = () => {
       }
     }
     fetch();
-  }, [user]);
+  }, [user, itemsArray]);
   console.log(itemsArray);
   console.log(accounts);
 
