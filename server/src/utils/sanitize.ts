@@ -46,7 +46,7 @@ export function sanitizeItems(items: any) {
 
 // returns an array of sanitized transactions
 export function sanitizeTransactions(transactions: TransactionBase[]) {
-  sanitizeWith(transactions, [
+  return sanitizeWith(transactions, [
     "id",
     "account_id",
     "user_id",

@@ -5,7 +5,7 @@ import { getUser, createUser } from "../database/users";
 import { User } from "../interfaces/databaseTypes";
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, CLIENT_URL } = process.env;
-console.log(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, CLIENT_URL);
+
 if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !CLIENT_URL) {
   throw new Error("Google Oauth env vars are not properly loading in");
 }

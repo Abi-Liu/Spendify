@@ -29,6 +29,10 @@ type TransactionsAction =
 const reducer = (state: TransactionsState, action: TransactionsAction) => {
   switch (action.type) {
     case "SUCCESSFUL_GET": {
+      // if there are no transactions for an account return the original state
+      if (action.payload.length === 0) {
+        return state;
+      }
       const newState = { ...state };
       action.payload.forEach((transaction) => {
         newState[transaction.id] = transaction;
@@ -97,6 +101,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
     startDate: string,
     endDate: string
   ) => {
+    console.log(userId, startDate, endDate);
     const { data } = await api.get(
       `/transactions/user/${userId}?startDate=${startDate}&endDate=${endDate}`
     );

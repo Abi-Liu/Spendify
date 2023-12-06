@@ -23,7 +23,6 @@ export default {
       const { userId } = req.params;
       const items = await getItemsByUserId(userId);
       const sanitized = sanitizeItems(items);
-      console.log(sanitized);
       res.status(200).json(sanitized);
     } catch (error) {
       console.error(error);
