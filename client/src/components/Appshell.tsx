@@ -1,8 +1,21 @@
 import { useDisclosure } from "@mantine/hooks";
-import { AppShell, Burger } from "@mantine/core";
-
+import {
+  AppShell,
+  Burger,
+  Button,
+  Flex,
+  useMantineColorScheme,
+  useComputedColorScheme,
+} from "@mantine/core";
+import { TbSunHigh, TbMoon } from "react-icons/tb";
 export default function Demo() {
   const [opened, { toggle }] = useDisclosure();
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("dark");
+
+  const toggleColorScheme = () => {
+    setColorScheme(computedColorScheme === "light" ? "dark" : "light");
+  };
 
   return (
     <AppShell
@@ -15,8 +28,17 @@ export default function Demo() {
       padding="md"
     >
       <AppShell.Header>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-        <div>Logo</div>
+        <Flex
+          justify="space-between"
+          align="center"
+          style={{ padding: ".625rem 1.25rem" }}
+        >
+          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <div>Logo</div>
+          <Button onClick={toggleColorScheme} size="sm" variant="link">
+            {computedColorScheme === "light" ? <TbMoon /> : <TbSunHigh />}
+          </Button>
+        </Flex>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
