@@ -5,6 +5,7 @@ import useUserContext from "../contexts/UserContext";
 import useAccountsContext, { Account } from "../contexts/AccountsContext";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import { TransactionsGroup } from "../contexts/TransactionsContext";
+import formatLastThreeMonths from "../utils/formatDates";
 
 const Dashboard = () => {
   const [accounts, setAccounts] = useState<{ [itemId: string]: Account[] }>();
@@ -44,30 +45,10 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetch() {
       if (user) {
-        // format dates - get the last day of the current month and the first day of the previous previous month
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
+        // returns first day of 2 months ago and last day of the current month
+        const { startDate, endDate } = formatLastThreeMonths();
 
-        const lastDayOfCurrentMonth = new Date(year, month, 0);
-        const twoMonthsAgo = month - 2;
-        // Handle the case where the current month is January or February
-        // Adjust the year and month accordingly
-        const adjustedYear = twoMonthsAgo < 0 ? year - 1 : year;
-        const adjustedMonth =
-          twoMonthsAgo < 0 ? 12 + twoMonthsAgo : twoMonthsAgo; // Adjust the month value for previous months
-        const firstDayOfPreviousPreviousMonth = new Date(
-          adjustedYear,
-          adjustedMonth,
-          1
-        );
-
-        const formattedStart = firstDayOfPreviousPreviousMonth
-          .toISOString()
-          .split("T")[0];
-        const formattedEnd = lastDayOfCurrentMonth.toISOString().split("T")[0];
-
-        await getTransactionsByUserId(user?.id, formattedStart, formattedEnd);
+        await getTransactionsByUserId(user?.id, startDate, endDate);
         setTransactions(groupTransactions());
       }
     }
