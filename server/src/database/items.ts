@@ -24,7 +24,6 @@ export async function getItemsByPlaidItemId(itemId: string) {
   const query = `SELECT * FROM items WHERE plaid_item_id = $1;`;
   const values = [itemId];
   const { rows } = await connection.query(query, values);
-  console.log(rows[0]);
   return rows[0];
 }
 

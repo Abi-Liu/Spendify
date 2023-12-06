@@ -65,7 +65,6 @@ export async function createOrUpdateAccounts(
       type,
       subtype,
     ];
-    console.log(values);
 
     const { rows } = await connection.query(query, values);
     return rows;
