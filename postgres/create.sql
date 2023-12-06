@@ -90,7 +90,7 @@ CREATE TABLE transactions
   amount numeric(28,10) NOT NULL,
   iso_currency_code text,
   unofficial_currency_code text,
-  date date NOT NULL,
+  date text NOT NULL,
   pending boolean NOT NULL,
   account_owner text,
   created_at timestamptz default now(),
