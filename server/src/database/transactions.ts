@@ -124,4 +124,30 @@ export async function getAccountTransactionsFromDates(
   return rows;
 }
 
-// export async function get
+// will be called by the dashboard page to set up monthly spending insights and budgeting purposes
+export async function getUserTransactionsFromDates(
+  start: string,
+  end: string,
+  accountId: string
+) {
+  const query = `SELECT * FROM Transactions WHERE user_id = $1 AND date BETWEEN $2 AND $3`;
+  const values = [accountId, start, end];
+  const { rows } = await connection.query(query, values);
+  return rows;
+}
+
+// used when going through transactions table on client to fetch new transactions for table pagination
+export async function getPaginatedTransactions(
+  column: string,
+  columnValue: number | string,
+  offset: number,
+  limit: number
+) {
+  const query = `
+    SELECT * FROM Transactions WHERE ${column} = $1 ORDER BY date DESC LIMIT $2 OFFSET $3;
+  `;
+  const values = [columnValue, limit, offset];
+  const { rows } = await connection.query(query, values);
+  console.log(rows);
+  return rows;
+}
