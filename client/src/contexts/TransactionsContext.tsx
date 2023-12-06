@@ -63,7 +63,11 @@ interface ContextShape extends TransactionsState {
   dispatch: Dispatch<TransactionsAction>;
   getTransactionsByItemId: (itemId: number) => void;
   getTransactionsByAccountId: (accountId: number) => void;
-  getTransactionsByUserId: (userId: number) => void;
+  getTransactionsByUserId: (
+    userId: number,
+    startDate: string,
+    endDate: string
+  ) => void;
   deleteTransactionsByItemId: (itemId: number) => void;
   groupTransactions: () => TransactionsGroup;
 }
@@ -88,8 +92,14 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 
-  const getTransactionsByUserId = async (userId: number) => {
-    const { data } = await api.get(`/transactions/user/${userId}`);
+  const getTransactionsByUserId = async (
+    userId: number,
+    startDate: string,
+    endDate: string
+  ) => {
+    const { data } = await api.get(
+      `/transactions/user/${userId}?startDate=${startDate}&endDate=${endDate}`
+    );
     console.log(data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };

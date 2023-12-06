@@ -36,21 +36,45 @@ const Dashboard = () => {
     }
     fetch();
   }, [user]);
-
+  console.log(itemsArray);
   console.log(accounts);
 
-  // get transactions so we can break down the summary of spending.
+  // get transactions so we can break down the summary of spending. Only fetch first 3 months of transactions.
+  // this will be used for budgeting and spending analysis. also comparing spending to previous month.
   useEffect(() => {
     async function fetch() {
       if (user) {
-        await getTransactionsByUserId(user?.id);
+        // format dates - get the last day of the current month and the first day of the previous previous month
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        const lastDayOfCurrentMonth = new Date(year, month, 0);
+        const twoMonthsAgo = month - 2;
+        // Handle the case where the current month is January or February
+        // Adjust the year and month accordingly
+        const adjustedYear = twoMonthsAgo < 0 ? year - 1 : year;
+        const adjustedMonth =
+          twoMonthsAgo < 0 ? 12 + twoMonthsAgo : twoMonthsAgo; // Adjust the month value for previous months
+        const firstDayOfPreviousPreviousMonth = new Date(
+          adjustedYear,
+          adjustedMonth,
+          1
+        );
+
+        const formattedStart = firstDayOfPreviousPreviousMonth
+          .toISOString()
+          .split("T")[0];
+        const formattedEnd = lastDayOfCurrentMonth.toISOString().split("T")[0];
+
+        await getTransactionsByUserId(user?.id, formattedStart, formattedEnd);
         setTransactions(groupTransactions());
       }
     }
     fetch();
   }, [user]);
   console.log(transactions);
-  return <div>Dashboard</div>;
+  return <div></div>;
 };
 
 export default Dashboard;

@@ -7,13 +7,11 @@ import Sockets from "./components/Sockets";
 import { MantineProvider } from "@mantine/core";
 import useUserContext from "./contexts/UserContext";
 import ItemCard from "./components/Items";
-import useAccountsContext from "./contexts/AccountsContext";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [linkToken, setLinkToken] = useState(null);
   const { login, user } = useUserContext();
-  const { getAccountsByUser } = useAccountsContext();
 
   useEffect(() => {
     login();
