@@ -48,7 +48,7 @@ export async function createOrUpdateTransactions(
               unofficial_currency_code,
               date,
               pending,
-              account_owner
+              account_owner,
               user_id
             )
           VALUES
@@ -148,6 +148,5 @@ export async function getPaginatedTransactions(
   `;
   const values = [columnValue, limit, offset];
   const { rows } = await connection.query(query, values);
-  console.log(rows);
   return rows;
 }
