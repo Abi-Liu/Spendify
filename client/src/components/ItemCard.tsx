@@ -31,11 +31,11 @@ const ItemCard = ({ item }: { item: Item }) => {
   useEffect(() => {
     const accounts = groupAccountsByItemId();
     setAccounts(accounts[id]);
-  }, [id]);
+  }, [id, groupAccountsByItemId]);
 
   useEffect(() => {
     getInstitutionById(plaid_institution_id);
-  }, []);
+  }, [getInstitutionById, plaid_institution_id]);
 
   useEffect(() => {
     setInstitution(institutions[plaid_institution_id]);

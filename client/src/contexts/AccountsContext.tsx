@@ -85,6 +85,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const groupAccountsByItemId = () => {
+    console.log(accounts);
     const result: { [itemId: string]: Account[] } = {};
     const allAccounts = Object.values(accounts);
     allAccounts.forEach((account) => {

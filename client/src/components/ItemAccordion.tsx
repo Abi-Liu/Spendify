@@ -8,7 +8,7 @@ const ItemAccordion = ({ items }: { items: Item[] }) => {
   return (
     <Accordion multiple={true} value={value} onChange={setValue}>
       {items.map((item) => (
-        <ItemCard item={item} />
+        <ItemCard key={item.id} item={item} />
       ))}
     </Accordion>
   );
