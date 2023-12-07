@@ -7,6 +7,7 @@ import {
   Flex,
   useMantineColorScheme,
   useComputedColorScheme,
+  ScrollArea,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
@@ -83,15 +84,21 @@ export default function Appshell({
 
       {showNav && user && (
         <AppShell.Navbar p="md">
-          <Button onClick={initiateLink}>Link Bank!</Button>
-          {link && <PlaidLink userId={user.id} linkToken={link} />}
-          {itemsArray.length > 0 ? (
-            <ItemAccordion items={itemsArray} />
-          ) : (
-            <div>
-              <p>No Items linked yet! Add a bank to get started.</p>
-            </div>
-          )}
+          <AppShell.Section>
+            <Flex justify="flex-end">
+              <Button onClick={initiateLink}>Link Bank!</Button>
+              {link && <PlaidLink userId={user.id} linkToken={link} />}
+            </Flex>
+          </AppShell.Section>
+          <AppShell.Section component={ScrollArea}>
+            {itemsArray.length > 0 ? (
+              <ItemAccordion items={itemsArray} />
+            ) : (
+              <div>
+                <p>No Items linked yet! Add a bank to get started.</p>
+              </div>
+            )}
+          </AppShell.Section>
         </AppShell.Navbar>
       )}
 

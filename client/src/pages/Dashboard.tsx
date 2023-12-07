@@ -73,6 +73,7 @@ const Dashboard = () => {
                 <p>{item.id}</p>
                 <p>
                   {Object.keys(groupedAccounts).length > 0 &&
+                    groupedAccounts[item.id] &&
                     groupedAccounts[item.id][0].current_balance}
                 </p>
               </>
