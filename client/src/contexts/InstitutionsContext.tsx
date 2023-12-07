@@ -41,12 +41,14 @@ interface InstitutionsContextShape {
   institutions: InstitutionState;
   dispatch: Dispatch<InstitutionActions>;
   getInstitutionById: (id: string) => void;
+  formatLogo: (logo: string | null | undefined) => string | null | undefined;
 }
 
 const InstitutionsContext = createContext<InstitutionsContextShape>({
   institutions: initialState,
   dispatch: () => {},
   getInstitutionById: async () => {},
+  formatLogo,
 });
 
 export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -61,7 +63,7 @@ export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <InstitutionsContext.Provider
-      value={{ institutions, dispatch, getInstitutionById }}
+      value={{ institutions, dispatch, getInstitutionById, formatLogo }}
     >
       {children}
     </InstitutionsContext.Provider>
@@ -77,4 +79,8 @@ export default function useInstitutionsContext() {
     );
   }
   return context;
+}
+
+function formatLogo(logo: string | null | undefined) {
+  return logo && `data:image/png;base64,${logo}`;
 }

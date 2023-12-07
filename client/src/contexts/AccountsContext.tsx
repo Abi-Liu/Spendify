@@ -76,7 +76,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [accounts, dispatch] = useReducer(reducer, initialState);
 
   const getAccountsByItemId = useCallback(async (itemId: number) => {
-    const { data } = await api.get(`/accounts/item/${itemId}`);
+    const { data } = await api.get(`/accounts/items/${itemId}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   }, []);
 
@@ -86,7 +86,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const deleteAccountsByItemId = useCallback(async (itemId: number) => {
-    await api.delete(`/accounts/item/${itemId}`);
+    await api.delete(`/accounts/items/${itemId}`);
     dispatch({ type: "DELETE_BY_ITEM", payload: itemId });
   }, []);
 

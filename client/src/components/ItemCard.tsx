@@ -10,6 +10,7 @@ import {
   ActionIcon,
   Center,
   Menu,
+  Avatar,
 } from "@mantine/core";
 import AccountDetails from "./AccountDetails";
 import useTransactionsContext from "../contexts/TransactionsContext";
@@ -24,7 +25,8 @@ const ItemCard = ({ item }: { item: Item }) => {
   const { deleteAccountsByItemId, groupAccountsByItemId } =
     useAccountsContext();
 
-  const { getInstitutionById, institutions } = useInstitutionsContext();
+  const { getInstitutionById, institutions, formatLogo } =
+    useInstitutionsContext();
 
   const { id, plaid_institution_id } = item;
 
@@ -66,9 +68,16 @@ const ItemCard = ({ item }: { item: Item }) => {
   }
 
   return (
-    <Accordion.Item value={item.plaid_institution_id}>
+    <Accordion.Item key={item.id} value={item.plaid_institution_id}>
       <Center>
-        <Accordion.Control icon={institution?.logo}>
+        <Accordion.Control
+          icon={
+            <Avatar
+              src={formatLogo(institution?.logo)}
+              alt={`${institution?.name} logo`}
+            />
+          }
+        >
           {institution?.name}
         </Accordion.Control>
         <Menu>

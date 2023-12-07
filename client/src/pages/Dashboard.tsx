@@ -11,8 +11,6 @@ import api from "../utils/axios";
 import PlaidLink from "../components/PlaidLink";
 
 const Dashboard = () => {
-  const [linkToken, setLinkToken] = useState(null);
-
   const [groupedAccounts, setGroupedAccounts] = useState<{
     [itemId: string]: Account[];
   }>({});

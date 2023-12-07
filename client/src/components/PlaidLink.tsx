@@ -21,8 +21,6 @@ export default function PlaidLink(props: Props) {
   const { getItemsByUser } = useItemsContext();
   const { deleteItemLinkToken, deleteUserLinkToken } = useLinkContext();
 
-  console.log(props.userId);
-
   // define onSuccess, onExit and onEvent functions as configs for Plaid Link creation
   const onSuccess = async (
     publicToken: string,
