@@ -35,19 +35,19 @@ const Dashboard = () => {
       }
     }
     fetch();
-  }, [user]);
+  }, [user, getItemsByUser]);
 
   // get all accounts associated with the user
   useEffect(() => {
     getAccountsByUser(user!.id);
-  }, [user]);
+  }, [user, getAccountsByUser]);
 
   // set accounts state to the grouped accounts by item id
   useEffect(() => {
     if (Object.keys(accounts).length !== 0) {
       setGroupedAccounts(groupAccountsByItemId());
     }
-  }, [accounts]);
+  }, [accounts, groupAccountsByItemId]);
 
   // get transactions so we can break down the summary of spending. Only fetch first 3 months of transactions.
   // this will be used for budgeting and spending analysis. also comparing spending to previous month.
@@ -56,14 +56,14 @@ const Dashboard = () => {
     const { startDate, endDate } = formatLastThreeMonths();
 
     getTransactionsByUserId(user!.id, startDate, endDate);
-  }, []);
+  }, [getTransactionsByUserId, user]);
 
   // set transactions state broken down by account, item, and user
   useEffect(() => {
     if (transactionsContextState) {
       setTransactions(groupTransactions());
     }
-  }, [transactionsContextState]);
+  }, [transactionsContextState, groupTransactions]);
 
   return (
     <Appshell showNav={true}>
