@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Login from "./login";
+import Login from "./Login";
 import useUserContext from "../contexts/UserContext";
 import Appshell from "../components/Appshell";
 import { Link } from "react-router-dom";

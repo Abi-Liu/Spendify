@@ -6,7 +6,6 @@ import useAccountsContext, { Account } from "../contexts/AccountsContext";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import { TransactionsGroup } from "../contexts/TransactionsContext";
 import formatLastThreeMonths from "../utils/formatDates";
-import { Button } from "@mantine/core";
 import Appshell from "../components/Appshell";
 import api from "../utils/axios";
 import PlaidLink from "../components/PlaidLink";
