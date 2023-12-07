@@ -56,7 +56,7 @@ export default {
         startDate: string;
         endDate: string;
       };
-      console.log(id, startDate, endDate);
+
       let transactions;
       if (startDate && endDate) {
         transactions = await getItemTransactionsFromDates(
