@@ -27,30 +27,6 @@ const Dashboard = () => {
     transactions: transactionsContextState,
   } = useTransactionsContext();
 
-  // set link token.
-  // TODO: Create context for link tokens state
-  useEffect(() => {
-    let ignore = false;
-    async function createLinkToken() {
-      try {
-        const response = await api.post("/plaid/createLinkToken", {
-          id: `${user?.id}`,
-        });
-        setLinkToken(response.data.link_token);
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    if (user && !ignore) {
-      createLinkToken();
-    }
-
-    return () => {
-      ignore = true;
-    };
-  }, [user]);
-
   // get all items for the user
   useEffect(() => {
     async function fetch() {
@@ -108,7 +84,6 @@ const Dashboard = () => {
           <>
             <h1>No Banks Linked!</h1>
             <h3>Link a bank to get started</h3>
-            <PlaidLink linkToken={linkToken} />
           </>
         )}
       </div>

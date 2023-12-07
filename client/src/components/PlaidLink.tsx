@@ -7,29 +7,42 @@ import {
 } from "react-plaid-link";
 import api from "../utils/axios";
 import useItemsContext from "../contexts/ItemsContext";
-import useUserContext from "../contexts/UserContext";
+import { useEffect } from "react";
+import useLinkContext from "../contexts/LinkTokenContext";
 
 interface Props {
   linkToken: string | null;
   itemId?: number | null;
+  userId: number;
 }
 
+// open plaid link interface
 export default function PlaidLink(props: Props) {
   const { getItemsByUser } = useItemsContext();
-  const { user } = useUserContext();
+  const { deleteItemLinkToken, deleteUserLinkToken } = useLinkContext();
+
+  console.log(props.userId);
 
   // define onSuccess, onExit and onEvent functions as configs for Plaid Link creation
   const onSuccess = async (
     publicToken: string,
     metadata: PlaidLinkOnSuccessMetadata
   ) => {
-    await api.post("/plaid/setAccessToken", {
-      publicToken,
-      institutionId: metadata.institution?.institution_id,
-      userId: user!.id,
-    });
-    // add the new item to the items global state
-    await getItemsByUser(user!.id);
+    if (!props.itemId) {
+      await api.post("/plaid/setAccessToken", {
+        publicToken,
+        institutionId: metadata.institution?.institution_id,
+        userId: props.userId,
+      });
+      // add the new item to the items global state
+      await getItemsByUser(props.userId);
+      deleteUserLinkToken(props.userId);
+    }
+    // else {
+    //   // we are now in update mode
+    //   // TODO: initiate update link flow
+    //   deleteItemLinkToken(props.itemId)
+    // }
   };
 
   const onExit = async (
@@ -51,9 +64,12 @@ export default function PlaidLink(props: Props) {
   };
 
   const { open, ready } = usePlaidLink(config);
-  return (
-    <button onClick={() => open()} disabled={!ready}>
-      Link account
-    </button>
-  );
+
+  // this will automatically open plaid link when this component is rendered
+  useEffect(() => {
+    if (ready) {
+      open();
+    }
+  }, [open, ready]);
+  return <></>;
 }

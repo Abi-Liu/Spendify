@@ -35,7 +35,7 @@ const ItemCard = ({ item }: { item: Item }) => {
 
   useEffect(() => {
     getInstitutionById(plaid_institution_id);
-  }, [getInstitutionById, plaid_institution_id]);
+  }, [plaid_institution_id]);
 
   useEffect(() => {
     setInstitution(institutions[plaid_institution_id]);

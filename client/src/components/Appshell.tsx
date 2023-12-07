@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import {
   AppShell,
@@ -11,6 +11,9 @@ import {
 import { TbSunHigh, TbMoon } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
 import ItemAccordion from "./ItemAccordion";
+import useLinkContext from "../contexts/LinkTokenContext";
+import useUserContext, { UserState } from "../contexts/UserContext";
+import PlaidLink from "./PlaidLink";
 // import PlaidLink from "./PlaidLink";
 
 export default function Appshell({
@@ -21,13 +24,21 @@ export default function Appshell({
   showNav: boolean;
 }) {
   const [opened, { toggle }] = useDisclosure();
+  const [link, setLink] = useState("");
+  const [userState, setUserState] = useState<UserState | null>(null);
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark");
   const { itemsArray } = useItemsContext();
+  const { generateUserLinkToken, linkTokens } = useLinkContext();
+  const { user } = useUserContext();
 
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
   };
+
+  useEffect(() => {
+    setUserState(user);
+  }, [user]);
 
   const navbarProps = showNav
     ? {
@@ -36,6 +47,19 @@ export default function Appshell({
         collapsed: { mobile: !opened },
       }
     : undefined;
+
+  async function initiateLink() {
+    // geerate new link token only when user clicks the button
+    if (user) {
+      await generateUserLinkToken(user.id);
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      setLink(linkTokens.byUser[user.id]);
+    }
+  }, [linkTokens, user]);
 
   return (
     <AppShell header={{ height: 60 }} navbar={navbarProps} padding="md">
@@ -57,8 +81,10 @@ export default function Appshell({
         </Flex>
       </AppShell.Header>
 
-      {showNav && (
+      {showNav && user && (
         <AppShell.Navbar p="md">
+          <Button onClick={initiateLink}>Link Bank!</Button>
+          {link && <PlaidLink userId={user.id} linkToken={link} />}
           {itemsArray.length > 0 ? (
             <ItemAccordion items={itemsArray} />
           ) : (

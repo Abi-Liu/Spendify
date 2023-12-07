@@ -2,7 +2,7 @@
 import React, { createContext, useReducer, Dispatch, useContext } from "react";
 import api from "../utils/axios";
 
-interface UserState {
+export interface UserState {
   id: number;
   first_name: string;
   last_name: string;
