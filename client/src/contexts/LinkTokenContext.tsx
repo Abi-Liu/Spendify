@@ -1,4 +1,5 @@
-import React, { Dispatch, createContext, useReducer } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { Dispatch, createContext, useContext, useReducer } from "react";
 import { PlaidLinkError } from "react-plaid-link";
 import api from "../utils/axios";
 
@@ -130,3 +131,12 @@ export const LinkProvider: React.FC<{ children: React.ReactNode }> = ({
     </LinkContext.Provider>
   );
 };
+
+export default function useLinkContext() {
+  const context = useContext(LinkContext);
+
+  if (!context) {
+    throw new Error("useLinkContext must be used within a LinkProvider");
+  }
+  return context;
+}
