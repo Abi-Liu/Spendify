@@ -105,9 +105,9 @@ export async function deleteTransactions(removed: RemovedTransaction[]) {
 export async function getItemTransactionsFromDates(
   start: string,
   end: string,
-  itemId: string
+  itemId: number
 ) {
-  const query = `SELECT * FROM Transactions WHERE plaid_item_id = $1 AND date BETWEEN $2 AND $3`;
+  const query = `SELECT * FROM Transactions WHERE item_id = $1 AND date BETWEEN $2 AND $3`;
   const values = [itemId, start, end];
   const { rows } = await connection.query(query, values);
   return rows;
@@ -116,9 +116,9 @@ export async function getItemTransactionsFromDates(
 export async function getAccountTransactionsFromDates(
   start: string,
   end: string,
-  accountId: string
+  accountId: number
 ) {
-  const query = `SELECT * FROM Transactions WHERE plaid_account_id = $1 AND date BETWEEN $2 AND $3`;
+  const query = `SELECT * FROM Transactions WHERE account_id = $1 AND date BETWEEN $2 AND $3`;
   const values = [accountId, start, end];
   const { rows } = await connection.query(query, values);
   return rows;

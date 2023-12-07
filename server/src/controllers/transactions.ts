@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {
+  getItemTransactionsFromDates,
   getPaginatedTransactions,
   getUserTransactionsFromDates,
 } from "../database/transactions";
@@ -55,9 +56,10 @@ export default {
         startDate: string;
         endDate: string;
       };
+      console.log(id, startDate, endDate);
       let transactions;
       if (startDate && endDate) {
-        transactions = await getUserTransactionsFromDates(
+        transactions = await getItemTransactionsFromDates(
           startDate,
           endDate,
           Number(id)
