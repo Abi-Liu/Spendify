@@ -9,6 +9,7 @@ import { TransactionsProvider } from "./contexts/TransactionsContext.tsx";
 import { InstitutionsProvider } from "./contexts/InstitutionsContext.tsx";
 import { MantineProvider, createTheme } from "@mantine/core";
 import "@mantine/core/styles.css";
+import { BrowserRouter } from "react-router-dom";
 
 const theme = createTheme({});
 
@@ -19,9 +20,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <AccountsProvider>
           <TransactionsProvider>
             <InstitutionsProvider>
-              <MantineProvider theme={theme}>
-                <App />
-              </MantineProvider>
+              <BrowserRouter>
+                <MantineProvider theme={theme}>
+                  <App />
+                </MantineProvider>
+              </BrowserRouter>
             </InstitutionsProvider>
           </TransactionsProvider>
         </AccountsProvider>

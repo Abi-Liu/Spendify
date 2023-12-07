@@ -6,6 +6,8 @@ import useAccountsContext, { Account } from "../contexts/AccountsContext";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import { TransactionsGroup } from "../contexts/TransactionsContext";
 import formatLastThreeMonths from "../utils/formatDates";
+import { Button } from "@mantine/core";
+import Appshell from "../components/Appshell";
 
 const Dashboard = () => {
   const [accounts, setAccounts] = useState<{ [itemId: string]: Account[] }>();
@@ -56,7 +58,22 @@ const Dashboard = () => {
     fetch();
   }, [user]);
   console.log(transactions);
-  return <div></div>;
+
+  return (
+    <Appshell showNav={true}>
+      <div>
+        {itemsArray.length > 0 ? (
+          itemsArray.map((item) => <p>{item.id}</p>)
+        ) : (
+          <>
+            <h1>No Banks Linked!</h1>
+            <h3>Link a bank to get started</h3>
+            <Button>Link Bank</Button>
+          </>
+        )}
+      </div>
+    </Appshell>
+  );
 };
 
 export default Dashboard;

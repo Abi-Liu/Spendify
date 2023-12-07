@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 import PlaidLink from "./components/PlaidLink";
 import api from "./utils/axios";
-import Login from "./pages/Login";
 import FireWebhookTest from "./components/FireWebhookTest";
 import Sockets from "./components/Sockets";
-import useUserContext from "./contexts/UserContext";
 import ItemCard from "./components/Items";
 import Dashboard from "./pages/Dashboard";
+import { Routes, Route, Navigate } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import useUserContext from "./contexts/UserContext";
 
-import Demo from "./components/Appshell";
 function App() {
   const [linkToken, setLinkToken] = useState(null);
-  const { login, user } = useUserContext();
-
-  useEffect(() => {
-    login();
-  }, []);
+  const { user } = useUserContext();
 
   useEffect(() => {
     let ignore = false;
@@ -39,6 +35,8 @@ function App() {
     };
   }, [user]);
 
+  console.log(user);
+
   return (
     <>
       {/* <Sockets />
@@ -48,7 +46,14 @@ function App() {
       <FireWebhookTest />
       <Dashboard />
       <ItemCard /> */}
-      <Demo />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/dashboard"
+          element={user ? <Dashboard /> : <Navigate to="/" />}
+        />
+        {/* <Route path="/transactions" element={user ? <Transactions /> : <Navigate to ='/' />} /> */}
+      </Routes>
     </>
   );
 }

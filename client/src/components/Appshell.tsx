@@ -1,3 +1,4 @@
+import React from "react";
 import { useDisclosure } from "@mantine/hooks";
 import {
   AppShell,
@@ -8,7 +9,14 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon } from "react-icons/tb";
-export default function Demo() {
+
+export default function Appshell({
+  children,
+  showNav,
+}: {
+  children: React.ReactNode;
+  showNav: boolean;
+}) {
   const [opened, { toggle }] = useDisclosure();
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark");
@@ -17,16 +25,16 @@ export default function Demo() {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
   };
 
-  return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
+  const navbarProps = showNav
+    ? {
         width: 300,
         breakpoint: "sm",
         collapsed: { mobile: !opened },
-      }}
-      padding="md"
-    >
+      }
+    : undefined;
+
+  return (
+    <AppShell header={{ height: 60 }} navbar={navbarProps} padding="md">
       <AppShell.Header>
         <Flex
           justify="space-between"
@@ -35,15 +43,19 @@ export default function Demo() {
         >
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <div>Logo</div>
-          <Button onClick={toggleColorScheme} size="sm" variant="link">
-            {computedColorScheme === "light" ? <TbMoon /> : <TbSunHigh />}
+          <Button onClick={toggleColorScheme} size="sm" variant="transparent">
+            {computedColorScheme === "light" ? (
+              <TbMoon size={24} />
+            ) : (
+              <TbSunHigh size={24} />
+            )}
           </Button>
         </Flex>
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
+      {showNav && <AppShell.Navbar p="md">Navbar</AppShell.Navbar>}
 
-      <AppShell.Main>Main</AppShell.Main>
+      <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
   );
 }
