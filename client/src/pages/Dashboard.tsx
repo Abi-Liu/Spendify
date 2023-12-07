@@ -37,6 +37,7 @@ const Dashboard = () => {
           id: `${user?.id}`,
         });
         setLinkToken(response.data.link_token);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
