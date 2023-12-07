@@ -13,13 +13,19 @@ import PlaidLink from "../components/PlaidLink";
 const Dashboard = () => {
   const [linkToken, setLinkToken] = useState(null);
 
-  const [accounts, setAccounts] = useState<{ [itemId: string]: Account[] }>({});
+  const [groupedAccounts, setGroupedAccounts] = useState<{
+    [itemId: string]: Account[];
+  }>({});
   const [transactions, setTransactions] = useState<TransactionsGroup>();
   const { itemsArray, getItemsByUser } = useItemsContext();
   const { user } = useUserContext();
-  const { groupAccountsByItemId, getAccountsByUser } = useAccountsContext();
-  const { getTransactionsByUserId, groupTransactions } =
-    useTransactionsContext();
+  const { groupAccountsByItemId, getAccountsByUser, accounts } =
+    useAccountsContext();
+  const {
+    getTransactionsByUserId,
+    groupTransactions,
+    transactions: transactionsContextState,
+  } = useTransactionsContext();
 
   // set link token.
   // TODO: Create context for link tokens state
@@ -56,34 +62,37 @@ const Dashboard = () => {
     fetch();
   }, [user]);
 
-  // get accounts and group them according to their respective items
+  // get groupedAccounts and group them according to their respective items
   useEffect(() => {
-    async function fetch() {
-      if (user && Object.keys(itemsArray).length !== 0) {
-        console.log("fire accounts get");
-        await getAccountsByUser(user.id);
-        setAccounts(groupAccountsByItemId());
-      }
+    getAccountsByUser(user!.id);
+  }, [user]);
+
+  useEffect(() => {
+    console.log("ACCOUNTS FETCHED", accounts);
+  }, [accounts]);
+
+  useEffect(() => {
+    if (Object.keys(accounts).length !== 0) {
+      setGroupedAccounts(groupAccountsByItemId());
     }
-    fetch();
-  }, [user, itemsArray]);
+  }, [accounts]);
   console.log(itemsArray);
-  console.log(accounts);
+  console.log(groupedAccounts);
 
   // get transactions so we can break down the summary of spending. Only fetch first 3 months of transactions.
   // this will be used for budgeting and spending analysis. also comparing spending to previous month.
   useEffect(() => {
-    async function fetch() {
-      if (user) {
-        // returns first day of 2 months ago and last day of the current month
-        const { startDate, endDate } = formatLastThreeMonths();
+    // returns first day of 2 months ago and last day of the current month
+    const { startDate, endDate } = formatLastThreeMonths();
 
-        await getTransactionsByUserId(user?.id, startDate, endDate);
-        setTransactions(groupTransactions());
-      }
+    getTransactionsByUserId(user!.id, startDate, endDate);
+  }, []);
+
+  useEffect(() => {
+    if (transactionsContextState) {
+      setTransactions(groupTransactions());
     }
-    fetch();
-  }, [user]);
+  }, [transactionsContextState]);
   console.log(transactions);
 
   return (
@@ -95,8 +104,8 @@ const Dashboard = () => {
               <>
                 <p>{item.id}</p>
                 <p>
-                  {Object.keys(accounts).length > 0 &&
-                    accounts[item.id][0].current_balance}
+                  {Object.keys(groupedAccounts).length > 0 &&
+                    groupedAccounts[item.id][0].current_balance}
                 </p>
               </>
             );
@@ -105,7 +114,7 @@ const Dashboard = () => {
           <>
             <h1>No Banks Linked!</h1>
             <h3>Link a bank to get started</h3>
-            <PlaidLink linkToken={linkToken} userId={user!.id} />
+            <PlaidLink linkToken={linkToken} />
           </>
         )}
       </div>

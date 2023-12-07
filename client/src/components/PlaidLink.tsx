@@ -7,16 +7,16 @@ import {
 } from "react-plaid-link";
 import api from "../utils/axios";
 import useItemsContext from "../contexts/ItemsContext";
-import useInstitutionsContext from "../contexts/InstitutionsContext";
+import useUserContext from "../contexts/UserContext";
 
 interface Props {
   linkToken: string | null;
-  userId: number;
   itemId?: number | null;
 }
 
 export default function PlaidLink(props: Props) {
   const { getItemsByUser } = useItemsContext();
+  const { user } = useUserContext();
 
   // define onSuccess, onExit and onEvent functions as configs for Plaid Link creation
   const onSuccess = async (
@@ -26,10 +26,10 @@ export default function PlaidLink(props: Props) {
     await api.post("/plaid/setAccessToken", {
       publicToken,
       institutionId: metadata.institution?.institution_id,
-      userId: props.userId,
+      userId: user!.id,
     });
     // add the new item to the items global state
-    await getItemsByUser(props.userId);
+    await getItemsByUser(user!.id);
   };
 
   const onExit = async (

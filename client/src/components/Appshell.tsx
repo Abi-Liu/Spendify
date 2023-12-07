@@ -9,6 +9,9 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon } from "react-icons/tb";
+import useItemsContext from "../contexts/ItemsContext";
+import ItemCard from "./ItemCard";
+// import PlaidLink from "./PlaidLink";
 
 export default function Appshell({
   children,
@@ -20,6 +23,7 @@ export default function Appshell({
   const [opened, { toggle }] = useDisclosure();
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark");
+  const { itemsArray } = useItemsContext();
 
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
@@ -53,7 +57,21 @@ export default function Appshell({
         </Flex>
       </AppShell.Header>
 
-      {showNav && <AppShell.Navbar p="md">Navbar</AppShell.Navbar>}
+      {showNav && (
+        <AppShell.Navbar p="md">
+          {itemsArray.length > 0 ? (
+            <>
+              {itemsArray.map((item) => (
+                <ItemCard item={item} />
+              ))}
+            </>
+          ) : (
+            <div>
+              <p>No Items linked yet! Add a bank to get started.</p>
+            </div>
+          )}
+        </AppShell.Navbar>
+      )}
 
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>

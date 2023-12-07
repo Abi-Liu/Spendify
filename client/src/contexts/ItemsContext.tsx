@@ -2,7 +2,7 @@
 import React, { useReducer, useContext, createContext, Dispatch } from "react";
 import api from "../utils/axios";
 
-interface Item {
+export interface Item {
   id: number;
   user_id: number;
   plaid_institution_id: string;

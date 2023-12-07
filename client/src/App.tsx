@@ -9,13 +9,7 @@ function App() {
 
   return (
     <>
-      {/* <Sockets />
-      {user && <h1>Welcome {user.first_name}</h1>}
-      <Login />
-      {user && <PlaidLink linkToken={linkToken} userId={user.id} />}
-      <FireWebhookTest />
-      <Dashboard />
-      <ItemCard /> */}
+      <Sockets />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route
