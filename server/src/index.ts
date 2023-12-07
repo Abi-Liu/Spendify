@@ -59,7 +59,7 @@ app.use("/institutions", institutionsRoutes);
 app.use("/transactions", transactionsRoutes);
 
 io.on("connection", (socket) => {
-  console.log(`${socket} connected`);
+  console.log(`Socket connected`);
 
   socket.on("disconnect", () => {
     console.log("Socket disconnected");

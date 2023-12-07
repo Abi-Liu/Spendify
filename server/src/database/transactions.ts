@@ -133,7 +133,6 @@ export async function getUserTransactionsFromDates(
   const query = `SELECT * FROM Transactions WHERE user_id = $1 AND date BETWEEN $2 AND $3`;
   const values = [userId, start, end];
   const { rows } = await connection.query(query, values);
-  console.log("rows: ", rows[0], rows[1]);
   return rows;
 }
 

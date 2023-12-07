@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.get("/user/:id", transactionsController.getTransactionsByUser);
 router.get("/pagination", transactionsController.getTransactionsPagination);
+router.get("items/:id", transactionsController.getTransactionsByUser);
 
 export default router;
