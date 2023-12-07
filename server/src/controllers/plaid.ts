@@ -35,7 +35,7 @@ export default {
     // Configuring plaid request
     const plaidRequest = {
       user: {
-        client_user_id: clientUserId,
+        client_user_id: String(clientUserId),
       },
       client_name: "BudgetBuddy",
       products,
