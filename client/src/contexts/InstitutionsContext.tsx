@@ -20,7 +20,6 @@ const reducer = (state: InstitutionState, action: InstitutionActions) => {
       if (!action.payload) {
         return state;
       }
-      console.log(action.payload);
       return {
         ...state,
         [action.payload.institution_id]: action.payload,

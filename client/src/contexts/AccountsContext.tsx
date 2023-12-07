@@ -76,7 +76,6 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getAccountsByUser = async (userId: number) => {
     const { data } = await api.get(`/accounts/user/${userId}`);
-    console.log("accounts data", data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   };
 
@@ -86,7 +85,6 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const groupAccountsByItemId = () => {
-    console.log("accounts", accounts);
     const result: { [itemId: string]: Account[] } = {};
     const allAccounts = Object.values(accounts);
     allAccounts.forEach((account) => {
@@ -96,7 +94,6 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
         result[account.item_id].push(account);
       }
     });
-    console.log("result", result);
     return result;
   };
 

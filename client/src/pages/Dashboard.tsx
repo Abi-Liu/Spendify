@@ -36,7 +36,6 @@ const Dashboard = () => {
         const response = await api.post("/plaid/createLinkToken", {
           id: `${user?.id}`,
         });
-        console.log(response);
         setLinkToken(response.data.link_token);
       } catch (error) {
         console.log(error);
@@ -51,33 +50,27 @@ const Dashboard = () => {
     };
   }, [user]);
 
-  // get items
+  // get all items for the user
   useEffect(() => {
     async function fetch() {
       if (user) {
-        console.log("fire items get");
         await getItemsByUser(user.id);
       }
     }
     fetch();
   }, [user]);
 
-  // get groupedAccounts and group them according to their respective items
+  // get all accounts associated with the user
   useEffect(() => {
     getAccountsByUser(user!.id);
   }, [user]);
 
-  useEffect(() => {
-    console.log("ACCOUNTS FETCHED", accounts);
-  }, [accounts]);
-
+  // set accounts state to the grouped accounts by item id
   useEffect(() => {
     if (Object.keys(accounts).length !== 0) {
       setGroupedAccounts(groupAccountsByItemId());
     }
   }, [accounts]);
-  console.log(itemsArray);
-  console.log(groupedAccounts);
 
   // get transactions so we can break down the summary of spending. Only fetch first 3 months of transactions.
   // this will be used for budgeting and spending analysis. also comparing spending to previous month.
@@ -88,12 +81,12 @@ const Dashboard = () => {
     getTransactionsByUserId(user!.id, startDate, endDate);
   }, []);
 
+  // set transactions state broken down by account, item, and user
   useEffect(() => {
     if (transactionsContextState) {
       setTransactions(groupTransactions());
     }
   }, [transactionsContextState]);
-  console.log(transactions);
 
   return (
     <Appshell showNav={true}>

@@ -4,6 +4,7 @@ import { Item } from "../contexts/ItemsContext";
 import { Institution } from "plaid";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
 import { Accordion } from "@mantine/core";
+import AccountDetails from "./AccountDetails";
 
 const ItemCard = ({ item }: { item: Item }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -29,7 +30,20 @@ const ItemCard = ({ item }: { item: Item }) => {
     setInstitution(institutions[plaid_institution_id]);
   }, [institutions, plaid_institution_id]);
 
-  return <Accordion></Accordion>;
+  console.log(accounts);
+  console.log(institution);
+
+  return (
+    <Accordion.Item value={item.plaid_institution_id}>
+      <Accordion.Control icon={institution?.logo}>
+        {institution?.name}
+      </Accordion.Control>
+      {accounts &&
+        accounts.map((account) => (
+          <AccountDetails key={account.id} account={account} />
+        ))}
+    </Accordion.Item>
+  );
 };
 
 export default ItemCard;
