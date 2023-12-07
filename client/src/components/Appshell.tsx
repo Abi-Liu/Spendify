@@ -7,11 +7,10 @@ import {
   Flex,
   useMantineColorScheme,
   useComputedColorScheme,
-  Accordion,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
-import ItemCard from "./ItemCard";
+import ItemAccordion from "./ItemAccordion";
 // import PlaidLink from "./PlaidLink";
 
 export default function Appshell({
@@ -61,11 +60,7 @@ export default function Appshell({
       {showNav && (
         <AppShell.Navbar p="md">
           {itemsArray.length > 0 ? (
-            <Accordion multiple={true}>
-              {itemsArray.map((item) => (
-                <ItemCard item={item} />
-              ))}
-            </Accordion>
+            <ItemAccordion items={itemsArray} />
           ) : (
             <div>
               <p>No Items linked yet! Add a bank to get started.</p>
