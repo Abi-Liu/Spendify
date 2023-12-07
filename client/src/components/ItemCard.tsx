@@ -3,10 +3,17 @@ import useAccountsContext, { Account } from "../contexts/AccountsContext";
 import useItemsContext, { Item } from "../contexts/ItemsContext";
 import { Institution } from "plaid";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
-import { Accordion, Text, Divider, ActionIcon, Center } from "@mantine/core";
+import {
+  Accordion,
+  Text,
+  Divider,
+  ActionIcon,
+  Center,
+  Menu,
+} from "@mantine/core";
 import AccountDetails from "./AccountDetails";
 import useTransactionsContext from "../contexts/TransactionsContext";
-import { TbDots } from "react-icons/tb";
+import { TbDots, TbTrash } from "react-icons/tb";
 
 const ItemCard = ({ item }: { item: Item }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -64,9 +71,21 @@ const ItemCard = ({ item }: { item: Item }) => {
         <Accordion.Control icon={institution?.logo}>
           {institution?.name}
         </Accordion.Control>
-        <ActionIcon size="md" variant="subtle" color="gray">
-          <TbDots size={16} />
-        </ActionIcon>
+        <Menu>
+          <Menu.Target>
+            <ActionIcon size="md" variant="subtle" color="gray">
+              <TbDots size={16} />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<TbTrash />}
+              onClick={() => handleDelete(item.id)}
+            >
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Center>
 
       {accounts &&
