@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useReducer, useContext, createContext, Dispatch } from "react";
+import React, {
+  useReducer,
+  useContext,
+  createContext,
+  Dispatch,
+  useCallback,
+} from "react";
 import api from "../utils/axios";
 
 export interface Item {
@@ -62,20 +68,20 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [items, dispatch] = useReducer(reducer, initialState);
 
-  const getItemById = async (id: number) => {
+  const getItemById = useCallback(async (id: number) => {
     const { data } = await api.get(`/items/${id}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  };
+  }, []);
 
-  const getItemsByUser = async (userId: number) => {
+  const getItemsByUser = useCallback(async (userId: number) => {
     const { data } = await api.get(`/items/user/${userId}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  };
+  }, []);
 
-  const deleteItemById = async (id: number) => {
+  const deleteItemById = useCallback(async (id: number) => {
     await api.delete(`/items/${id}`);
     dispatch({ type: "DELETE", payload: id });
-  };
+  }, []);
 
   return (
     <ItemsContext.Provider

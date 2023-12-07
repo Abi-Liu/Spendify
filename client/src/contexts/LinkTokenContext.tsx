@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { Dispatch, createContext, useContext, useReducer } from "react";
+import React, {
+  Dispatch,
+  createContext,
+  useCallback,
+  useContext,
+  useReducer,
+} from "react";
 import { PlaidLinkError } from "react-plaid-link";
 import api from "../utils/axios";
 
@@ -81,7 +87,7 @@ export const LinkProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [linkTokens, dispatch] = useReducer(reducer, initialState);
 
-  const generateUserLinkToken = async (id: number) => {
+  const generateUserLinkToken = useCallback(async (id: number) => {
     const { data } = await api.post("/plaid/createLinkToken", { id });
     if (data.link_token) {
       dispatch({ type: "LINK_TOKEN_CREATED", id, token: data.link_token });
@@ -89,32 +95,35 @@ export const LinkProvider: React.FC<{ children: React.ReactNode }> = ({
       dispatch({ type: "LINK_ERROR", error: data });
       console.log("link error", data);
     }
-  };
+  }, []);
 
-  const generateItemLinkToken = async (userId: number, itemId: number) => {
-    const { data } = await api.post("/plaid/createLinkToken", {
-      id: userId,
-      itemId,
-    });
-    if (data.link_token) {
-      dispatch({
-        type: "LINK_TOKEN_CREATED",
-        id: itemId,
-        token: data.link_token,
+  const generateItemLinkToken = useCallback(
+    async (userId: number, itemId: number) => {
+      const { data } = await api.post("/plaid/createLinkToken", {
+        id: userId,
+        itemId,
       });
-    } else {
-      dispatch({ type: "LINK_ERROR", error: data });
-      console.log("link error", data);
-    }
-  };
+      if (data.link_token) {
+        dispatch({
+          type: "LINK_TOKEN_CREATED",
+          id: itemId,
+          token: data.link_token,
+        });
+      } else {
+        dispatch({ type: "LINK_ERROR", error: data });
+        console.log("link error", data);
+      }
+    },
+    []
+  );
 
-  const deleteUserLinkToken = (id: number) => {
+  const deleteUserLinkToken = useCallback((id: number) => {
     dispatch({ type: "DELETE_USER_LINK_TOKEN", id });
-  };
+  }, []);
 
-  const deleteItemLinkToken = (id: number) => {
+  const deleteItemLinkToken = useCallback((id: number) => {
     dispatch({ type: "DELETE_ITEM_LINK_TOKEN", id });
-  };
+  }, []);
 
   return (
     <LinkContext.Provider

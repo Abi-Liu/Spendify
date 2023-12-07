@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useContext, createContext, useReducer, Dispatch } from "react";
+import React, {
+  useContext,
+  createContext,
+  useReducer,
+  Dispatch,
+  useCallback,
+} from "react";
 import api from "../utils/axios";
 
 interface Transactions {
@@ -85,35 +91,34 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [transactions, dispatch] = useReducer(reducer, initialState);
 
-  const getTransactionsByItemId = async (itemId: number) => {
+  const getTransactionsByItemId = useCallback(async (itemId: number) => {
     const { data } = await api.get(`/transactions/items/${itemId}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  };
+  }, []);
 
-  const getTransactionsByAccountId = async (accountId: number) => {
+  const getTransactionsByAccountId = useCallback(async (accountId: number) => {
     const { data } = await api.get(`/transactions/accounts/${accountId}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  };
+  }, []);
 
-  const getTransactionsByUserId = async (
-    userId: number,
-    startDate: string,
-    endDate: string
-  ) => {
-    const { data } = await api.get(
-      `/transactions/user/${userId}?startDate=${startDate}&endDate=${endDate}`
-    );
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  };
+  const getTransactionsByUserId = useCallback(
+    async (userId: number, startDate: string, endDate: string) => {
+      const { data } = await api.get(
+        `/transactions/user/${userId}?startDate=${startDate}&endDate=${endDate}`
+      );
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    },
+    []
+  );
 
-  const deleteTransactionsByItemId = async (itemId: number) => {
+  const deleteTransactionsByItemId = useCallback(async (itemId: number) => {
     await api.delete(`/transactions/items/${itemId}`);
     dispatch({ type: "DELETE_BY_ITEM_ID", payload: itemId });
-  };
+  }, []);
 
   // groups all transactions into a map
   // groups them by userid, accountid, and itemid for easy use.
-  const groupTransactions = () => {
+  const groupTransactions = useCallback(() => {
     const res: TransactionsGroup = {
       byUserId: {},
       byItemId: {},
@@ -143,7 +148,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
     return res;
-  };
+  }, [transactions]);
 
   return (
     <TransactionsContext.Provider

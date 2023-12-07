@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useContext, useReducer, Dispatch, createContext } from "react";
+import React, {
+  useContext,
+  useReducer,
+  Dispatch,
+  createContext,
+  useCallback,
+} from "react";
 import { Institution } from "plaid";
 import api from "../utils/axios";
 
@@ -48,10 +54,10 @@ export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [institutions, dispatch] = useReducer(reducer, initialState);
 
-  const getInstitutionById = async (id: string) => {
+  const getInstitutionById = useCallback(async (id: string) => {
     const { data } = await api.get(`/institutions/${id}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data.institution });
-  };
+  }, []);
 
   return (
     <InstitutionsContext.Provider

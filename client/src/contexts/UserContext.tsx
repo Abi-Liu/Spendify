@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useReducer, Dispatch, useContext } from "react";
+import React, {
+  createContext,
+  useReducer,
+  Dispatch,
+  useContext,
+  useCallback,
+} from "react";
 import api from "../utils/axios";
 
 export interface UserState {
@@ -52,19 +58,19 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, dispatch] = useReducer(reducer, initialState.user);
 
-  const login = async () => {
+  const login = useCallback(async () => {
     const { data } = await api.get("/auth/login/success");
     const payload = data.user;
     dispatch({
       type: "LOGIN",
       payload: payload,
     });
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     window.open("http://localhost:8000/auth/logout", "_self");
     dispatch({ type: "LOGOUT" });
-  };
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, login, logout, dispatch }}>

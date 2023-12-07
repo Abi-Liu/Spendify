@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useContext, createContext, useReducer, Dispatch } from "react";
+import React, {
+  useContext,
+  createContext,
+  useReducer,
+  Dispatch,
+  useCallback,
+} from "react";
 import api from "../utils/axios";
 
 export interface Account {
@@ -69,22 +75,22 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [accounts, dispatch] = useReducer(reducer, initialState);
 
-  const getAccountsByItemId = async (itemId: number) => {
+  const getAccountsByItemId = useCallback(async (itemId: number) => {
     const { data } = await api.get(`/accounts/item/${itemId}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  };
+  }, []);
 
-  const getAccountsByUser = async (userId: number) => {
+  const getAccountsByUser = useCallback(async (userId: number) => {
     const { data } = await api.get(`/accounts/user/${userId}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  };
+  }, []);
 
-  const deleteAccountsByItemId = async (itemId: number) => {
+  const deleteAccountsByItemId = useCallback(async (itemId: number) => {
     await api.delete(`/accounts/item/${itemId}`);
     dispatch({ type: "DELETE_BY_ITEM", payload: itemId });
-  };
+  }, []);
 
-  const groupAccountsByItemId = () => {
+  const groupAccountsByItemId = useCallback(() => {
     console.log(accounts);
     const result: { [itemId: string]: Account[] } = {};
     const allAccounts = Object.values(accounts);
@@ -96,7 +102,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     });
     return result;
-  };
+  }, [accounts]);
 
   return (
     <AccountsContext.Provider
