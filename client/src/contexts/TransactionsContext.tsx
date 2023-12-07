@@ -71,7 +71,11 @@ export interface TransactionsGroup {
 interface ContextShape extends TransactionsState {
   transactions: TransactionsState;
   dispatch: Dispatch<TransactionsAction>;
-  getTransactionsByItemId: (itemId: number) => void;
+  getTransactionsByItemId: (
+    itemId: number,
+    startDate: string,
+    endDate: string
+  ) => void;
   getTransactionsByAccountId: (accountId: number) => void;
   getTransactionsByUserId: (
     userId: number,
@@ -91,10 +95,15 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [transactions, dispatch] = useReducer(reducer, initialState);
 
-  const getTransactionsByItemId = useCallback(async (itemId: number) => {
-    const { data } = await api.get(`/transactions/items/${itemId}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
-  }, []);
+  const getTransactionsByItemId = useCallback(
+    async (itemId: number, startDate: string, endDate: string) => {
+      const { data } = await api.get(
+        `/transactions/items/${itemId}?startDate=${startDate}&endDate=${endDate}`
+      );
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    },
+    []
+  );
 
   const getTransactionsByAccountId = useCallback(async (accountId: number) => {
     const { data } = await api.get(`/transactions/accounts/${accountId}`);

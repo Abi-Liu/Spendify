@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { io } from "socket.io-client";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import useAccountsContext from "../contexts/AccountsContext";
+import formatLastThreeMonths from "../utils/formatDates";
 
 const Sockets = () => {
   const { getTransactionsByItemId } = useTransactionsContext();
@@ -11,8 +12,9 @@ const Sockets = () => {
     socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {
       // leave a notification that we have new transaction data to be fetched
 
-      // fetch new transactions data
-      getTransactionsByItemId(itemId);
+      // fetch new transactions data. Only fetching last 3 months.
+      const { startDate, endDate } = formatLastThreeMonths();
+      getTransactionsByItemId(itemId, startDate, endDate);
 
       // fetch new accounts data. AKA balance updates
       getAccountsByItemId(itemId);
