@@ -8,15 +8,43 @@ import { TransactionsGroup } from "../contexts/TransactionsContext";
 import formatLastThreeMonths from "../utils/formatDates";
 import { Button } from "@mantine/core";
 import Appshell from "../components/Appshell";
+import api from "../utils/axios";
+import PlaidLink from "../components/PlaidLink";
 
 const Dashboard = () => {
-  const [accounts, setAccounts] = useState<{ [itemId: string]: Account[] }>();
+  const [linkToken, setLinkToken] = useState(null);
+
+  const [accounts, setAccounts] = useState<{ [itemId: string]: Account[] }>({});
   const [transactions, setTransactions] = useState<TransactionsGroup>();
   const { itemsArray, getItemsByUser } = useItemsContext();
   const { user } = useUserContext();
   const { groupAccountsByItemId, getAccountsByUser } = useAccountsContext();
   const { getTransactionsByUserId, groupTransactions } =
     useTransactionsContext();
+
+  // set link token.
+  // TODO: Create context for link tokens state
+  useEffect(() => {
+    let ignore = false;
+    async function createLinkToken() {
+      try {
+        const response = await api.post("/plaid/createLinkToken", {
+          id: `${user?.id}`,
+        });
+        console.log(response);
+        setLinkToken(response.data.link_token);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (user && !ignore) {
+      createLinkToken();
+    }
+
+    return () => {
+      ignore = true;
+    };
+  }, [user]);
 
   // get items
   useEffect(() => {
@@ -63,12 +91,22 @@ const Dashboard = () => {
     <Appshell showNav={true}>
       <div>
         {itemsArray.length > 0 ? (
-          itemsArray.map((item) => <p>{item.id}</p>)
+          itemsArray.map((item) => {
+            return (
+              <>
+                <p>{item.id}</p>
+                <p>
+                  {Object.keys(accounts).length > 0 &&
+                    accounts[item.id][0].current_balance}
+                </p>
+              </>
+            );
+          })
         ) : (
           <>
             <h1>No Banks Linked!</h1>
             <h3>Link a bank to get started</h3>
-            <Button>Link Bank</Button>
+            <PlaidLink linkToken={linkToken} userId={user!.id} />
           </>
         )}
       </div>

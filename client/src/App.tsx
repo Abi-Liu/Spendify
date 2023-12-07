@@ -10,32 +10,7 @@ import HomePage from "./pages/HomePage";
 import useUserContext from "./contexts/UserContext";
 
 function App() {
-  const [linkToken, setLinkToken] = useState(null);
   const { user } = useUserContext();
-
-  useEffect(() => {
-    let ignore = false;
-    async function createLinkToken() {
-      try {
-        const response = await api.post("/plaid/createLinkToken", {
-          id: `${user?.id}`,
-        });
-        console.log(response);
-        setLinkToken(response.data.link_token);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    if (user && !ignore) {
-      createLinkToken();
-    }
-
-    return () => {
-      ignore = true;
-    };
-  }, [user]);
-
-  console.log(user);
 
   return (
     <>
