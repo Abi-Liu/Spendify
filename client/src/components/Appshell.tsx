@@ -34,7 +34,7 @@ export default function Appshell({
   const computedColorScheme = useComputedColorScheme("dark");
   const { itemsArray, loading: itemsLoading } = useItemsContext();
   const { generateUserLinkToken, linkTokens } = useLinkContext();
-  const { user } = useUserContext();
+  const { user, logout } = useUserContext();
 
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
@@ -106,7 +106,7 @@ export default function Appshell({
               <Divider />
               <AppShell.Section style={{ paddingTop: "1rem" }}>
                 <Flex justify="flex-end">
-                  <Tooltip label="Logout">
+                  <Tooltip label="Logout" onClick={logout}>
                     <ActionIcon variant="light" aria-label="Logout">
                       <TbLogout size={24} />
                     </ActionIcon>
