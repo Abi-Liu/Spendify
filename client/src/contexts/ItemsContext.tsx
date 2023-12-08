@@ -18,31 +18,45 @@ export interface Item {
 }
 
 interface ItemsState {
-  [itemId: number]: Item;
+  items: { [itemId: number]: Item };
+  loading: boolean;
+  error: string | null;
 }
 
-const initialState: ItemsState = {};
+const initialState: ItemsState = {
+  items: {},
+  loading: false,
+  error: null,
+};
 
 type ItemActions =
   | { type: "SUCCESSFUL_GET"; payload: Item[] }
-  | { type: "DELETE"; payload: number };
+  | { type: "DELETE"; payload: number }
+  | { type: "REQUEST_ITEMS" }
+  | { type: "ERROR"; payload: string };
 
 const reducer = (state: ItemsState, action: ItemActions) => {
   switch (action.type) {
     case "SUCCESSFUL_GET": {
       // adds all new items to the state object
-      const newItems = { ...state };
+      const newItems = { ...state.items };
       action.payload.forEach((item) => {
         newItems[item.id] = item;
       });
-      return newItems;
+      return { items: newItems, loading: false, error: null };
     }
 
     case "DELETE": {
       // deletes the entry where key = action.payload
-      const newState = { ...state };
-      delete newState[action.payload];
-      return newState;
+      const newItems = { ...state.items };
+      delete newItems[action.payload];
+      return { items: newItems, loading: false, error: null };
+    }
+    case "REQUEST_ITEMS": {
+      return { ...state, loading: true, error: null };
+    }
+    case "ERROR": {
+      return { ...state, loading: false, error: action.payload };
     }
     default:
       console.log("unknown action");
@@ -51,7 +65,7 @@ const reducer = (state: ItemsState, action: ItemActions) => {
 };
 
 interface ItemsContextShape extends ItemsState {
-  items: ItemsState;
+  itemsState: ItemsState;
   dispatch: Dispatch<ItemActions>;
   deleteItemById: (id: number) => void;
   getItemById: (id: number) => void;
@@ -66,16 +80,26 @@ const ItemsContext = createContext<ItemsContextShape>(
 export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [items, dispatch] = useReducer(reducer, initialState);
+  const [itemsState, dispatch] = useReducer(reducer, initialState);
 
   const getItemById = useCallback(async (id: number) => {
-    const { data } = await api.get(`/items/${id}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    dispatch({ type: "REQUEST_ITEMS" });
+    try {
+      const { data } = await api.get(`/items/${id}`);
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    } catch (error) {
+      dispatch({ type: "ERROR", payload: "Failed to fetch item" });
+    }
   }, []);
 
   const getItemsByUser = useCallback(async (userId: number) => {
-    const { data } = await api.get(`/items/user/${userId}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    dispatch({ type: "REQUEST_ITEMS" });
+    try {
+      const { data } = await api.get(`/items/user/${userId}`);
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    } catch (error) {
+      dispatch({ type: "ERROR", payload: "Failed to fetch items" });
+    }
   }, []);
 
   const deleteItemById = useCallback(async (id: number) => {
@@ -86,12 +110,15 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <ItemsContext.Provider
       value={{
-        items,
+        itemsState: itemsState,
+        items: itemsState.items,
+        loading: itemsState.loading,
+        error: itemsState.error,
         deleteItemById,
         getItemById,
         getItemsByUser,
         dispatch,
-        itemsArray: Object.values(items),
+        itemsArray: Object.values(itemsState.items),
       }}
     >
       {children}
