@@ -19,6 +19,7 @@ import { TbDots, TbTrash } from "react-icons/tb";
 const ItemCard = ({ item }: { item: Item }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [institution, setInstitution] = useState<Institution>();
+  console.log(institution);
 
   const { deleteItemById } = useItemsContext();
   const { deleteTransactionsByItemId } = useTransactionsContext();
@@ -36,11 +37,11 @@ const ItemCard = ({ item }: { item: Item }) => {
   }, [id, groupAccountsByItemId]);
 
   useEffect(() => {
-    getInstitutionById(plaid_institution_id);
-  }, [getInstitutionById, plaid_institution_id]);
+    getInstitutionById(plaid_institution_id, item.id);
+  }, [getInstitutionById, plaid_institution_id, item.id]);
 
   useEffect(() => {
-    setInstitution(institutions[plaid_institution_id]);
+    setInstitution(institutions.byInstitutionId[plaid_institution_id]);
   }, [institutions, plaid_institution_id]);
 
   // format the time so we can let the user's know how fresh the data is

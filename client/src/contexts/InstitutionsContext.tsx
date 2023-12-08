@@ -10,14 +10,19 @@ import { Institution } from "plaid";
 import api from "../utils/axios";
 
 interface InstitutionState {
-  [id: string]: Institution;
+  byInstitutionId: { [id: string]: Institution };
+  byItemId: { [id: number]: Institution };
 }
 
-const initialState: InstitutionState = {};
+const initialState: InstitutionState = {
+  byInstitutionId: {},
+  byItemId: {},
+};
 
 type InstitutionActions = {
   type: "SUCCESSFUL_GET";
   payload: Institution;
+  itemId: number;
 };
 
 const reducer = (state: InstitutionState, action: InstitutionActions) => {
@@ -28,7 +33,11 @@ const reducer = (state: InstitutionState, action: InstitutionActions) => {
       }
       return {
         ...state,
-        [action.payload.institution_id]: action.payload,
+        byInstitutionId: {
+          ...state.byInstitutionId,
+          [action.payload.institution_id]: action.payload,
+        },
+        byItemId: { ...state.byItemId, [action.itemId]: action.payload },
       };
     }
     default:
@@ -40,7 +49,7 @@ const reducer = (state: InstitutionState, action: InstitutionActions) => {
 interface InstitutionsContextShape {
   institutions: InstitutionState;
   dispatch: Dispatch<InstitutionActions>;
-  getInstitutionById: (id: string) => void;
+  getInstitutionById: (id: string, itemId: number) => void;
   formatLogo: (logo: string | null | undefined) => string | null | undefined;
 }
 
@@ -56,9 +65,9 @@ export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [institutions, dispatch] = useReducer(reducer, initialState);
 
-  const getInstitutionById = useCallback(async (id: string) => {
+  const getInstitutionById = useCallback(async (id: string, itemId: number) => {
     const { data } = await api.get(`/institutions/${id}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data.institution });
+    dispatch({ type: "SUCCESSFUL_GET", payload: data.institution, itemId });
   }, []);
 
   return (
