@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useEffect, useState } from "react";
 import useItemsContext from "../contexts/ItemsContext";
 import useUserContext from "../contexts/UserContext";
@@ -9,6 +9,7 @@ import formatLastThreeMonths from "../utils/formatDates";
 import Appshell from "../components/Appshell";
 import api from "../utils/axios";
 import PlaidLink from "../components/PlaidLink";
+import Loading from "../components/Loading";
 
 const Dashboard = () => {
   const [groupedAccounts, setGroupedAccounts] = useState<{
@@ -64,29 +65,31 @@ const Dashboard = () => {
   }, [transactionsContextState, groupTransactions]);
 
   return (
-    <Appshell showNav={true}>
-      <div>
-        {itemsArray.length > 0 ? (
-          itemsArray.map((item) => {
-            return (
-              <>
-                <p>{item.id}</p>
-                <p>
-                  {Object.keys(groupedAccounts).length > 0 &&
-                    groupedAccounts[item.id] &&
-                    groupedAccounts[item.id][0].current_balance}
-                </p>
-              </>
-            );
-          })
-        ) : (
-          <>
-            <h1>No Banks Linked!</h1>
-            <h3>Link a bank to get started</h3>
-          </>
-        )}
-      </div>
-    </Appshell>
+    <Suspense fallback={<Loading />}>
+      <Appshell showNav={true}>
+        <div>
+          {itemsArray.length > 0 ? (
+            itemsArray.map((item) => {
+              return (
+                <>
+                  <p>{item.id}</p>
+                  <p>
+                    {Object.keys(groupedAccounts).length > 0 &&
+                      groupedAccounts[item.id] &&
+                      groupedAccounts[item.id][0].current_balance}
+                  </p>
+                </>
+              );
+            })
+          ) : (
+            <>
+              <h1>No Banks Linked!</h1>
+              <h3>Link a bank to get started</h3>
+            </>
+          )}
+        </div>
+      </Appshell>
+    </Suspense>
   );
 };
 

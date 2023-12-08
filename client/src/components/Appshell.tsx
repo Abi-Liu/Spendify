@@ -15,6 +15,7 @@ import ItemAccordion from "./ItemAccordion";
 import useLinkContext from "../contexts/LinkTokenContext";
 import useUserContext from "../contexts/UserContext";
 import PlaidLink from "./PlaidLink";
+import Loading from "./Loading";
 // import PlaidLink from "./PlaidLink";
 
 export default function Appshell({
@@ -28,7 +29,7 @@ export default function Appshell({
   const [link, setLink] = useState("");
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark");
-  const { itemsArray } = useItemsContext();
+  const { itemsArray, loading: itemsLoading } = useItemsContext();
   const { generateUserLinkToken, linkTokens } = useLinkContext();
   const { user } = useUserContext();
 
@@ -79,21 +80,27 @@ export default function Appshell({
 
       {showNav && user && (
         <AppShell.Navbar p="md">
-          <AppShell.Section>
-            <Flex justify="flex-end">
-              <Button onClick={initiateLink}>Link Bank!</Button>
-              {link && <PlaidLink userId={user.id} linkToken={link} />}
-            </Flex>
-          </AppShell.Section>
-          <AppShell.Section component={ScrollArea}>
-            {itemsArray.length > 0 ? (
-              <ItemAccordion items={itemsArray} />
-            ) : (
-              <div>
-                <p>No Items linked yet! Add a bank to get started.</p>
-              </div>
-            )}
-          </AppShell.Section>
+          {itemsLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <AppShell.Section>
+                <Flex justify="flex-end">
+                  <Button onClick={initiateLink}>Link Bank!</Button>
+                  {link && <PlaidLink userId={user.id} linkToken={link} />}
+                </Flex>
+              </AppShell.Section>
+              <AppShell.Section component={ScrollArea}>
+                {itemsArray.length > 0 ? (
+                  <ItemAccordion items={itemsArray} />
+                ) : (
+                  <div>
+                    <p>No Items linked yet! Add a bank to get started.</p>
+                  </div>
+                )}
+              </AppShell.Section>
+            </>
+          )}
         </AppShell.Navbar>
       )}
 

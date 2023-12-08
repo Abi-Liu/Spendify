@@ -7,9 +7,12 @@ import { notifications } from "@mantine/notifications";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
 
 const Sockets = () => {
-  const { getTransactionsByItemId } = useTransactionsContext();
-  const { getAccountsByItemId } = useAccountsContext();
-  const { institutions } = useInstitutionsContext();
+  const { getTransactionsByItemId, loading: transactionsLoading } =
+    useTransactionsContext();
+  const { getAccountsByItemId, loading: accountsLoading } =
+    useAccountsContext();
+  const { institutions, loading: institutionLoading } =
+    useInstitutionsContext();
   useEffect(() => {
     const socket = io("http://localhost:8000");
     socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {

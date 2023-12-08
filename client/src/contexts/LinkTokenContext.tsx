@@ -16,13 +16,13 @@ interface LinkToken {
 interface LinkState {
   byUser: LinkToken;
   byItem: LinkToken;
-  error: PlaidLinkError | object;
+  error: PlaidLinkError | null;
 }
 
 const initialState: LinkState = {
   byUser: {},
   byItem: {},
-  error: {},
+  error: null,
 };
 
 type LinkActions =
@@ -38,13 +38,13 @@ function reducer(state: LinkState, action: LinkActions) {
       return {
         ...state,
         byUser: { [action.id]: action.token },
-        error: {},
+        error: null,
       };
     case "LINK_UPDATE_MODE":
       return {
         ...state,
         byItem: { ...state.byItem, [action.id]: action.token },
-        error: {},
+        error: null,
       };
     case "DELETE_ITEM_LINK_TOKEN":
       return {
