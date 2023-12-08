@@ -23,14 +23,22 @@ interface Transactions {
 }
 
 interface TransactionsState {
-  [id: number]: Transactions;
+  transactions: { [id: number]: Transactions };
+  loading: boolean;
+  error: string | null;
 }
 
-const initialState: TransactionsState = {};
+const initialState: TransactionsState = {
+  transactions: {},
+  loading: false,
+  error: null,
+};
 
 type TransactionsAction =
   | { type: "SUCCESSFUL_GET"; payload: Transactions[] }
-  | { type: "DELETE_BY_ITEM_ID"; payload: number };
+  | { type: "DELETE_BY_ITEM_ID"; payload: number }
+  | { type: "REQUEST_TRANSACTIONS" }
+  | { type: "ERROR"; payload: string };
 
 const reducer = (state: TransactionsState, action: TransactionsAction) => {
   switch (action.type) {
@@ -39,21 +47,29 @@ const reducer = (state: TransactionsState, action: TransactionsAction) => {
       if (action.payload.length === 0) {
         return state;
       }
-      const newState = { ...state };
+      const newState = { ...state.transactions };
       action.payload.forEach((transaction) => {
         newState[transaction.id] = transaction;
       });
-      return newState;
+      return { transactions: newState, loading: false, error: null };
     }
 
     case "DELETE_BY_ITEM_ID": {
-      const newState = { ...state };
+      const newState = { ...state.transactions };
       for (const key in newState) {
         if (newState[key].id === action.payload) {
           delete newState[key];
         }
       }
-      return newState;
+      return { transactions: newState, loading: false, error: null };
+    }
+
+    case "REQUEST_TRANSACTIONS": {
+      return { ...state, error: null, loading: true };
+    }
+
+    case "ERROR": {
+      return { ...state, error: action.payload, loading: false };
     }
 
     default:
@@ -69,7 +85,7 @@ export interface TransactionsGroup {
 }
 
 interface ContextShape extends TransactionsState {
-  transactions: TransactionsState;
+  transactionsState: TransactionsState;
   dispatch: Dispatch<TransactionsAction>;
   getTransactionsByItemId: (
     itemId: number,
@@ -93,29 +109,56 @@ const TransactionsContext = createContext<ContextShape>(
 export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [transactions, dispatch] = useReducer(reducer, initialState);
+  const [transactionsState, dispatch] = useReducer(reducer, initialState);
 
   const getTransactionsByItemId = useCallback(
     async (itemId: number, startDate: string, endDate: string) => {
-      const { data } = await api.get(
-        `/transactions/items/${itemId}?startDate=${startDate}&endDate=${endDate}`
-      );
-      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+      dispatch({ type: "REQUEST_TRANSACTIONS" });
+      try {
+        const { data } = await api.get(
+          `/transactions/items/${itemId}?startDate=${startDate}&endDate=${endDate}`
+        );
+        dispatch({ type: "SUCCESSFUL_GET", payload: data });
+      } catch (error) {
+        console.log(error);
+        dispatch({
+          type: "ERROR",
+          payload: "Failed to fetch transactions for this item",
+        });
+      }
     },
     []
   );
 
   const getTransactionsByAccountId = useCallback(async (accountId: number) => {
-    const { data } = await api.get(`/transactions/accounts/${accountId}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    dispatch({ type: "REQUEST_TRANSACTIONS" });
+    try {
+      const { data } = await api.get(`/transactions/accounts/${accountId}`);
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: "ERROR",
+        payload: "Failed to fetch transactions for this account",
+      });
+    }
   }, []);
 
   const getTransactionsByUserId = useCallback(
     async (userId: number, startDate: string, endDate: string) => {
-      const { data } = await api.get(
-        `/transactions/user/${userId}?startDate=${startDate}&endDate=${endDate}`
-      );
-      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+      dispatch({ type: "REQUEST_TRANSACTIONS" });
+      try {
+        const { data } = await api.get(
+          `/transactions/user/${userId}?startDate=${startDate}&endDate=${endDate}`
+        );
+        dispatch({ type: "SUCCESSFUL_GET", payload: data });
+      } catch (error) {
+        console.log(error);
+        dispatch({
+          type: "ERROR",
+          payload: "Failed to fetch transactions for user",
+        });
+      }
     },
     []
   );
@@ -133,7 +176,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
       byItemId: {},
       byAccountId: {},
     };
-    const transactionsArray = Object.values(transactions);
+    const transactionsArray = Object.values(transactionsState.transactions);
 
     for (const transaction of transactionsArray) {
       const { user_id, item_id, account_id } = transaction;
@@ -157,12 +200,15 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
     return res;
-  }, [transactions]);
+  }, [transactionsState.transactions]);
 
   return (
     <TransactionsContext.Provider
       value={{
-        transactions,
+        transactionsState,
+        error: transactionsState.error,
+        loading: transactionsState.loading,
+        transactions: transactionsState.transactions,
         getTransactionsByAccountId,
         getTransactionsByItemId,
         getTransactionsByUserId,
