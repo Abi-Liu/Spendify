@@ -15,8 +15,6 @@ const Sockets = () => {
     socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {
       console.log("NEW TRANSACTIONS FOR ITEM: ", itemId);
 
-      console.log(institutions);
-
       // fetch new transactions data. Only fetching last 3 months.
       const { startDate, endDate } = formatLastThreeMonths();
       getTransactionsByItemId(itemId, startDate, endDate);
@@ -26,7 +24,7 @@ const Sockets = () => {
 
       // leave a notification that we have new transaction data to be fetched
       notifications.show({
-        title: `Updates available`,
+        title: `Updates available for ${institutions.byItemId[itemId].institution_id}`,
         message: "New balance and transaction data have been received!",
       });
     });

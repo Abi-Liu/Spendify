@@ -66,7 +66,6 @@ export const InstitutionsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [institutions, dispatch] = useReducer(reducer, initialState);
 
   const getInstitutionById = useCallback(async (id: string, itemId: number) => {
-    console.log("getting ins info");
     const { data } = await api.get(`/institutions/${id}`);
     dispatch({ type: "SUCCESSFUL_GET", payload: data.institution, itemId });
   }, []);
