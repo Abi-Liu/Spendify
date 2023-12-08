@@ -93,13 +93,31 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [accountsState, dispatch] = useReducer(reducer, initialState);
 
   const getAccountsByItemId = useCallback(async (itemId: number) => {
-    const { data } = await api.get(`/accounts/items/${itemId}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    dispatch({ type: "REQUEST_ACCOUNTS" });
+    try {
+      const { data } = await api.get(`/accounts/items/${itemId}`);
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: "ERROR",
+        payload: "Failed to fetch accounts for this item",
+      });
+    }
   }, []);
 
   const getAccountsByUser = useCallback(async (userId: number) => {
-    const { data } = await api.get(`/accounts/user/${userId}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    dispatch({ type: "REQUEST_ACCOUNTS" });
+    try {
+      const { data } = await api.get(`/accounts/user/${userId}`);
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: "ERROR",
+        payload: "Failed to fetch accounts for the user",
+      });
+    }
   }, []);
 
   const deleteAccountsByItemId = useCallback(async (itemId: number) => {
@@ -118,7 +136,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     });
     return result;
-  }, [accountsState]);
+  }, [accountsState.accounts]);
 
   return (
     <AccountsContext.Provider
