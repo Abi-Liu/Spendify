@@ -26,39 +26,56 @@ export interface Account {
 }
 
 interface InitialState {
-  [accountId: number]: Account;
+  accounts: { [accountId: number]: Account };
+  loading: boolean;
+  error: string | null;
 }
 
-const initialState: InitialState = {};
+const initialState: InitialState = {
+  accounts: {},
+  loading: false,
+  error: null,
+};
 
 type AccountActions =
   | { type: "SUCCESSFUL_GET"; payload: Account[] }
-  | { type: "DELETE_BY_ITEM"; payload: number };
+  | { type: "DELETE_BY_ITEM"; payload: number }
+  | { type: "REQUEST_ACCOUNTS" }
+  | { type: "ERROR"; payload: string };
 
 const reducer = (state: InitialState, action: AccountActions) => {
   switch (action.type) {
     case "SUCCESSFUL_GET": {
-      const newAccounts = { ...state };
+      const newAccounts = { ...state.accounts };
       action.payload.forEach((account) => {
         newAccounts[account.id] = account;
       });
-      return newAccounts;
+      return { accounts: newAccounts, loading: false, error: null };
     }
     case "DELETE_BY_ITEM": {
-      const newState = { ...state };
+      const newState = { ...state.accounts };
       // loop through the object and delete objects that match the itemId
       for (const key in newState) {
         if (newState[key].item_id === action.payload) {
           delete newState[key];
         }
       }
-      return newState;
+      return { accounts: newState, loading: false, error: null };
     }
+    case "REQUEST_ACCOUNTS": {
+      return { ...state, loading: true, error: null };
+    }
+    case "ERROR": {
+      return { ...state, loading: false, error: action.payload };
+    }
+    default:
+      console.log("Unknown accounts action ");
+      return state;
   }
 };
 
 interface ContextShape extends InitialState {
-  accounts: InitialState;
+  accountsState: InitialState;
   dispatch: Dispatch<AccountActions>;
   getAccountsByItemId: (itemId: number) => void;
   getAccountsByUser: (userId: number) => void;
@@ -73,7 +90,7 @@ const AccountsContext = createContext<ContextShape>(
 export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [accounts, dispatch] = useReducer(reducer, initialState);
+  const [accountsState, dispatch] = useReducer(reducer, initialState);
 
   const getAccountsByItemId = useCallback(async (itemId: number) => {
     const { data } = await api.get(`/accounts/items/${itemId}`);
@@ -92,7 +109,7 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const groupAccountsByItemId = useCallback(() => {
     const result: { [itemId: string]: Account[] } = {};
-    const allAccounts = Object.values(accounts);
+    const allAccounts = Object.values(accountsState.accounts);
     allAccounts.forEach((account) => {
       if (!result[account.item_id]) {
         result[account.item_id] = [account];
@@ -101,12 +118,15 @@ export const AccountsProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     });
     return result;
-  }, [accounts]);
+  }, [accountsState]);
 
   return (
     <AccountsContext.Provider
       value={{
-        accounts,
+        accountsState,
+        accounts: accountsState.accounts,
+        loading: accountsState.loading,
+        error: accountsState.error,
         getAccountsByItemId,
         getAccountsByUser,
         deleteAccountsByItemId,
