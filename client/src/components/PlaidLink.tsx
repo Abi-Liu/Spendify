@@ -29,7 +29,7 @@ export default function PlaidLink(props: Props) {
     metadata: PlaidLinkOnSuccessMetadata
   ) => {
     if (!props.itemId) {
-      const { data } = await api.post("/plaid/setAccessToken", {
+      await api.post("/plaid/setAccessToken", {
         publicToken,
         institutionId: metadata.institution?.institution_id,
         userId: props.userId,

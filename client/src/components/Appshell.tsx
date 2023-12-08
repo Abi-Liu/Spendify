@@ -8,8 +8,11 @@ import {
   useMantineColorScheme,
   useComputedColorScheme,
   ScrollArea,
+  Divider,
+  Tooltip,
+  ActionIcon,
 } from "@mantine/core";
-import { TbSunHigh, TbMoon } from "react-icons/tb";
+import { TbSunHigh, TbMoon, TbLogout } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
 import ItemAccordion from "./ItemAccordion";
 import useLinkContext from "../contexts/LinkTokenContext";
@@ -84,13 +87,14 @@ export default function Appshell({
             <Loading />
           ) : (
             <>
-              <AppShell.Section>
+              <AppShell.Section style={{ paddingBottom: "1rem" }}>
                 <Flex justify="flex-end">
                   <Button onClick={initiateLink}>Link Bank!</Button>
                   {link && <PlaidLink userId={user.id} linkToken={link} />}
                 </Flex>
               </AppShell.Section>
-              <AppShell.Section component={ScrollArea}>
+              <Divider />
+              <AppShell.Section grow component={ScrollArea}>
                 {itemsArray.length > 0 ? (
                   <ItemAccordion items={itemsArray} />
                 ) : (
@@ -98,6 +102,16 @@ export default function Appshell({
                     <p>No Items linked yet! Add a bank to get started.</p>
                   </div>
                 )}
+              </AppShell.Section>
+              <Divider />
+              <AppShell.Section style={{ paddingTop: "1rem" }}>
+                <Flex justify="flex-end">
+                  <Tooltip label="Logout">
+                    <ActionIcon variant="light" aria-label="Logout">
+                      <TbLogout size={24} />
+                    </ActionIcon>
+                  </Tooltip>
+                </Flex>
               </AppShell.Section>
             </>
           )}
