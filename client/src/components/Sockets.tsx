@@ -7,15 +7,12 @@ import { notifications } from "@mantine/notifications";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
 
 const Sockets = () => {
-  const { getTransactionsByItemId, loading: transactionsLoading } =
-    useTransactionsContext();
-  const { getAccountsByItemId, loading: accountsLoading } =
-    useAccountsContext();
-  const { institutions, loading: institutionLoading } =
-    useInstitutionsContext();
+  const { getTransactionsByItemId } = useTransactionsContext();
+  const { getAccountsByItemId } = useAccountsContext();
+  const { institutions, getInstitutionById } = useInstitutionsContext();
   useEffect(() => {
     const socket = io("http://localhost:8000");
-    socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {
+    socket.on("SYNC_UPDATES_AVAILABLE", ({ itemId }) => {
       console.log("NEW TRANSACTIONS FOR ITEM: ", itemId);
 
       // fetch new transactions data. Only fetching last 3 months.
@@ -32,11 +29,25 @@ const Sockets = () => {
       });
     });
 
+    socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {
+      // fetch new transactions data. Only fetching last 3 months.
+      const { startDate, endDate } = formatLastThreeMonths();
+      getTransactionsByItemId(itemId, startDate, endDate);
+
+      // fetch new accounts data. AKA balance updates
+      getAccountsByItemId(itemId);
+    });
+
     // close the connection to avoid memory leaks
     return () => {
       socket.disconnect();
     };
-  }, [getAccountsByItemId, getTransactionsByItemId, institutions]);
+  }, [
+    getAccountsByItemId,
+    getInstitutionById,
+    getTransactionsByItemId,
+    institutions.byItemId,
+  ]);
   return <></>;
 };
 
