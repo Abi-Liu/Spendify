@@ -9,6 +9,8 @@ import api from "../utils/axios";
 import useItemsContext from "../contexts/ItemsContext";
 import { useEffect } from "react";
 import useLinkContext from "../contexts/LinkTokenContext";
+import useAccountsContext from "../contexts/AccountsContext";
+import useInstitutionsContext from "../contexts/InstitutionsContext";
 
 interface Props {
   linkToken: string | null;
@@ -27,7 +29,7 @@ export default function PlaidLink(props: Props) {
     metadata: PlaidLinkOnSuccessMetadata
   ) => {
     if (!props.itemId) {
-      await api.post("/plaid/setAccessToken", {
+      const { data } = await api.post("/plaid/setAccessToken", {
         publicToken,
         institutionId: metadata.institution?.institution_id,
         userId: props.userId,

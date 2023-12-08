@@ -19,7 +19,6 @@ import { TbDots, TbTrash } from "react-icons/tb";
 const ItemCard = ({ item }: { item: Item }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [institution, setInstitution] = useState<Institution>();
-  console.log(institution);
 
   const { deleteItemById } = useItemsContext();
   const { deleteTransactionsByItemId } = useTransactionsContext();

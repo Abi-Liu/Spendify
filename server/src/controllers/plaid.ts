@@ -69,12 +69,13 @@ export default {
       const itemId = tokenResponse.data.item_id;
       // create the item
       const item = await createItem(userId, accessToken, itemId, institutionId);
-
       // fetch and store transactions
       await updateTransactions(itemId);
 
       // notify the client that the transactions are ready to be fetched
-      req.io.emit("NEW_TRANSACTIONS_DATA", { itemId: item.id });
+      req.io.emit("NEW_TRANSACTIONS_DATA", {
+        itemId: item.id,
+      });
 
       // potentially cache items here?
 

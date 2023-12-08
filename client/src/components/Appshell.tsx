@@ -13,7 +13,7 @@ import { TbSunHigh, TbMoon } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
 import ItemAccordion from "./ItemAccordion";
 import useLinkContext from "../contexts/LinkTokenContext";
-import useUserContext, { UserState } from "../contexts/UserContext";
+import useUserContext from "../contexts/UserContext";
 import PlaidLink from "./PlaidLink";
 // import PlaidLink from "./PlaidLink";
 
@@ -26,7 +26,6 @@ export default function Appshell({
 }) {
   const [opened, { toggle }] = useDisclosure();
   const [link, setLink] = useState("");
-  const [userState, setUserState] = useState<UserState | null>(null);
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark");
   const { itemsArray } = useItemsContext();
@@ -36,10 +35,6 @@ export default function Appshell({
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
   };
-
-  useEffect(() => {
-    setUserState(user);
-  }, [user]);
 
   const navbarProps = showNav
     ? {
