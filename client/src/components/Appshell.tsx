@@ -122,22 +122,31 @@ export default function Appshell({
                     </ActionIcon>
                     {link && <PlaidLink userId={user.id} linkToken={link} />}
                   </Flex>
-                  <Stack align="flex-start" style={{ paddingBottom: "1rem" }}>
-                    <Title order={4}>Net Worth</Title>
-                    <Text size="2rem">
-                      {formatCurrency(depository + investment - credit - loan)}
-                    </Text>
-                  </Stack>
-                  <Flex justify="space-between">
-                    <Text size="sm">Assets</Text>
-                    <Text size="sm">
-                      {formatCurrency(depository + investment)}
-                    </Text>
-                  </Flex>
-                  <Flex justify="space-between">
-                    <Text size="sm">Liabilities</Text>
-                    <Text size="sm">{formatCurrency(credit + loan)}</Text>
-                  </Flex>
+                  {Object.keys(accounts).length > 0 && (
+                    <>
+                      <Stack
+                        align="flex-start"
+                        style={{ paddingBottom: "1rem" }}
+                      >
+                        <Title order={4}>Net Worth</Title>
+                        <Text size="2rem">
+                          {formatCurrency(
+                            depository + investment - credit - loan
+                          )}
+                        </Text>
+                      </Stack>
+                      <Flex justify="space-between">
+                        <Text size="sm">Assets</Text>
+                        <Text size="sm">
+                          {formatCurrency(depository + investment)}
+                        </Text>
+                      </Flex>
+                      <Flex justify="space-between">
+                        <Text size="sm">Liabilities</Text>
+                        <Text size="sm">{formatCurrency(credit + loan)}</Text>
+                      </Flex>
+                    </>
+                  )}
                 </Stack>
               </AppShell.Section>
               <Divider />

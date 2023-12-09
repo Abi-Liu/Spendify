@@ -39,7 +39,7 @@ export default {
           );
 
           // send data to client via socket so client knows to refetch transactions
-          req.io.emit("SYNC_UPDATES_AVAILABLE", id);
+          req.io.emit("SYNC_UPDATES_AVAILABLE", { id });
         }
       } else if (webhookType === "ITEM") {
         if (webhookCode === "PENDING_EXPIRATION") {
