@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import {
   AppShell,
@@ -11,14 +11,19 @@ import {
   Divider,
   Tooltip,
   ActionIcon,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
-import { TbSunHigh, TbMoon, TbLogout } from "react-icons/tb";
+import { TbSunHigh, TbMoon, TbLogout, TbPlus } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
 import ItemAccordion from "./ItemAccordion";
 import useLinkContext from "../contexts/LinkTokenContext";
 import useUserContext from "../contexts/UserContext";
 import PlaidLink from "./PlaidLink";
 import Loading from "./Loading";
+import useAccountsContext from "../contexts/AccountsContext";
+import calculateNetworth from "../utils/calculateNetworth";
 // import PlaidLink from "./PlaidLink";
 
 export default function Appshell({
@@ -33,6 +38,7 @@ export default function Appshell({
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark");
   const { itemsArray, loading: itemsLoading } = useItemsContext();
+  const { accounts } = useAccountsContext();
   const { generateUserLinkToken, linkTokens } = useLinkContext();
   const { user, logout } = useUserContext();
 
@@ -61,6 +67,15 @@ export default function Appshell({
     }
   }, [linkTokens, user]);
 
+  // calculate networth
+  const { depository, credit, loan, investment } = useMemo(() => {
+    const calculateNetWorthAccounts = Object.values(accounts);
+    if (calculateNetWorthAccounts.length > 0) {
+      return calculateNetworth(calculateNetWorthAccounts);
+    }
+    return { depository: 0, credit: 0, loan: 0, investment: 0 };
+  }, [accounts]);
+
   return (
     <AppShell header={{ height: 60 }} navbar={navbarProps} padding="md">
       <AppShell.Header>
@@ -69,7 +84,14 @@ export default function Appshell({
           align="center"
           style={{ padding: ".625rem 1.25rem" }}
         >
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          {showNav && (
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
+          )}
           <div>Logo</div>
           <Button onClick={toggleColorScheme} size="sm" variant="transparent">
             {computedColorScheme === "light" ? (
@@ -88,10 +110,30 @@ export default function Appshell({
           ) : (
             <>
               <AppShell.Section style={{ paddingBottom: "1rem" }}>
-                <Flex justify="flex-end">
-                  <Button onClick={initiateLink}>Link Bank!</Button>
-                  {link && <PlaidLink userId={user.id} linkToken={link} />}
-                </Flex>
+                <Stack align="stretch" gap="xs">
+                  <Flex justify="flex-end">
+                    <ActionIcon
+                      variant="transparent"
+                      aria-label="link bank"
+                      onClick={initiateLink}
+                    >
+                      <TbPlus />
+                    </ActionIcon>
+                    {link && <PlaidLink userId={user.id} linkToken={link} />}
+                  </Flex>
+                  <Stack align="flex-start">
+                    <Title order={2}>Net Worth</Title>
+                    <Text size="md">
+                      {(depository + investment - credit - loan).toLocaleString(
+                        "en-US",
+                        {
+                          style: "currency",
+                          currency: "USD",
+                        }
+                      )}
+                    </Text>
+                  </Stack>
+                </Stack>
               </AppShell.Section>
               <Divider />
               <AppShell.Section grow component={ScrollArea}>
@@ -103,9 +145,10 @@ export default function Appshell({
                   </div>
                 )}
               </AppShell.Section>
-              <Divider />
-              <AppShell.Section style={{ paddingTop: "1rem" }}>
-                <Flex justify="flex-end">
+              <Divider style={{ paddingBottom: "1rem" }} />
+              <AppShell.Section>
+                <Flex justify="space-between" align="center">
+                  <Button onClick={initiateLink}>Link Bank!</Button>
                   <Tooltip label="Logout" onClick={logout}>
                     <ActionIcon variant="light" aria-label="Logout">
                       <TbLogout size={24} />

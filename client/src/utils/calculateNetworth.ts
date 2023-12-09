@@ -8,15 +8,17 @@ export default function calculateNetworth(accounts: Account[]) {
   let credit = 0;
   let loan = 0;
   for (const account of accounts) {
+    const currentBalace = Number(account.current_balance);
     if (account.type === "depository") {
-      depository += account.current_balance;
+      depository += currentBalace;
     } else if (account.type === "investment") {
-      investment += account.current_balance;
+      investment += currentBalace;
     } else if (account.type === "credit") {
-      credit += account.current_balance;
+      credit += currentBalace;
     } else {
-      loan += account.current_balance;
+      loan += currentBalace;
     }
   }
+  console.log(typeof depository);
   return { depository, investment, credit, loan };
 }

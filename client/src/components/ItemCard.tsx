@@ -6,7 +6,6 @@ import useInstitutionsContext from "../contexts/InstitutionsContext";
 import {
   Accordion,
   Text,
-  Divider,
   ActionIcon,
   Center,
   Menu,
@@ -101,7 +100,6 @@ const ItemCard = ({ item }: { item: Item }) => {
         accounts.map((account) => (
           <>
             <AccountDetails key={account.id} account={account} />
-            <Divider />
           </>
         ))}
       <Accordion.Panel>
