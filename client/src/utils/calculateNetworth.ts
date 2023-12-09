@@ -19,6 +19,6 @@ export default function calculateNetworth(accounts: Account[]) {
       loan += currentBalace;
     }
   }
-  console.log(typeof depository);
+
   return { depository, investment, credit, loan };
 }
