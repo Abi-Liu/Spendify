@@ -24,7 +24,7 @@ const Sockets = () => {
 
       // leave a notification that we have new transaction data to be fetched
       notifications.show({
-        title: `Updates available for ${institutions.byItemId[id].institution_id}`,
+        title: `Updates available for ${institutions.byItemId[id].name}`,
         message: "New balance and transaction data have been received!",
       });
     });
