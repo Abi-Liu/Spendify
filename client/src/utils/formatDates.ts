@@ -1,22 +1,23 @@
 export default function formatLastThreeMonths() {
-  // format dates - get the last day of the current month and the first day of the previous previous month
+  // Get the current date
   const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1; // Add 1 because getMonth() returns a zero-based index
 
-  const lastDayOfCurrentMonth = new Date(year, month, 0);
-  const twoMonthsAgo = month - 2;
-  // Handle the case where the current month is January or February
-  // Adjust the year and month accordingly
-  const adjustedYear = twoMonthsAgo < 0 ? year - 1 : year;
-  const adjustedMonth = twoMonthsAgo < 0 ? 12 + twoMonthsAgo : twoMonthsAgo; // Adjust the month value for previous months
+  // Calculate the last day of the current month
+  const lastDayOfCurrentMonth = new Date(currentYear, currentMonth, 0);
+  const endDate = lastDayOfCurrentMonth.toISOString().split("T")[0];
+
+  // Calculate the first day of the month before the previous month
+  const twoMonthsAgo = currentMonth - 2;
+  const adjustedYear = twoMonthsAgo < 0 ? currentYear - 1 : currentYear;
+  const adjustedMonth = twoMonthsAgo < 0 ? 12 + twoMonthsAgo : twoMonthsAgo;
   const firstDayOfPreviousPreviousMonth = new Date(
     adjustedYear,
-    adjustedMonth,
+    adjustedMonth - 1,
     1
-  );
-
+  ); // Subtract 1 from adjustedMonth
   const startDate = firstDayOfPreviousPreviousMonth.toISOString().split("T")[0];
-  const endDate = lastDayOfCurrentMonth.toISOString().split("T")[0];
+
   return { startDate, endDate };
 }
