@@ -10,6 +10,7 @@ const Sockets = () => {
   const { getTransactionsByItemId } = useTransactionsContext();
   const { getAccountsByItemId } = useAccountsContext();
   const { institutions, getInstitutionById } = useInstitutionsContext();
+
   useEffect(() => {
     const socket = io("http://localhost:8000");
     socket.on("SYNC_UPDATES_AVAILABLE", ({ id }) => {

@@ -10,6 +10,7 @@ import Appshell from "../components/Appshell";
 import api from "../utils/axios";
 import PlaidLink from "../components/PlaidLink";
 import Loading from "../components/Loading";
+import SpendingAnalysis from "../components/SpendingAnalysis";
 
 const Dashboard = () => {
   const [groupedAccounts, setGroupedAccounts] = useState<{
@@ -68,6 +69,7 @@ const Dashboard = () => {
     <Suspense fallback={<Loading />}>
       <Appshell showNav={true}>
         <div>
+          <SpendingAnalysis />
           {itemsArray.length > 0 ? (
             itemsArray.map((item) => {
               return (
