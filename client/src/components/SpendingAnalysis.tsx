@@ -2,6 +2,7 @@
 import React, { useMemo } from "react";
 import { Container, Text } from "@mantine/core";
 import useTransactionsContext from "../contexts/TransactionsContext";
+import CategoryChart from "./CategoryChart";
 
 const SpendingAnalysis = () => {
   const { transactions } = useTransactionsContext();
@@ -39,6 +40,7 @@ const SpendingAnalysis = () => {
   return (
     <Container>
       <Text ta="center">A Monthly Breakdown of Your Spending</Text>
+      <CategoryChart categories={categories} />
     </Container>
   );
 };
