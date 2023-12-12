@@ -20,7 +20,9 @@ const TopVendors = ({ names }: TopVendorsProps) => {
   }, [names]);
 
   return (
-    <Container style={{ width: "45%", border: "1px solid #808080" }}>
+    <Container
+      style={{ width: "45%", border: "1px solid #808080", height: "29rem" }}
+    >
       <Flex
         direction="column"
         align="space-between"
