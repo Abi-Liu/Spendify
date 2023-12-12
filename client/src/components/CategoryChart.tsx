@@ -22,11 +22,13 @@ const CategoryChart = ({ categories }: PieChartProps) => {
   };
 
   return (
-    <Container style={{ border: "1px solid #808080", width: "45%" }}>
+    <Container
+      style={{ border: "1px solid #808080", width: "45%", height: "29rem" }}
+    >
       <Flex
         direction="column"
         align="space-between"
-        style={{ marginTop: "1.15rem", height: "100%" }}
+        style={{ marginTop: "1.2rem", height: "100%" }}
       >
         <Text size="1.5rem" ta="center" style={{ marginTop: "1rem" }}>
           Spending Categories

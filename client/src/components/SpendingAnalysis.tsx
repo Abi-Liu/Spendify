@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useMemo } from "react";
-import { Container, Flex, Text } from "@mantine/core";
+import { Container, Flex, Text, em } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import CategoryChart from "./CategoryChart";
 import TopVendors from "./TopVendors";
 
 const SpendingAnalysis = () => {
   const { transactions } = useTransactionsContext();
+
+  const isMedium = useMediaQuery(`(max-width: ${em(1050)})`);
 
   // we only want the current months transactions
   const currentDate = new Date();
@@ -47,7 +50,11 @@ const SpendingAnalysis = () => {
   return (
     <Container>
       <Text ta="center">A Monthly Breakdown of Your Spending</Text>
-      <Flex justify="space-between" gap={10}>
+      <Flex
+        direction={isMedium ? "column" : "row"}
+        justify="space-between"
+        gap={10}
+      >
         <CategoryChart categories={categories} />
         <TopVendors names={names} />
       </Flex>
