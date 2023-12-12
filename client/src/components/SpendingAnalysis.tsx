@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { Container, Text } from "@mantine/core";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import CategoryChart from "./CategoryChart";
+import TopVendors from "./TopVendors";
 
 const SpendingAnalysis = () => {
   const { transactions } = useTransactionsContext();
@@ -21,9 +22,10 @@ const SpendingAnalysis = () => {
       );
     }
   );
-  console.log(transactionsArray);
-  const categories: any = useMemo(() => {
+
+  const { categories, names }: any = useMemo(() => {
     const categories: any = {};
+    const names: any = {};
     for (const transaction of transactionsArray) {
       const amount = Number(transaction.amount);
       // if the category already exists, add the total, if not create a new key in the object and set the value to the amount.
@@ -32,15 +34,21 @@ const SpendingAnalysis = () => {
       } else {
         categories[transaction.personal_finance_category] = amount;
       }
+
+      if (names[transaction.name]) {
+        names[transaction.name] += amount;
+      } else {
+        names[transaction.name] = amount;
+      }
     }
-    return categories;
+    return { categories, names };
   }, [transactionsArray]);
 
-  console.log(categories);
   return (
     <Container>
       <Text ta="center">A Monthly Breakdown of Your Spending</Text>
       <CategoryChart categories={categories} />
+      <TopVendors names={names} />
     </Container>
   );
 };

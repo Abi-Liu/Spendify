@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import api from "../utils/axios";
 
-interface Transactions {
+export interface Transactions {
   id: number;
   item_id: number;
   account_id: number;

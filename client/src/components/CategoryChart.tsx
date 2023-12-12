@@ -1,6 +1,5 @@
 import React from "react";
 import { PieChart, Pie, Cell, Legend } from "recharts";
-import formatCurrency from "../utils/formatDollar";
 
 interface PieChartProps {
   categories: { [key: string]: number };
@@ -34,7 +33,6 @@ const CategoryChart = ({ categories }: PieChartProps) => {
           innerRadius={70}
           outerRadius={90}
           dataKey="value"
-          fill="#8884d8"
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
