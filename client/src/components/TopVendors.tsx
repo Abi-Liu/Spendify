@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useMemo } from "react";
-import { Flex, Text, Title } from "@mantine/core";
+import { Container, Flex, Text, Title } from "@mantine/core";
 import formatCurrency from "../utils/formatDollar";
 
 interface TopVendorsProps {
@@ -20,17 +20,29 @@ const TopVendors = ({ names }: TopVendorsProps) => {
   }, [names]);
 
   return (
-    <Flex direction="column" align="center">
-      <Title order={3} ta="center">
-        Top 5 Vendors
-      </Title>
-      {topFive.map((vendor: [string, number]) => (
-        <Flex justify="space-between">
-          <Text>{vendor[0]}</Text>
-          <Text>{formatCurrency(vendor[1])}</Text>
+    <Container style={{ width: "45%", border: "1px solid #808080" }}>
+      <Flex
+        direction="column"
+        align="space-between"
+        style={{ marginTop: "1rem", height: "100%" }}
+      >
+        <Text size="1.5rem" ta="center" style={{ marginTop: "1.25rem" }}>
+          Top 5 Vendors
+        </Text>
+        <Flex
+          style={{ marginTop: "1rem", height: "65%" }}
+          direction="column"
+          justify="space-between"
+        >
+          {topFive.map((vendor: [string, number]) => (
+            <Flex justify="space-between" gap={10}>
+              <Text>{vendor[0]}</Text>
+              <Text>{formatCurrency(vendor[1])}</Text>
+            </Flex>
+          ))}
         </Flex>
-      ))}
-    </Flex>
+      </Flex>
+    </Container>
   );
 };
 

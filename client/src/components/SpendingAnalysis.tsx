@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useMemo } from "react";
-import { Container, Text } from "@mantine/core";
+import { Container, Flex, Text } from "@mantine/core";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import CategoryChart from "./CategoryChart";
 import TopVendors from "./TopVendors";
@@ -47,8 +47,10 @@ const SpendingAnalysis = () => {
   return (
     <Container>
       <Text ta="center">A Monthly Breakdown of Your Spending</Text>
-      <CategoryChart categories={categories} />
-      <TopVendors names={names} />
+      <Flex justify="space-between" gap={10}>
+        <CategoryChart categories={categories} />
+        <TopVendors names={names} />
+      </Flex>
     </Container>
   );
 };
