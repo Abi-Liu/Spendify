@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Transactions } from "../contexts/TransactionsContext";
 import { Table } from "@mantine/core";
 import api from "../utils/axios";
@@ -35,13 +35,22 @@ const TransactionsTable = () => {
     fetchPagination();
   }, [limit, page, user]);
 
+  const formatDate = useCallback((dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }, []);
+
   if (!transactions) {
     return <Loading />;
   }
 
   const rows = transactions.map((transaction) => (
     <Table.Tr key={transaction.id}>
-      <Table.Td>{transaction.date}</Table.Td>
+      <Table.Td>{formatDate(transaction.date)}</Table.Td>
       <Table.Td>{transaction.name}</Table.Td>
       <Table.Td>{transaction.personal_finance_category}</Table.Td>
       <Table.Td>{transaction.payment_channel}</Table.Td>
