@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import Appshell from "../components/Appshell";
+import TransactionsTable from "../components/TransactionsTable";
 
 const TransactionsPage = () => {
-  return <div>TransactionsPage</div>;
+  return (
+    <Appshell showNav={true}>
+      <TransactionsTable />
+    </Appshell>
+  );
 };
 
 export default TransactionsPage;

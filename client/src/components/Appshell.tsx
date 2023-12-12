@@ -106,14 +106,27 @@ export default function Appshell({
             />
           )}
           <div>Logo</div>
-
-          <Button onClick={toggleColorScheme} size="sm" variant="transparent">
-            {computedColorScheme === "light" ? (
-              <TbMoon size={24} />
-            ) : (
-              <TbSunHigh size={24} />
-            )}
-          </Button>
+          <Group>
+            {navigationLinks.map((link) => (
+              <Button
+                variant="transparent"
+                style={{
+                  color: computedColorScheme === "light" ? "black" : "#CED4DA",
+                }}
+                onClick={() => navigate(link.link)}
+                visibleFrom="sm"
+              >
+                {link.name}
+              </Button>
+            ))}
+            <Button onClick={toggleColorScheme} size="sm" variant="transparent">
+              {computedColorScheme === "light" ? (
+                <TbMoon size={24} />
+              ) : (
+                <TbSunHigh size={24} />
+              )}
+            </Button>
+          </Group>
         </Flex>
       </AppShell.Header>
 
