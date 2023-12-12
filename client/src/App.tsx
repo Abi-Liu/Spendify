@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import useUserContext from "./contexts/UserContext";
+import TransactionsPage from "./pages/TransactionsPage";
 
 function App() {
   const { user } = useUserContext();
@@ -16,7 +17,10 @@ function App() {
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/" />}
         />
-        {/* <Route path="/transactions" element={user ? <Transactions /> : <Navigate to ='/' />} /> */}
+        <Route
+          path="/transactions"
+          element={user ? <TransactionsPage /> : <Navigate to="/" />}
+        />
       </Routes>
     </>
   );

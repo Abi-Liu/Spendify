@@ -14,6 +14,7 @@ import {
   Stack,
   Text,
   Title,
+  Group,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon, TbLogout, TbPlus } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
@@ -25,7 +26,7 @@ import Loading from "./Loading";
 import useAccountsContext from "../contexts/AccountsContext";
 import calculateNetworth from "../utils/calculateNetworth";
 import formatCurrency from "../utils/formatDollar";
-// import PlaidLink from "./PlaidLink";
+import { useNavigate } from "react-router-dom";
 
 export default function Appshell({
   children,
@@ -46,6 +47,17 @@ export default function Appshell({
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
   };
+
+  const navigate = useNavigate();
+
+  const navigationLinks = showNav
+    ? [
+        { name: "Dashboard", link: "/dashboard" },
+        { name: "Transactions", link: "/transactions" },
+        { name: "Networth", link: "/networth" },
+        { name: "Budgeting", link: "/budget" },
+      ]
+    : [];
 
   const navbarProps = showNav
     ? {
@@ -94,6 +106,7 @@ export default function Appshell({
             />
           )}
           <div>Logo</div>
+
           <Button onClick={toggleColorScheme} size="sm" variant="transparent">
             {computedColorScheme === "light" ? (
               <TbMoon size={24} />
