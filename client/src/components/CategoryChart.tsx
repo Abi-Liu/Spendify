@@ -1,12 +1,13 @@
 import { Container, Flex, Text } from "@mantine/core";
 import React from "react";
-import { PieChart, Pie, Cell, Legend } from "recharts";
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 interface PieChartProps {
   categories: { [key: string]: number };
+  isMedium: boolean | undefined;
 }
 
-const CategoryChart = ({ categories }: PieChartProps) => {
+const CategoryChart = ({ categories, isMedium }: PieChartProps) => {
   const data = [];
   const labels = Object.keys(categories);
   const values = Object.values(categories);
@@ -21,39 +22,47 @@ const CategoryChart = ({ categories }: PieChartProps) => {
     return `$${value.value.toLocaleString()}`;
   };
 
+  const containerWidth = isMedium ? "100%" : "45%";
+
   return (
     <Container
-      style={{ border: "1px solid #808080", width: "45%", height: "29rem" }}
+      style={{
+        border: "1px solid #808080",
+        width: containerWidth,
+        height: "29rem",
+      }}
     >
       <Flex
         direction="column"
         align="space-between"
-        style={{ marginTop: "1.2rem", height: "100%" }}
+        style={{ marginTop: "1rem", height: "100%" }}
       >
         <Text size="1.5rem" ta="center" style={{ marginTop: "1rem" }}>
           Spending Categories
         </Text>
-        <PieChart width={400} height={400}>
-          <Legend />
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            isAnimationActive={true}
-            label={renderLabel}
-            paddingAngle={5}
-            innerRadius={70}
-            outerRadius={90}
-            dataKey="value"
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={colors[index % colors.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
+        <ResponsiveContainer height="85%">
+          <PieChart width={350} height={350}>
+            <Legend />
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              isAnimationActive={true}
+              label={renderLabel}
+              paddingAngle={5}
+              innerRadius={70}
+              outerRadius={90}
+              dataKey="value"
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={colors[index % colors.length]}
+                />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
       </Flex>
     </Container>
   );

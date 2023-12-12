@@ -48,15 +48,15 @@ const SpendingAnalysis = () => {
   }, [transactionsArray]);
 
   return (
-    <Container>
+    <Container style={{ height: "30rem" }}>
       <Text ta="center">A Monthly Breakdown of Your Spending</Text>
       <Flex
         direction={isMedium ? "column" : "row"}
         justify="space-between"
         gap={10}
       >
-        <CategoryChart categories={categories} />
-        <TopVendors names={names} />
+        <CategoryChart categories={categories} isMedium={isMedium} />
+        <TopVendors names={names} isMedium={isMedium} />
       </Flex>
     </Container>
   );

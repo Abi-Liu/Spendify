@@ -5,9 +5,10 @@ import formatCurrency from "../utils/formatDollar";
 
 interface TopVendorsProps {
   names: { [key: string]: number };
+  isMedium: boolean | undefined;
 }
 
-const TopVendors = ({ names }: TopVendorsProps) => {
+const TopVendors = ({ names, isMedium }: TopVendorsProps) => {
   // converts the object into a 2D array containing the name and amount.
   // we can then sort the array and get the top 5 vendors
   const topFive = useMemo(() => {
@@ -19,16 +20,26 @@ const TopVendors = ({ names }: TopVendorsProps) => {
     return namesArray.slice(0, 5);
   }, [names]);
 
+  const containerWidth = isMedium ? "100%" : "45%";
+
   return (
     <Container
-      style={{ width: "45%", border: "1px solid #808080", height: "29rem" }}
+      style={{
+        width: containerWidth,
+        border: "1px solid #808080",
+        height: "29rem",
+      }}
     >
       <Flex
         direction="column"
         align="space-between"
         style={{ marginTop: "1rem", height: "100%" }}
       >
-        <Text size="1.5rem" ta="center" style={{ marginTop: "1.25rem" }}>
+        <Text
+          size="1.5rem"
+          ta="center"
+          style={{ marginTop: "1rem", marginBottom: ".75rem" }}
+        >
           Top 5 Vendors
         </Text>
         <Flex
