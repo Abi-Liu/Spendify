@@ -56,8 +56,11 @@ const ItemCard = ({ item }: { item: Item }) => {
     updatedTime = `Updated < 1 hour ago`;
   } else if (hours === 1) {
     updatedTime = `Updated 1 hour ago`;
-  } else {
+  } else if (hours > 1 && hours < 24) {
     updatedTime = `Updated ${hours} hours ago`;
+  } else {
+    const plural = Math.floor(hours / 24) > 1 ? "days" : "day";
+    updatedTime = `Updated ${Math.floor(hours / 24)} ${plural} ago`;
   }
 
   function handleDelete(itemId: number) {

@@ -8,7 +8,6 @@ import {
   Combobox,
   useCombobox,
   InputBase,
-  Pagination,
   Button,
 } from "@mantine/core";
 import api from "../utils/axios";
@@ -23,7 +22,7 @@ const TransactionsTable = () => {
   // used for table pagination. Default value of 1
   const [page, setPage] = useState(1);
 
-  // used to determine how many transactions to show per page. Default value of 10
+  // used to determine how many transactions to show per page. Default value of 25
   const [limit, setLimit] = useState(25);
 
   const { user } = useUserContext();
