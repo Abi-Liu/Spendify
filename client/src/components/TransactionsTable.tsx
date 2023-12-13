@@ -26,8 +26,6 @@ const TransactionsTable = (props: TransactionsTableProps) => {
   const [column, setColumn] = useState("user_id");
   const [columnValue, setColumnValue] = useState(user!.id);
 
-  console.log(column, columnValue);
-
   // used for table pagination. Default value of 1
   const [page, setPage] = useState(1);
 
