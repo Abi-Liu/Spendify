@@ -20,8 +20,13 @@ interface TransactionsTableProps {
 }
 
 const TransactionsTable = (props: TransactionsTableProps) => {
+  const { user } = useUserContext();
+
   const [transactions, setTransactions] = useState<Transactions[]>();
   const [column, setColumn] = useState("user_id");
+  const [columnValue, setColumnValue] = useState(user!.id);
+
+  console.log(column, columnValue);
 
   // used for table pagination. Default value of 1
   const [page, setPage] = useState(1);
@@ -29,25 +34,25 @@ const TransactionsTable = (props: TransactionsTableProps) => {
   // used to determine how many transactions to show per page. Default value of 25
   const [limit, setLimit] = useState(25);
 
-  const { user } = useUserContext();
-
-  // it will determine if we are querying from all accounts or specific accounts
+  // it will determine if we are querying from all accounts or specific accounts and the id of the row we want to get
   useEffect(() => {
-    if (typeof props.account === "string") {
+    if (typeof props.account === "number") {
       setColumn("account_id");
+      setColumnValue(props.account);
     } else {
       setColumn("user_id");
+      setColumnValue(user!.id);
     }
-  }, [props.account]);
+  }, [props.account, user]);
 
   // on render, retrieve the first page of transactions.
   useEffect(() => {
     async function fetchPagination() {
       try {
         const { data } = await api.get(
-          `/transactions/pagination?column=${column}&columnValue=${
-            user!.id
-          }&limit=${limit}&offset=${(page - 1) * limit}`
+          `/transactions/pagination?column=${column}&columnValue=${columnValue}&limit=${limit}&offset=${
+            (page - 1) * limit
+          }`
         );
         setTransactions(data);
       } catch (error) {
@@ -56,7 +61,7 @@ const TransactionsTable = (props: TransactionsTableProps) => {
     }
 
     fetchPagination();
-  }, [limit, page, user]);
+  }, [limit, page, user, column, columnValue]);
 
   const formatDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
