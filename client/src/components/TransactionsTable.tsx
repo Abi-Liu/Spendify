@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Transactions } from "../contexts/TransactionsContext";
 import {
-  Container,
   Group,
   Table,
   Text,
@@ -16,8 +15,13 @@ import Loading from "./Loading";
 import formatCurrency from "../utils/formatDollar";
 import { TbArrowLeft, TbArrowRight } from "react-icons/tb";
 
-const TransactionsTable = () => {
+interface TransactionsTableProps {
+  account: string | number;
+}
+
+const TransactionsTable = (props: TransactionsTableProps) => {
   const [transactions, setTransactions] = useState<Transactions[]>();
+  const [column, setColumn] = useState("user_id");
 
   // used for table pagination. Default value of 1
   const [page, setPage] = useState(1);
@@ -27,12 +31,21 @@ const TransactionsTable = () => {
 
   const { user } = useUserContext();
 
+  // it will determine if we are querying from all accounts or specific accounts
+  useEffect(() => {
+    if (typeof props.account === "string") {
+      setColumn("account_id");
+    } else {
+      setColumn("user_id");
+    }
+  }, [props.account]);
+
   // on render, retrieve the first page of transactions.
   useEffect(() => {
     async function fetchPagination() {
       try {
         const { data } = await api.get(
-          `/transactions/pagination?column=user_id&columnValue=${
+          `/transactions/pagination?column=${column}&columnValue=${
             user!.id
           }&limit=${limit}&offset=${(page - 1) * limit}`
         );
@@ -89,7 +102,7 @@ const TransactionsTable = () => {
   ));
 
   return (
-    <Container size="xl">
+    <>
       <Table.ScrollContainer minWidth={650}>
         <Table striped withTableBorder>
           <Table.Thead>
@@ -154,7 +167,7 @@ const TransactionsTable = () => {
           </Button>
         </Group>
       </Group>
-    </Container>
+    </>
   );
 };
 

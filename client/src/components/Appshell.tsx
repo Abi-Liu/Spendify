@@ -53,7 +53,7 @@ export default function Appshell({
   const navigationLinks = showNav
     ? [
         { name: "Dashboard", link: "/dashboard" },
-        { name: "Transactions", link: "/transactions" },
+        { name: "Transactions", link: `/transactions` },
         { name: "Networth", link: "/networth" },
         { name: "Budgeting", link: "/budget" },
       ]
