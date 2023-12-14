@@ -26,13 +26,13 @@ import Loading from "./Loading";
 import useAccountsContext from "../contexts/AccountsContext";
 import calculateNetworth from "../utils/calculateNetworth";
 import formatCurrency from "../utils/formatDollar";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function Appshell({
   children,
   showNav,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   showNav: boolean;
 }) {
   const [opened, { toggle }] = useDisclosure();
@@ -53,9 +53,9 @@ export default function Appshell({
   const navigationLinks = showNav
     ? [
         { name: "Dashboard", link: "/dashboard" },
-        { name: "Transactions", link: `/transactions` },
-        { name: "Networth", link: "/networth" },
-        { name: "Budgeting", link: "/budget" },
+        { name: "Transactions", link: `transactions` },
+        { name: "Networth", link: "networth" },
+        { name: "Budgeting", link: "budget" },
       ]
     : [];
 
@@ -201,7 +201,7 @@ export default function Appshell({
         </AppShell.Navbar>
       )}
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>{children ? children : <Outlet />}</AppShell.Main>
     </AppShell>
   );
 }

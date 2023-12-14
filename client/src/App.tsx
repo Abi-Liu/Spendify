@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import useUserContext from "./contexts/UserContext";
 import TransactionsPage from "./pages/TransactionsPage";
+import Appshell from "./components/Appshell";
 
 function App() {
   const { user } = useUserContext();
@@ -15,12 +16,12 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route
           path="/dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/transactions"
-          element={user ? <TransactionsPage /> : <Navigate to="/" />}
-        />
+          element={user ? <Appshell showNav={true} /> : <Navigate to="/" />}
+        >
+          {/* Nested Routes inside Dashboard */}
+          <Route index element={<Dashboard />} />
+          <Route path="transactions" element={<TransactionsPage />} />
+        </Route>
       </Routes>
     </>
   );
