@@ -109,6 +109,7 @@ export default function Appshell({
           <Group>
             {navigationLinks.map((link) => (
               <Button
+                key={link.name}
                 variant="transparent"
                 style={{
                   color: computedColorScheme === "light" ? "black" : "#CED4DA",
