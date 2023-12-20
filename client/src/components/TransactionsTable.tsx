@@ -104,6 +104,10 @@ const TransactionsTable = (props: TransactionsTableProps) => {
     </Table.Tr>
   ));
 
+  if (transactions.length === 0) {
+    return <Text size="lg">No Transactions Found</Text>;
+  }
+
   return (
     <>
       <Table.ScrollContainer minWidth={650}>
