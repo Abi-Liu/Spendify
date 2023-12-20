@@ -68,20 +68,22 @@ const Dashboard = () => {
   return (
     <Suspense fallback={<Loading />}>
       <div>
-        <SpendingAnalysis />
         {itemsArray.length > 0 ? (
-          itemsArray.map((item) => {
-            return (
-              <>
-                <p>{item.id}</p>
-                <p>
-                  {Object.keys(groupedAccounts).length > 0 &&
-                    groupedAccounts[item.id] &&
-                    groupedAccounts[item.id][0].current_balance}
-                </p>
-              </>
-            );
-          })
+          <>
+            <SpendingAnalysis />
+            {itemsArray.map((item) => {
+              return (
+                <>
+                  <p>{item.id}</p>
+                  <p>
+                    {Object.keys(groupedAccounts).length > 0 &&
+                      groupedAccounts[item.id] &&
+                      groupedAccounts[item.id][0].current_balance}
+                  </p>
+                </>
+              );
+            })}
+          </>
         ) : (
           <>
             <h1>No Banks Linked!</h1>
