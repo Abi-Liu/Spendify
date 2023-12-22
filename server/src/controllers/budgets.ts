@@ -7,7 +7,6 @@ export default {
     console.log(budgetAmount, userId);
     try {
       const data = await createBudget(budgetAmount, userId);
-      console.log(data);
       res.status(200).json(data);
     } catch (error) {
       console.error(error);
