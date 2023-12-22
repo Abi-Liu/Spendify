@@ -2,6 +2,7 @@ import Sockets from "./components/Sockets";
 import Dashboard from "./pages/Dashboard";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import BudgetPage from "./pages/BudgetPage";
 import useUserContext from "./contexts/UserContext";
 import TransactionsPage from "./pages/TransactionsPage";
 import Appshell from "./components/Appshell";
@@ -21,6 +22,7 @@ function App() {
           {/* Nested Routes inside Dashboard */}
           <Route index element={<Dashboard />} />
           <Route path="transactions" element={<TransactionsPage />} />
+          <Route path="budget" element={<BudgetPage />} />
         </Route>
       </Routes>
     </>
