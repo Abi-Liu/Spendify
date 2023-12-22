@@ -3,6 +3,7 @@ import TransactionsTable from "../components/TransactionsTable";
 import { Button, Container, Group, Text, Title } from "@mantine/core";
 import useAccountsContext from "../contexts/AccountsContext";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
+import NoAccounts from "../components/NoAccounts";
 
 const TransactionsPage = () => {
   const [selectedAccount, setSelectedAccount] = useState<number | string>(
@@ -23,11 +24,11 @@ const TransactionsPage = () => {
 
   return (
     <Container size="xl">
-      <Title order={4} pt={10}>
-        Transactions
-      </Title>
       {Object.keys(accounts).length > 0 ? (
         <>
+          <Title order={4} pt={10}>
+            Transactions
+          </Title>
           <Text size="lg" pt={5} pb={subheading ? "" : "2.5rem"} c="#6B6C71">
             {title}
           </Text>
@@ -63,11 +64,7 @@ const TransactionsPage = () => {
           <TransactionsTable account={selectedAccount} />
         </>
       ) : (
-        <Container>
-          <Text>
-            No Accounts Linked <br /> Please connect a bank to get started
-          </Text>
-        </Container>
+        <NoAccounts />
       )}
     </Container>
   );

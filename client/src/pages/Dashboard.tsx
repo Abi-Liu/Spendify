@@ -11,6 +11,7 @@ import api from "../utils/axios";
 import PlaidLink from "../components/PlaidLink";
 import Loading from "../components/Loading";
 import SpendingAnalysis from "../components/SpendingAnalysis";
+import NoAccounts from "../components/NoAccounts";
 
 const Dashboard = () => {
   const [groupedAccounts, setGroupedAccounts] = useState<{
@@ -85,10 +86,7 @@ const Dashboard = () => {
             })}
           </>
         ) : (
-          <>
-            <h1>No Banks Linked!</h1>
-            <h3>Link a bank to get started</h3>
-          </>
+          <NoAccounts />
         )}
       </div>
     </Suspense>
