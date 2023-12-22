@@ -4,9 +4,14 @@ import { createBudget, getBudgetByUser } from "../database/budgets";
 export default {
   createBudget: async (req: Request, res: Response) => {
     const { budgetAmount, userId } = req.body;
-    console.log(budgetAmount, userId);
+
     try {
-      const data = await createBudget(budgetAmount, userId);
+      // create the budget
+      await createBudget(budgetAmount, userId);
+
+      // then we retrieve it with additional information from the get sql query
+      const date = new Date().toISOString().split("T")[0];
+      const data = await getBudgetByUser(userId, date);
       res.status(200).json(data);
     } catch (error) {
       console.error(error);
@@ -17,7 +22,10 @@ export default {
   getBudget: async (req: Request, res: Response) => {
     const { userId } = req.params;
     try {
-      const budget = await getBudgetByUser(Number(userId));
+      // hard code the date for now, maybe in the future i can implement past months budgets
+      const date = new Date().toISOString().split("T")[0];
+      const budget = await getBudgetByUser(Number(userId), date);
+      console.log(budget);
       res.status(200).json(budget);
     } catch (error) {
       console.error(error);

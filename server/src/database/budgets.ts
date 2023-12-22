@@ -14,11 +14,28 @@ export async function createBudget(amount: number, userId: number) {
   return rows[0];
 }
 
-export async function getBudgetByUser(userId: number) {
-  const query = "SELECT * FROM budgets WHERE userId = $1";
+export async function getBudgetByUser(userId: number, date: string) {
+  const query = `
+  SELECT
+    budgets.id,
+    budgets.budget_amount,
+    budgets.user_id,
+    COALESCE(SUM(t.amount), 0) AS total_spending
+  FROM
+    budgets
+  LEFT JOIN
+    transactions t ON budgets.user_id = t.user_id
+    AND DATE_TRUNC('MONTH', t.date) = DATE_TRUNC('MONTH', CAST('${date}' AS DATE))
+    AND DATE_TRUNC('YEAR', t.date) = DATE_TRUNC('YEAR', CAST('${date}' AS DATE))
+  WHERE
+    budgets.user_id = $1
+  GROUP BY
+    budgets.id,
+    budgets.budget_amount,
+    budgets.user_id;
+  `;
   const values = [userId];
   const { rows } = await connection.query(query, values);
 
-  // for right now users will only have 1 monthly budget entry
-  return rows[0];
+  return rows;
 }
