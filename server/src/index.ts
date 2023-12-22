@@ -13,6 +13,7 @@ import itemsRoutes from "./routes/items";
 import accountsRoutes from "./routes/accounts";
 import institutionsRoutes from "./routes/institutions";
 import transactionsRoutes from "./routes/transactions";
+import budgetRoutes from "./routes/budgets";
 
 const app = express();
 app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
@@ -57,6 +58,7 @@ app.use("/items", itemsRoutes);
 app.use("/accounts", accountsRoutes);
 app.use("/institutions", institutionsRoutes);
 app.use("/transactions", transactionsRoutes);
+app.use("/budgets", budgetRoutes);
 
 io.on("connection", (socket) => {
   console.log(`Socket connected`);

@@ -10,7 +10,7 @@ const TransactionsPage = () => {
   );
   const { accounts } = useAccountsContext();
   const { institutions } = useInstitutionsContext();
-  console.log(accounts);
+
   let title;
   let subheading;
   if (selectedAccount == "all") {

@@ -103,12 +103,11 @@ FOR EACH ROW
 EXECUTE FUNCTION trigger_set_timestamp();
 
 CREATE TABLE budgets (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    month_year DATE NOT NULL,
-    budget_amount NUMERIC(10, 2) NOT NULL,
-    created_at timestamptz default now(),
-    updated_at timestamptz default now()
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  budget_amount NUMERIC(10, 2) NOT NULL,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
 
 CREATE TRIGGER trigger_update_updated_at_transactions
