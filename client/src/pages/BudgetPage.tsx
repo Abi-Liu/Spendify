@@ -2,10 +2,11 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useBudgetsContext from "../contexts/BudgetsContext";
 import useItemsContext from "../contexts/ItemsContext";
 import NoAccounts from "../components/NoAccounts";
-import { Button, Container, Text, Modal, Input } from "@mantine/core";
+import { Button, Container, Text, Modal, Input, Box } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import useUserContext from "../contexts/UserContext";
 import { notifications } from "@mantine/notifications";
+import BudgetChart from "../components/BudgetChart";
 
 const CustomForm = () => {
   const [amount, setAmount] = useState<number | "">("");
@@ -25,6 +26,7 @@ const CustomForm = () => {
     e.preventDefault();
     if (user && typeof amount === "number") {
       createBudget(user.id, amount);
+      // TODO: have better error handling, do not show success message if an error occurs
       // show success message
       notifications.show({
         message: `Budget successfully created`,
@@ -65,8 +67,6 @@ const BudgetPage = () => {
   const { itemsArray } = useItemsContext();
   const { user } = useUserContext();
 
-  console.log(budgets);
-
   useEffect(() => {
     if (user) {
       getBudgetByUser(user.id);
@@ -95,9 +95,13 @@ const BudgetPage = () => {
     );
   }
 
-  console.log(budgets);
-
-  return <div>BudgetPage</div>;
+  return (
+    <Container style={{ height: "100vh" }}>
+      <Box style={{ height: "350px" }}>
+        <BudgetChart />
+      </Box>
+    </Container>
+  );
 };
 
 export default BudgetPage;

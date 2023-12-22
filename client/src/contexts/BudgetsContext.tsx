@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import api from "../utils/axios";
 
-interface Budget {
+export interface Budget {
   id: number;
   user_id: number;
   budget_amount: number;
