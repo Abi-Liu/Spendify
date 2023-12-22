@@ -36,6 +36,9 @@ export async function getBudgetByUser(userId: number, date: string) {
   `;
   const values = [userId];
   const { rows } = await connection.query(query, values);
-
-  return rows;
+  if (rows.length === 0) {
+    return [];
+  } else {
+    return rows[0];
+  }
 }

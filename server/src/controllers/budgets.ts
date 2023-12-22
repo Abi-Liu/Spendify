@@ -25,7 +25,6 @@ export default {
       // hard code the date for now, maybe in the future i can implement past months budgets
       const date = new Date().toISOString().split("T")[0];
       const budget = await getBudgetByUser(Number(userId), date);
-      console.log(budget);
       res.status(200).json(budget);
     } catch (error) {
       console.error(error);
