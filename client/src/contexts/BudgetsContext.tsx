@@ -11,8 +11,7 @@ interface Budget {
   id: number;
   user_id: number;
   budget_amount: number;
-  created_at: string;
-  updated_at: string;
+  total_spending: number;
 }
 
 interface InitialState {
@@ -71,7 +70,10 @@ export const BudgetsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getBudgetByUser = useCallback(async (userId: number) => {
     const { data } = await api.get(`/budgets/${userId}`);
-    dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    // if there is no budget yet for the user we do not want to update state.
+    if (data.length !== 0) {
+      dispatch({ type: "SUCCESSFUL_GET", payload: data });
+    }
   }, []);
 
   const createBudget = useCallback(async (userId: number, amount: number) => {

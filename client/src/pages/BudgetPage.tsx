@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useBudgetsContext from "../contexts/BudgetsContext";
 import useItemsContext from "../contexts/ItemsContext";
 import NoAccounts from "../components/NoAccounts";
@@ -22,7 +22,6 @@ const CustomForm = () => {
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    console.log("submitting");
     e.preventDefault();
     if (user && typeof amount === "number") {
       createBudget(user.id, amount);
@@ -62,8 +61,17 @@ const CustomForm = () => {
 
 const BudgetPage = () => {
   const [opened, { open, close }] = useDisclosure(false);
-  const { budgets } = useBudgetsContext();
+  const { budgets, getBudgetByUser } = useBudgetsContext();
   const { itemsArray } = useItemsContext();
+  const { user } = useUserContext();
+
+  console.log(budgets);
+
+  useEffect(() => {
+    if (user) {
+      getBudgetByUser(user.id);
+    }
+  }, [user, getBudgetByUser]);
 
   if (itemsArray.length === 0) {
     return <NoAccounts />;
@@ -75,15 +83,20 @@ const BudgetPage = () => {
           No monthly budget
         </Text>
         <Text size="1rem">
-          Create a monthly budget to keep your expenses in check!
+          Create a monthly budget to keep your track of your spending.
         </Text>
         <Modal opened={opened} onClose={close} title="Monthly Budget">
           <CustomForm />
         </Modal>
-        <Button onClick={open}>Create Budget</Button>
+        <Button my="1rem" onClick={open}>
+          Create Budget
+        </Button>
       </Container>
     );
   }
+
+  console.log(budgets);
+
   return <div>BudgetPage</div>;
 };
 
