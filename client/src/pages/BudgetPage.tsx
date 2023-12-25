@@ -77,7 +77,8 @@ const BudgetPage = () => {
   const { user } = useUserContext();
   const { transactions } = useTransactionsContext();
 
-  const spendingPerDay = useMemo(() => {
+  // used to display graph of daily spending in the current month
+  const { spendingPerDay, filteredTransactions } = useMemo(() => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
@@ -110,10 +111,8 @@ const BudgetPage = () => {
       {}
     );
 
-    return spendingPerDay;
+    return { spendingPerDay, filteredTransactions };
   }, [transactions]);
-
-  console.log(spendingPerDay);
 
   useEffect(() => {
     if (user) {
