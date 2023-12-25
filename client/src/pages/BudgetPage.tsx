@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import useBudgetsContext from "../contexts/BudgetsContext";
 import useItemsContext from "../contexts/ItemsContext";
 import NoAccounts from "../components/NoAccounts";
@@ -7,6 +13,9 @@ import { useDisclosure } from "@mantine/hooks";
 import useUserContext from "../contexts/UserContext";
 import { notifications } from "@mantine/notifications";
 import BudgetChart from "../components/BudgetChart";
+import useTransactionsContext, {
+  Transactions,
+} from "../contexts/TransactionsContext";
 
 const CustomForm = () => {
   const [amount, setAmount] = useState<number | "">("");
@@ -66,6 +75,45 @@ const BudgetPage = () => {
   const { budgets, getBudgetByUser } = useBudgetsContext();
   const { itemsArray } = useItemsContext();
   const { user } = useUserContext();
+  const { transactions } = useTransactionsContext();
+
+  const spendingPerDay = useMemo(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+
+    const filteredTransactions = Object.values(transactions).filter(
+      (transaction) => {
+        const transactionDate = new Date(transaction.date);
+        const transactionYear = transactionDate.getFullYear();
+        const transactionMonth = transactionDate.getMonth() + 1;
+
+        return (
+          transactionYear === currentYear && transactionMonth === currentMonth
+        );
+      }
+    );
+    // get the spending per day for the current month
+    const spendingPerDay = filteredTransactions.reduce(
+      (acc: { [day: number]: number }, transaction: Transactions) => {
+        const transactionDate = new Date(transaction.date);
+        const day = transactionDate.getDate();
+
+        if (!acc[day]) {
+          acc[day] = 0;
+        }
+
+        acc[day] += Number(transaction.amount);
+
+        return acc;
+      },
+      {}
+    );
+
+    return spendingPerDay;
+  }, [transactions]);
+
+  console.log(spendingPerDay);
 
   useEffect(() => {
     if (user) {
