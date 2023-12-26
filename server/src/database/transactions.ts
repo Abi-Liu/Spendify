@@ -107,7 +107,7 @@ export async function getItemTransactionsFromDates(
   end: string,
   itemId: number
 ) {
-  const query = `SELECT * FROM Transactions WHERE item_id = $1 AND date BETWEEN $2 AND $3`;
+  const query = `SELECT * FROM Transactions WHERE item_id = $1 AND date BETWEEN $2 AND $3 ORDER BY date DESC`;
   const values = [itemId, start, end];
   const { rows } = await connection.query(query, values);
   return rows;
@@ -118,7 +118,7 @@ export async function getAccountTransactionsFromDates(
   end: string,
   accountId: number
 ) {
-  const query = `SELECT * FROM Transactions WHERE account_id = $1 AND date BETWEEN $2 AND $3`;
+  const query = `SELECT * FROM Transactions WHERE account_id = $1 AND date BETWEEN $2 AND $3 ORDER BY date DESC`;
   const values = [accountId, start, end];
   const { rows } = await connection.query(query, values);
   return rows;
@@ -130,7 +130,7 @@ export async function getUserTransactionsFromDates(
   end: string,
   userId: number
 ) {
-  const query = `SELECT * FROM Transactions WHERE user_id = $1 AND date BETWEEN $2 AND $3`;
+  const query = `SELECT * FROM Transactions WHERE user_id = $1 AND date BETWEEN $2 AND $3 ORDER BY date DESC`;
   const values = [userId, start, end];
   const { rows } = await connection.query(query, values);
   return rows;
