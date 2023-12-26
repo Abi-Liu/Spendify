@@ -32,11 +32,6 @@ import DailySpendingChart from "../components/DailySpendingChart";
 import formatCurrency from "../utils/formatDollar";
 
 const CustomForm = () => {
-  // change document title
-  useEffect(() => {
-    document.title = "Budgeting | BudgetBuddy";
-  }, []);
-
   const [amount, setAmount] = useState<number | "">("");
 
   const { createBudget } = useBudgetsContext();
@@ -90,6 +85,11 @@ const CustomForm = () => {
 };
 
 const BudgetPage = () => {
+  // change document title
+  useEffect(() => {
+    document.title = "Budgeting | BudgetBuddy";
+  }, []);
+
   const [opened, { open, close }] = useDisclosure(false);
   const { budgets, getBudgetByUser } = useBudgetsContext();
   const { itemsArray } = useItemsContext();
