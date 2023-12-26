@@ -1,3 +1,4 @@
+import { FormEvent, useState } from "react";
 import {
   Avatar,
   Menu,
@@ -8,34 +9,31 @@ import {
   Button,
   Text,
   Flex,
-  Input,
+  TextInput,
   NumberInput,
 } from "@mantine/core";
 import useUserContext from "../contexts/UserContext";
 import { TbBuildingBank, TbLogout, TbTrash } from "react-icons/tb";
 import { useDisclosure } from "@mantine/hooks";
-import { ChangeEvent, useState } from "react";
 
 const AssetsForm = () => {
   const [value, setValue] = useState<number | string>("");
   const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target;
-    setName(value);
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
   }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <Flex direction="column" gap={16}>
-        <Input.Wrapper label="Name">
-          <Input
-            type="text"
-            onChange={handleChange}
-            value={name}
-            placeholder="e.g Car"
-          />
-        </Input.Wrapper>
+        <TextInput
+          label="Name"
+          placeholder="e.g Car"
+          value={name}
+          onChange={(event) => setName(event.currentTarget.value)}
+        />
         <NumberInput
           label="Value"
           placeholder="eg 5,000"
@@ -46,6 +44,13 @@ const AssetsForm = () => {
           hideControls
           value={value}
           onChange={setValue}
+        />
+        <TextInput
+          label="Name"
+          description="Optional"
+          placeholder="e.g 2004 Toyota Camry"
+          value={description}
+          onChange={(event) => setDescription(event.currentTarget.value)}
         />
         <Button type="submit">Add asset</Button>
       </Flex>
