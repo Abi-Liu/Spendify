@@ -8,10 +8,55 @@ import {
   Button,
   Text,
   Flex,
+  Input,
 } from "@mantine/core";
 import useUserContext from "../contexts/UserContext";
 import { TbBuildingBank, TbLogout, TbTrash } from "react-icons/tb";
 import { useDisclosure } from "@mantine/hooks";
+import { ChangeEvent, useState } from "react";
+
+const AssetsForm = () => {
+  const [amount, setAmount] = useState<number | "">("");
+  const [name, setName] = useState<string>("");
+
+  function handleNumericChange(e: ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
+
+    if (/^\d*$/.test(value) || value === "") {
+      setAmount(value === "" ? "" : parseInt(value)); // Convert valid input to a number
+    }
+  }
+
+  function handleAlphaChange(e: ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
+    setName(value);
+  }
+
+  return (
+    <form>
+      <Flex direction="column" gap={16}>
+        <Input.Wrapper label="Name">
+          <Input
+            type="text"
+            onChange={handleAlphaChange}
+            value={name}
+            placeholder="e.g Car"
+          />
+        </Input.Wrapper>
+        <Input.Wrapper label="Value">
+          <Input
+            type="text"
+            inputMode="numeric"
+            value={amount}
+            onChange={handleNumericChange}
+            placeholder="e.g 100"
+          />
+        </Input.Wrapper>
+        <Button type="submit">Add asset</Button>
+      </Flex>
+    </form>
+  );
+};
 
 const UserMenu = () => {
   const { user, logout, deleteAccount } = useUserContext();
@@ -22,12 +67,9 @@ const UserMenu = () => {
 
   return (
     <>
-      <Modal
-        opened={assetOpened}
-        onClose={assetClose}
-        title="Assets"
-        centered
-      ></Modal>
+      <Modal opened={assetOpened} onClose={assetClose} title="Assets" centered>
+        <AssetsForm />
+      </Modal>
 
       <Modal
         opened={deleteOpened}

@@ -29,11 +29,11 @@ const TransactionsPage = () => {
           <Title order={2} pt={10}>
             Transactions
           </Title>
-          <Text size="lg" pt={5} pb={subheading ? "" : "2.5rem"} c="#6B6C71">
+          <Text size="lg" pt={5} pb={subheading ? "" : "2.5rem"} c="dimmed">
             {title}
           </Text>
           {subheading && (
-            <Text size="md" pt={5} pb="2.5rem" c="#6B6C71">
+            <Text size="md" pt={5} pb="2.5rem" c="dimmed">
               {subheading}
             </Text>
           )}
