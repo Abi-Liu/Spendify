@@ -9,6 +9,7 @@ import {
   Text,
   Flex,
   Input,
+  NumberInput,
 } from "@mantine/core";
 import useUserContext from "../contexts/UserContext";
 import { TbBuildingBank, TbLogout, TbTrash } from "react-icons/tb";
@@ -16,18 +17,10 @@ import { useDisclosure } from "@mantine/hooks";
 import { ChangeEvent, useState } from "react";
 
 const AssetsForm = () => {
-  const [amount, setAmount] = useState<number | "">("");
+  const [value, setValue] = useState<number | string>("");
   const [name, setName] = useState<string>("");
 
-  function handleNumericChange(e: ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target;
-
-    if (/^\d*$/.test(value) || value === "") {
-      setAmount(value === "" ? "" : parseInt(value)); // Convert valid input to a number
-    }
-  }
-
-  function handleAlphaChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
     setName(value);
   }
@@ -38,20 +31,22 @@ const AssetsForm = () => {
         <Input.Wrapper label="Name">
           <Input
             type="text"
-            onChange={handleAlphaChange}
+            onChange={handleChange}
             value={name}
             placeholder="e.g Car"
           />
         </Input.Wrapper>
-        <Input.Wrapper label="Value">
-          <Input
-            type="text"
-            inputMode="numeric"
-            value={amount}
-            onChange={handleNumericChange}
-            placeholder="e.g 100"
-          />
-        </Input.Wrapper>
+        <NumberInput
+          label="Value"
+          placeholder="eg 5,000"
+          inputMode="numeric"
+          allowNegative={false}
+          decimalScale={2}
+          thousandSeparator=","
+          hideControls
+          value={value}
+          onChange={setValue}
+        />
         <Button type="submit">Add asset</Button>
       </Flex>
     </form>

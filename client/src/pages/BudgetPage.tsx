@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import useBudgetsContext from "../contexts/BudgetsContext";
 import useItemsContext from "../contexts/ItemsContext";
 import NoAccounts from "../components/NoAccounts";
@@ -14,12 +7,12 @@ import {
   Container,
   Text,
   Modal,
-  Input,
   Table,
   Flex,
   Divider,
   em,
   Title,
+  NumberInput,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import useUserContext from "../contexts/UserContext";
@@ -32,18 +25,10 @@ import DailySpendingChart from "../components/DailySpendingChart";
 import formatCurrency from "../utils/formatDollar";
 
 const CustomForm = () => {
-  const [amount, setAmount] = useState<number | "">("");
+  const [amount, setAmount] = useState<number | string>("");
 
   const { createBudget } = useBudgetsContext();
   const { user } = useUserContext();
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target;
-
-    if (/^\d*$/.test(value) || value === "") {
-      setAmount(value === "" ? "" : parseInt(value)); // Convert valid input to a number
-    }
-  }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -68,15 +53,17 @@ const CustomForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input.Wrapper label="Amount">
-        <Input
-          type="text"
-          inputMode="numeric"
-          value={amount}
-          onChange={handleChange}
-          placeholder="e.g 100"
-        />
-      </Input.Wrapper>
+      <NumberInput
+        label="Amount"
+        placeholder="eg 100"
+        inputMode="numeric"
+        allowNegative={false}
+        decimalScale={2}
+        thousandSeparator=","
+        hideControls
+        value={amount}
+        onChange={setAmount}
+      />
       <Button type="submit" my="1rem">
         Create
       </Button>
