@@ -26,7 +26,7 @@ const TransactionsPage = () => {
     <Container size="xl">
       {Object.keys(accounts).length > 0 ? (
         <>
-          <Title order={4} pt={10}>
+          <Title order={2} pt={10}>
             Transactions
           </Title>
           <Text size="lg" pt={5} pb={subheading ? "" : "2.5rem"} c="#6B6C71">

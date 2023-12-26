@@ -8,7 +8,6 @@ import {
 } from "recharts";
 import useBudgetsContext, { Budget } from "../contexts/BudgetsContext";
 import formatCurrency from "../utils/formatDollar";
-// import { TbPencil } from "react-icons/tb";
 
 const BudgetChart = () => {
   const { budgets } = useBudgetsContext();

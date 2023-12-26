@@ -19,6 +19,7 @@ import {
   Flex,
   Divider,
   em,
+  Title,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import useUserContext from "../contexts/UserContext";
@@ -183,6 +184,7 @@ const BudgetPage = () => {
 
   return (
     <Container size="xl" style={{ height: "100vh", marginTop: "1rem" }}>
+      <Title order={2}>Budgeting</Title>
       <Flex
         direction={breakpoint ? "column" : "row"}
         justify="space-between"

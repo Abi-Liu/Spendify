@@ -113,6 +113,7 @@ export default function Appshell({
                 variant="transparent"
                 style={{
                   color: computedColorScheme === "light" ? "black" : "#CED4DA",
+                  fontWeight: "normal",
                 }}
                 onClick={() => navigate(link.link)}
                 visibleFrom="sm"
