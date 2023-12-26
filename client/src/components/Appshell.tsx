@@ -15,6 +15,7 @@ import {
   Text,
   Title,
   Group,
+  Image,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon, TbLogout, TbPlus } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
@@ -27,6 +28,7 @@ import useAccountsContext from "../contexts/AccountsContext";
 import calculateNetworth from "../utils/calculateNetworth";
 import formatCurrency from "../utils/formatDollar";
 import { Outlet, useNavigate } from "react-router-dom";
+import FullLogo from "../assets/FullLogo.png";
 
 export default function Appshell({
   children,
@@ -90,22 +92,24 @@ export default function Appshell({
   }, [accounts]);
 
   return (
-    <AppShell header={{ height: 60 }} navbar={navbarProps} padding="md">
+    <AppShell header={{ height: 70 }} navbar={navbarProps} padding="md">
       <AppShell.Header>
         <Flex
           justify="space-between"
           align="center"
           style={{ padding: ".625rem 1.25rem" }}
         >
-          {showNav && (
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              hiddenFrom="sm"
-              size="sm"
-            />
-          )}
-          <div>Logo</div>
+          <Group>
+            {showNav && (
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                hiddenFrom="sm"
+                size="sm"
+              />
+            )}
+            <Image src={FullLogo} fit="contain" h={52} w={140} />
+          </Group>
           <Group>
             {navigationLinks.map((link) => (
               <Button

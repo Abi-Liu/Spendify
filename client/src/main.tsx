@@ -15,7 +15,24 @@ import { LinkProvider } from "./contexts/LinkTokenContext.tsx";
 import { Notifications } from "@mantine/notifications";
 import { BudgetsProvider } from "./contexts/BudgetsContext.tsx";
 
-const theme = createTheme({});
+//
+const theme = createTheme({
+  primaryColor: "custom",
+  colors: {
+    custom: [
+      "#18A8A8",
+      "#1ce3e5",
+      "#108a8b",
+      "#18A8A8",
+      "#18A8A8",
+      "#18A8A8",
+      "#18A8A8",
+      "#18A8A8",
+      "#18A8A8",
+      "#18A8A8",
+    ],
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
