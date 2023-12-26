@@ -32,16 +32,12 @@ const SpendingAnalysis = () => {
     for (const transaction of transactionsArray) {
       const amount = Number(transaction.amount);
       // if the category already exists, add the total, if not create a new key in the object and set the value to the amount.
-      if (categories[transaction.personal_finance_category]) {
-        categories[transaction.personal_finance_category] += amount;
-      } else {
-        categories[transaction.personal_finance_category] = amount;
-      }
+      // we do not want to include negatives into this calculation.
+      if (amount > 0) {
+        categories[transaction.personal_finance_category] =
+          categories[transaction.personal_finance_category] + amount || amount;
 
-      if (names[transaction.name]) {
-        names[transaction.name] += amount;
-      } else {
-        names[transaction.name] = amount;
+        names[transaction.name] = names[transaction.name] + amount || amount;
       }
     }
     return { categories, names };
