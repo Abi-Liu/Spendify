@@ -1,5 +1,4 @@
 import { Container, Flex, Text } from "@mantine/core";
-import React from "react";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 interface PieChartProps {
@@ -15,7 +14,16 @@ const CategoryChart = ({ categories, isMedium }: PieChartProps) => {
     data.push({ name: labels[i], value: values[i] });
   }
 
-  const colors = ["#8ED8B7", "#69B8F4", "#C899F4", "#6B8CEF", "#B5BEC7"];
+  const colors = [
+    "#8ED8B7",
+    "#69B8F4",
+    "#C899F4",
+    "#6B8CEF",
+    "#B5BEC7",
+    "#F4D06F",
+    "#F48A6B",
+    "#B5E36D",
+  ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderLabel = (value: any) => {
