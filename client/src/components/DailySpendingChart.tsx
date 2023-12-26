@@ -66,8 +66,8 @@ const DailySpendingChart = ({ spendingPerDay }: PropsInterface) => {
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
-        <ReferenceLine y={0} stroke="#000" />
-        <Bar dataKey="amount" fill="#8884d8" />
+        <ReferenceLine y={0} stroke="#808080" />
+        <Bar dataKey="amount" fill="#EC6F27" />
       </BarChart>
     </ResponsiveContainer>
   );

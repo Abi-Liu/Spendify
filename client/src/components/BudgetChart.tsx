@@ -40,7 +40,7 @@ const BudgetChart = () => {
     { name: "Remaining", value: remainingPercentage },
   ];
 
-  const COLORS = ["#FF6347", "#3CB371"];
+  const COLORS = ["#EC6F27", "#3CB371"];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderLabel = (value: any) => {
