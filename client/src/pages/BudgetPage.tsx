@@ -1,6 +1,7 @@
-import React, {
+import {
   ChangeEvent,
   FormEvent,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -8,8 +9,18 @@ import React, {
 import useBudgetsContext from "../contexts/BudgetsContext";
 import useItemsContext from "../contexts/ItemsContext";
 import NoAccounts from "../components/NoAccounts";
-import { Button, Container, Text, Modal, Input, Box } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import {
+  Button,
+  Container,
+  Text,
+  Modal,
+  Input,
+  Table,
+  Flex,
+  Divider,
+  em,
+} from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import useUserContext from "../contexts/UserContext";
 import { notifications } from "@mantine/notifications";
 import BudgetChart from "../components/BudgetChart";
@@ -17,6 +28,7 @@ import useTransactionsContext, {
   Transactions,
 } from "../contexts/TransactionsContext";
 import DailySpendingChart from "../components/DailySpendingChart";
+import formatCurrency from "../utils/formatDollar";
 
 const CustomForm = () => {
   const [amount, setAmount] = useState<number | "">("");
@@ -115,7 +127,16 @@ const BudgetPage = () => {
     return { spendingPerDay, filteredTransactions };
   }, [transactions]);
 
-  console.log(spendingPerDay);
+  const formatDate = useCallback((dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }, []);
+
+  const breakpoint = useMediaQuery(`(max-width: ${em(1050)})`);
 
   useEffect(() => {
     if (user) {
@@ -145,12 +166,48 @@ const BudgetPage = () => {
     );
   }
 
+  const rows =
+    filteredTransactions.length > 0 ? (
+      filteredTransactions.map((transaction) => (
+        <Table.Tr key={transaction.id}>
+          <Table.Td>{formatDate(transaction.date)}</Table.Td>
+          <Table.Td>{transaction.name}</Table.Td>
+          <Table.Td>{transaction.personal_finance_category}</Table.Td>
+          <Table.Td>{transaction.payment_channel}</Table.Td>
+          <Table.Td>{formatCurrency(Number(transaction.amount))}</Table.Td>
+        </Table.Tr>
+      ))
+    ) : (
+      <Text>No transactions found for this month.</Text>
+    );
+
   return (
-    <Container style={{ height: "100vh" }}>
-      <Box style={{ height: "350px" }}>
+    <Container size="xl" style={{ height: "100vh", marginTop: "1rem" }}>
+      <Flex
+        direction={breakpoint ? "column" : "row"}
+        justify="space-between"
+        style={{ height: breakpoint ? "700px" : "350px" }}
+      >
         <BudgetChart />
         <DailySpendingChart spendingPerDay={spendingPerDay} />
-      </Box>
+      </Flex>
+
+      <Divider mt={"1.25rem"} mb={"2rem"} />
+
+      <Table.ScrollContainer minWidth={650}>
+        <Table striped withTableBorder>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Date</Table.Th>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>Category</Table.Th>
+              <Table.Th>Payment Channel</Table.Th>
+              <Table.Th>Amount</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
     </Container>
   );
 };
