@@ -9,7 +9,6 @@ import {
   useComputedColorScheme,
   ScrollArea,
   Divider,
-  Tooltip,
   ActionIcon,
   Stack,
   Text,
@@ -17,7 +16,7 @@ import {
   Group,
   Image,
 } from "@mantine/core";
-import { TbSunHigh, TbMoon, TbLogout, TbPlus } from "react-icons/tb";
+import { TbSunHigh, TbMoon, TbPlus } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
 import ItemAccordion from "./ItemAccordion";
 import useLinkContext from "../contexts/LinkTokenContext";
@@ -29,6 +28,7 @@ import calculateNetworth from "../utils/calculateNetworth";
 import formatCurrency from "../utils/formatDollar";
 import { Outlet, useNavigate } from "react-router-dom";
 import FullLogo from "../assets/FullLogo.png";
+import UserMenu from "./UserMenu";
 
 export default function Appshell({
   children,
@@ -44,7 +44,7 @@ export default function Appshell({
   const { itemsArray, loading: itemsLoading } = useItemsContext();
   const { accounts } = useAccountsContext();
   const { generateUserLinkToken, linkTokens } = useLinkContext();
-  const { user, logout } = useUserContext();
+  const { user } = useUserContext();
 
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
@@ -195,11 +195,7 @@ export default function Appshell({
               <AppShell.Section>
                 <Flex justify="space-between" align="center">
                   <Button onClick={initiateLink}>Link Bank!</Button>
-                  <Tooltip label="Logout" onClick={logout}>
-                    <ActionIcon variant="light" aria-label="Logout">
-                      <TbLogout size={24} />
-                    </ActionIcon>
-                  </Tooltip>
+                  <UserMenu />
                 </Flex>
               </AppShell.Section>
             </>
