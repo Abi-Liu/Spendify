@@ -21,3 +21,9 @@ export async function createUser(
   const { rows } = await connection.query(insert, values);
   return rows[0];
 }
+
+export async function deleteUser(id: number) {
+  const query = "DELETE FROM users WHERE id = $1";
+  const values = [id];
+  await connection.query(query, values);
+}

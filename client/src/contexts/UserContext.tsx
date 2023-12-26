@@ -43,14 +43,12 @@ interface UserContextShape extends initialStateType {
   dispatch: Dispatch<UserActions>;
   login: () => void;
   logout: () => void;
+  deleteAccount: (id: number) => void;
 }
 
-const UserContext = createContext<UserContextShape>({
-  user: null,
-  dispatch: () => {},
-  login: () => {},
-  logout: () => {},
-});
+const UserContext = createContext<UserContextShape>(
+  initialState as UserContextShape
+);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -72,8 +70,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "LOGOUT" });
   }, []);
 
+  const deleteAccount = useCallback(async (id: number) => {
+    await api.post("/auth/deleteUser", { id });
+    dispatch({ type: "LOGOUT" });
+  }, []);
+
   return (
-    <UserContext.Provider value={{ user, login, logout, dispatch }}>
+    <UserContext.Provider
+      value={{ user, login, logout, dispatch, deleteAccount }}
+    >
       {children}
     </UserContext.Provider>
   );

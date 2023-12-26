@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { deleteUser } from "../database/users";
 
 export default {
   getLoginSuccess: async (req: Request, res: Response) => {
@@ -22,5 +23,15 @@ export default {
       const CLIENT_URL = process.env.CLIENT_URL;
       return res.redirect(CLIENT_URL as string);
     });
+  },
+
+  deleteUser: async (req: Request, res: Response) => {
+    try {
+      await deleteUser;
+      res.status(200).json({ message: "User succesfully deleted" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to delete account" });
+    }
   },
 };
