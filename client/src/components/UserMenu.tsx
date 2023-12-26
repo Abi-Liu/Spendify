@@ -4,8 +4,9 @@ import { TbBuildingBank, TbLogout, TbTrash } from "react-icons/tb";
 import { useDisclosure } from "@mantine/hooks";
 
 const UserMenu = () => {
-  const { user, logout } = useUserContext();
+  const { user, logout, deleteAccount } = useUserContext();
   const [opened, { open, close }] = useDisclosure(false);
+  console.log(user!.id);
 
   return (
     <>
@@ -32,7 +33,11 @@ const UserMenu = () => {
           <Menu.Divider />
 
           <Menu.Label>Danger zone</Menu.Label>
-          <Menu.Item color="red" leftSection={<TbTrash />}>
+          <Menu.Item
+            color="red"
+            leftSection={<TbTrash />}
+            onClick={() => deleteAccount(user!.id)}
+          >
             Delete my account
           </Menu.Item>
         </Menu.Dropdown>

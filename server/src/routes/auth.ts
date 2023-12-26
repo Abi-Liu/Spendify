@@ -8,7 +8,7 @@ const { CLIENT_URL } = process.env;
 router.get("/login/success", authController.getLoginSuccess);
 router.get("/login/failed", authController.getLoginFailed);
 router.get("/logout", authController.logout);
-router.get("/deleteUser", authController.deleteUser);
+router.delete("/deleteUser/:id", authController.deleteUser);
 router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 router.get(
   "/google/callback",
