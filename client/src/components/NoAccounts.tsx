@@ -3,7 +3,7 @@ import { Container, Flex, Text } from "@mantine/core";
 // component will be shown whenever a user has not yet linked an account
 const NoAccounts = () => {
   return (
-    <Container>
+    <Container mt={15}>
       <Flex
         direction="column"
         style={{ width: "100%", height: "100vh" }}
