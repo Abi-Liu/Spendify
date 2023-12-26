@@ -62,7 +62,7 @@ const CategoryChart = ({ categories, isMedium }: PieChartProps) => {
               outerRadius={90}
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {data.map((_, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={colors[index % colors.length]}

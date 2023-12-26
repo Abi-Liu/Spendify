@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import useItemsContext from "../contexts/ItemsContext";
 import useUserContext from "../contexts/UserContext";
@@ -6,12 +6,16 @@ import useAccountsContext, { Account } from "../contexts/AccountsContext";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import { TransactionsGroup } from "../contexts/TransactionsContext";
 import formatLastThreeMonths from "../utils/formatDates";
-import PlaidLink from "../components/PlaidLink";
 import Loading from "../components/Loading";
 import SpendingAnalysis from "../components/SpendingAnalysis";
 import NoAccounts from "../components/NoAccounts";
 
 const Dashboard = () => {
+  // change document title
+  useEffect(() => {
+    document.title = "Dashboard | BudgetBuddy";
+  }, []);
+
   const [groupedAccounts, setGroupedAccounts] = useState<{
     [itemId: string]: Account[];
   }>({});

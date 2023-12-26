@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TransactionsTable from "../components/TransactionsTable";
 import { Button, Container, Group, Text, Title } from "@mantine/core";
 import useAccountsContext from "../contexts/AccountsContext";
@@ -6,6 +6,11 @@ import useInstitutionsContext from "../contexts/InstitutionsContext";
 import NoAccounts from "../components/NoAccounts";
 
 const TransactionsPage = () => {
+  // change document title
+  useEffect(() => {
+    document.title = "Transactions | BudgetBuddy";
+  }, []);
+
   const [selectedAccount, setSelectedAccount] = useState<number | string>(
     "all"
   );
