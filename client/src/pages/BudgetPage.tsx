@@ -16,6 +16,7 @@ import BudgetChart from "../components/BudgetChart";
 import useTransactionsContext, {
   Transactions,
 } from "../contexts/TransactionsContext";
+import DailySpendingChart from "../components/DailySpendingChart";
 
 const CustomForm = () => {
   const [amount, setAmount] = useState<number | "">("");
@@ -114,6 +115,8 @@ const BudgetPage = () => {
     return { spendingPerDay, filteredTransactions };
   }, [transactions]);
 
+  console.log(spendingPerDay);
+
   useEffect(() => {
     if (user) {
       getBudgetByUser(user.id);
@@ -146,6 +149,7 @@ const BudgetPage = () => {
     <Container style={{ height: "100vh" }}>
       <Box style={{ height: "350px" }}>
         <BudgetChart />
+        <DailySpendingChart spendingPerDay={spendingPerDay} />
       </Box>
     </Container>
   );
