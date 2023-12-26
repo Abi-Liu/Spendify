@@ -44,7 +44,7 @@ CREATE TABLE items
 );
 
 CREATE TRIGGER trigger_update_updated_at_items
-BEFORE UPDATE ON users
+BEFORE UPDATE ON items
 FOR EACH ROW
 EXECUTE FUNCTION trigger_set_timestamp();
 
@@ -70,7 +70,7 @@ CREATE TABLE accounts
 );
 
 CREATE TRIGGER trigger_update_updated_at_accounts
-BEFORE UPDATE ON users
+BEFORE UPDATE ON accounts
 FOR EACH ROW
 EXECUTE FUNCTION trigger_set_timestamp();
 
@@ -98,19 +98,34 @@ CREATE TABLE transactions
 );
 
 CREATE TRIGGER trigger_update_updated_at_transactions
-BEFORE UPDATE ON users
+BEFORE UPDATE ON transactions
 FOR EACH ROW
 EXECUTE FUNCTION trigger_set_timestamp();
 
 CREATE TABLE budgets (
   id SERIAL PRIMARY KEY,
-  user_id INT NOT NULL,
-  budget_amount NUMERIC(10, 2) NOT NULL,
+  user_id integer REFERENCES users(id) ON DELETE CASCADE,
+  budget_amount NUMERIC(28, 2) NOT NULL,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
 
-CREATE TRIGGER trigger_update_updated_at_transactions
-BEFORE UPDATE ON users
+CREATE TRIGGER trigger_update_updated_at_budgets
+BEFORE UPDATE ON budgets
+FOR EACH ROW
+EXECUTE FUNCTION trigger_set_timestamp();
+
+CREATE TABLE assets (
+  id SERIAL PRIMARY KEY,
+  user_id integer REFERENCES users(id) ON DELETE CASCADE,
+  value NUMERIC(28, 2) NOT NULL,
+  name text NOT NULL,
+  description text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+)
+
+CREATE TRIGGER trigger_update_updated_at_assets
+BEFORE UPDATE ON assets
 FOR EACH ROW
 EXECUTE FUNCTION trigger_set_timestamp();
