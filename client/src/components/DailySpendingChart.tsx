@@ -53,8 +53,6 @@ const DailySpendingChart = ({ spendingPerDay }: PropsInterface) => {
     return result;
   }, [spendingPerDay]);
 
-  console.log(data);
-
   return (
     <ResponsiveContainer height="100%" width="100%">
       <BarChart

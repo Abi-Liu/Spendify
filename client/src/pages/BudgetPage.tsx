@@ -157,7 +157,7 @@ const BudgetPage = () => {
         <Text size="1rem">
           Create a monthly budget to keep your track of your spending.
         </Text>
-        <Modal opened={opened} onClose={close} title="Monthly Budget">
+        <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
           <CustomForm />
         </Modal>
         <Button my="1rem" onClick={open}>
