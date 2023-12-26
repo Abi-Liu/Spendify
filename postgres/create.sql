@@ -123,7 +123,7 @@ CREATE TABLE assets (
   description text,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
-)
+);
 
 CREATE TRIGGER trigger_update_updated_at_assets
 BEFORE UPDATE ON assets
