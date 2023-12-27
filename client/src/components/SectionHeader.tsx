@@ -20,6 +20,7 @@ import useAssetsContext from "../contexts/AssetsContext";
 import calculateNetworth from "../utils/calculateNetworth";
 
 const NetWorthAccordion = () => {
+  const [value, setValue] = useState<string[]>([]);
   const { accounts } = useAccountsContext();
   const { assets } = useAssetsContext();
   // calculate networth
@@ -32,31 +33,88 @@ const NetWorthAccordion = () => {
   }, [accounts, assets]);
 
   return (
-    <Accordion chevronPosition="right" variant="filled">
+    <Accordion
+      chevronPosition="right"
+      variant="filled"
+      multiple
+      value={value}
+      onChange={setValue}
+    >
       <Accordion.Item value="assets" px={0} mx={0}>
-        <Accordion.Control icon={<TbPigMoney />}>
+        <Accordion.Control icon={<TbPigMoney size={20} />}>
           <Group wrap="nowrap">
             <div>
               <Text>Assets</Text>
-              <Text size="sm" c="dimmed" fw={400}>
+              <Text size="sm" c="dimmed" fw={600}>
                 {formatCurrency(depository + investment + assetsTotal)}
               </Text>
             </div>
           </Group>
         </Accordion.Control>
+
+        <Accordion.Panel>
+          <Stack gap={10}>
+            <Group justify="space-between">
+              <Text size="sm" c="dimmed" fw={500}>
+                Cash
+              </Text>
+              <Text size="sm" c="dimmed" fw={500}>
+                {formatCurrency(depository)}
+              </Text>
+            </Group>
+            <Group justify="space-between">
+              <Text size="sm" c="dimmed" fw={500}>
+                Investments
+              </Text>
+              <Text size="sm" c="dimmed" fw={500}>
+                {formatCurrency(investment)}
+              </Text>
+            </Group>
+            {Object.values(assets).map((asset) => (
+              <Group justify="space-between">
+                <Text size="sm" c="dimmed" fw={500}>
+                  {asset.name}
+                </Text>
+                <Text size="sm" c="dimmed" fw={500}>
+                  {formatCurrency(Number(asset.value))}
+                </Text>
+              </Group>
+            ))}
+          </Stack>
+        </Accordion.Panel>
       </Accordion.Item>
 
       <Accordion.Item value="liabilities">
-        <Accordion.Control icon={<GiPayMoney />}>
+        <Accordion.Control icon={<GiPayMoney size={20} />}>
           <Group wrap="nowrap">
             <div>
               <Text>Liabilities</Text>
-              <Text size="sm" c="dimmed" fw={400}>
+              <Text size="sm" c="dimmed" fw={600}>
                 {formatCurrency(credit + loan)}
               </Text>
             </div>
           </Group>
         </Accordion.Control>
+        <Accordion.Panel>
+          <Stack gap={10}>
+            <Group justify="space-between">
+              <Text size="sm" c="dimmed" fw={500}>
+                Credit
+              </Text>
+              <Text size="sm" c="dimmed" fw={500}>
+                {formatCurrency(credit)}
+              </Text>
+            </Group>
+            <Group justify="space-between">
+              <Text size="sm" c="dimmed" fw={500}>
+                Loans
+              </Text>
+              <Text size="sm" c="dimmed" fw={500}>
+                {formatCurrency(loan)}
+              </Text>
+            </Group>
+          </Stack>
+        </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
   );
