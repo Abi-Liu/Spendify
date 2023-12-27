@@ -108,7 +108,7 @@ const UserMenu = () => {
         </Flex>
       </Modal>
 
-      <Menu position="top" shadow="md">
+      <Menu position="top-end" shadow="md">
         <Menu.Target>
           <UnstyledButton
             style={{

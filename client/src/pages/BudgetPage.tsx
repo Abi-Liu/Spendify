@@ -13,6 +13,9 @@ import {
   em,
   Title,
   NumberInput,
+  Group,
+  Tooltip,
+  ActionIcon,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import useUserContext from "../contexts/UserContext";
@@ -23,23 +26,34 @@ import useTransactionsContext, {
 } from "../contexts/TransactionsContext";
 import DailySpendingChart from "../components/DailySpendingChart";
 import formatCurrency from "../utils/formatDollar";
+import { TbPencilCog } from "react-icons/tb";
 
 const CustomForm = () => {
   const [amount, setAmount] = useState<number | string>("");
 
-  const { createBudget } = useBudgetsContext();
+  const { budgets, createBudget } = useBudgetsContext();
   const { user } = useUserContext();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const existingBudget = Object.values(budgets)[0];
     if (user && typeof amount === "number") {
-      createBudget(user.id, amount);
-      // TODO: have better error handling, do not show success message if an error occurs
-      // show success message
-      notifications.show({
-        message: `Budget successfully created`,
-        color: "green",
-      });
+      if (existingBudget) {
+        createBudget(user.id, amount);
+
+        notifications.show({
+          message: `Budget updated!`,
+          color: "green",
+        });
+      } else {
+        createBudget(user.id, amount);
+        // TODO: have better error handling, do not show success message if an error occurs
+        // show success message
+        notifications.show({
+          message: `Budget successfully created`,
+          color: "green",
+        });
+      }
     } else {
       // user will always be defined so if we get into this block
       // that means the user has tried to submit an empty input
@@ -65,7 +79,7 @@ const CustomForm = () => {
         onChange={setAmount}
       />
       <Button type="submit" my="1rem">
-        Create
+        Set
       </Button>
     </form>
   );
@@ -143,15 +157,15 @@ const BudgetPage = () => {
     return (
       // FINISH STYLING CREATE BUDGET PAGE
       <Container size="xl">
+        <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
+          <CustomForm />
+        </Modal>
         <Text size="1.25rem" pb={"1rem"}>
           No monthly budget
         </Text>
         <Text size="1rem">
           Create a monthly budget to keep your track of your spending.
         </Text>
-        <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
-          <CustomForm />
-        </Modal>
         <Button my="1rem" onClick={open}>
           Create Budget
         </Button>
@@ -176,7 +190,17 @@ const BudgetPage = () => {
 
   return (
     <Container size="xl" style={{ height: "100vh", marginTop: "1rem" }}>
-      <Title order={2}>Budgeting</Title>
+      <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
+        <CustomForm />
+      </Modal>
+      <Group align="flex-end" gap={4}>
+        <Title order={2}>Budgeting</Title>
+        <Tooltip label="Edit budget">
+          <ActionIcon variant="subtle" c="inherit" onClick={open}>
+            <TbPencilCog />
+          </ActionIcon>
+        </Tooltip>
+      </Group>
       <Flex
         direction={breakpoint ? "column" : "row"}
         justify="space-between"

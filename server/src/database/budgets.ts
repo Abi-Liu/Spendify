@@ -6,6 +6,10 @@ export async function createBudget(amount: number, userId: number) {
         (user_id, budget_amount)
     VALUES 
         ($1, $2)
+    ON CONFLICT 
+      (user_id)
+    DO UPDATE SET
+      budget_amount = $2
     RETURNING *
     `;
   const values = [userId, amount];

@@ -105,7 +105,7 @@ EXECUTE FUNCTION trigger_set_timestamp();
 
 CREATE TABLE budgets (
   id SERIAL PRIMARY KEY,
-  user_id integer REFERENCES users(id) ON DELETE CASCADE,
+  user_id integer UNIQUE REFERENCES users(id) ON DELETE CASCADE,
   budget_amount NUMERIC(28, 2) NOT NULL,
   created_at timestamptz default now(),
   updated_at timestamptz default now()

@@ -83,6 +83,7 @@ export const BudgetsProvider: React.FC<{ children: React.ReactNode }> = ({
       budgetAmount: amount,
       userId,
     });
+    console.log(data);
     dispatch({ type: "SUCCESSFUL_GET", payload: data });
   }, []);
 
