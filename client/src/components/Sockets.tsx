@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { io } from "socket.io-client";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import useAccountsContext from "../contexts/AccountsContext";

@@ -10,6 +10,7 @@ import api from "../utils/axios";
 
 export interface UserState {
   id: number;
+  email: string;
   first_name: string;
   last_name: string;
   avatar_url: string;

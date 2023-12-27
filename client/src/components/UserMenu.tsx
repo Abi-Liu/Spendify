@@ -3,7 +3,6 @@ import {
   Avatar,
   Menu,
   UnstyledButton,
-  Tooltip,
   Modal,
   Group,
   Button,
@@ -13,7 +12,12 @@ import {
   NumberInput,
 } from "@mantine/core";
 import useUserContext from "../contexts/UserContext";
-import { TbBuildingBank, TbLogout, TbTrash } from "react-icons/tb";
+import {
+  TbBuildingBank,
+  TbLogout,
+  TbTrash,
+  TbChevronRight,
+} from "react-icons/tb";
 import { useDisclosure } from "@mantine/hooks";
 import useAssetsContext from "../contexts/AssetsContext";
 import { notifications } from "@mantine/notifications";
@@ -106,11 +110,28 @@ const UserMenu = () => {
 
       <Menu position="top" shadow="md">
         <Menu.Target>
-          <Tooltip label="Settings">
-            <UnstyledButton>
+          <UnstyledButton
+            style={{
+              padding: "var(--mantine-spacing-md)",
+              color: "var(--mantine-color-text)",
+              borderRadius: "var(--mantine-radius-sm)",
+              width: "100%",
+            }}
+          >
+            <Group>
               <Avatar src={user!.avatar_url} />
-            </UnstyledButton>
-          </Tooltip>
+              <div style={{ flex: 1 }}>
+                <Text size="sm" fw={500}>
+                  {user?.first_name} {user?.last_name}
+                </Text>
+
+                <Text c="dimmed" size="xs">
+                  {user!.email}
+                </Text>
+              </div>
+              <TbChevronRight />
+            </Group>
+          </UnstyledButton>
         </Menu.Target>
 
         <Menu.Dropdown>

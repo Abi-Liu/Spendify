@@ -1,4 +1,3 @@
-import React from "react";
 import useUserContext from "../contexts/UserContext";
 
 const Login = () => {

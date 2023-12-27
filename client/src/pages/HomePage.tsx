@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Login from "./Login";
 import useUserContext from "../contexts/UserContext";
 import Appshell from "../components/Appshell";
@@ -9,7 +9,7 @@ const HomePage = () => {
 
   useEffect(() => {
     login();
-  }, []);
+  }, [login]);
 
   return (
     <Appshell showNav={false}>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Container, Flex, Text } from "@mantine/core";
 import formatCurrency from "../utils/formatDollar";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { Accordion, Flex, Text } from "@mantine/core";
 import { Account } from "../contexts/AccountsContext";
 

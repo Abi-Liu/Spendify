@@ -15,6 +15,7 @@ CREATE TABLE users
 (
   id SERIAL PRIMARY KEY,
   google_id text UNIQUE NOT NULL,
+  email text NOT NULL,
   first_name text NOT NULL,
   last_name text NOT NULL,
   avatar_url text NOT NULL,

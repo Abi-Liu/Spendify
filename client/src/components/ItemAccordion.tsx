@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Item } from "../contexts/ItemsContext";
 import { Accordion } from "@mantine/core";
 import ItemCard from "./ItemCard";
