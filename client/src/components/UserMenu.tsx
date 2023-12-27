@@ -17,18 +17,16 @@ import { TbBuildingBank, TbLogout, TbTrash } from "react-icons/tb";
 import { useDisclosure } from "@mantine/hooks";
 import useAssetsContext from "../contexts/AssetsContext";
 import { notifications } from "@mantine/notifications";
-import formatCurrency from "../utils/formatDollar";
 
 const AssetsForm = () => {
   const [value, setValue] = useState<number | string>("");
   const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
   const { createAsset } = useAssetsContext();
   const { user } = useUserContext();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    createAsset(user!.id, Number(value), name, description);
+    createAsset(user!.id, Number(value), name);
 
     notifications.show({
       message: `Asset added!`,
@@ -58,23 +56,16 @@ const AssetsForm = () => {
           value={value}
           onChange={setValue}
         />
-        <TextInput
-          label="Name"
-          description="Optional"
-          placeholder="e.g 2004 Toyota Camry"
-          value={description}
-          onChange={(event) => setDescription(event.currentTarget.value)}
-        />
-        <Button type="submit">Add asset</Button>
+        <Button type="submit" mb="1rem">
+          Add asset
+        </Button>
       </Flex>
     </form>
   );
 };
 
 const UserMenu = () => {
-  const [showAssetsForm, setShowAssetsForm] = useState(false);
   const { user, logout, deleteAccount } = useUserContext();
-  const { assets } = useAssetsContext();
   const [assetOpened, { open: assetOpen, close: assetClose }] =
     useDisclosure(false);
   const [deleteOpened, { open: deleteOpen, close: deleteClose }] =
@@ -83,18 +74,7 @@ const UserMenu = () => {
   return (
     <>
       <Modal opened={assetOpened} onClose={assetClose} title="Assets" centered>
-        <Flex direction="column">
-          {Object.values(assets).map((asset) => (
-            <Group key={asset.id} justify="space-between">
-              <Text>{asset.name}</Text>
-              <Text>{formatCurrency(Number(asset.value))}</Text>
-            </Group>
-          ))}
-          <Button onClick={() => setShowAssetsForm((prev) => !prev)}>
-            Add new asset
-          </Button>
-        </Flex>
-        {showAssetsForm && <AssetsForm />}
+        <AssetsForm />
       </Modal>
 
       <Modal
@@ -134,6 +114,11 @@ const UserMenu = () => {
         </Menu.Target>
 
         <Menu.Dropdown>
+          <Menu.Label>Danger zone</Menu.Label>
+          <Menu.Item color="red" leftSection={<TbTrash />} onClick={deleteOpen}>
+            Delete my account
+          </Menu.Item>
+
           <Menu.Label>Settings</Menu.Label>
           <Menu.Item leftSection={<TbBuildingBank />} onClick={assetOpen}>
             Assets
@@ -143,11 +128,6 @@ const UserMenu = () => {
           </Menu.Item>
 
           <Menu.Divider />
-
-          <Menu.Label>Danger zone</Menu.Label>
-          <Menu.Item color="red" leftSection={<TbTrash />} onClick={deleteOpen}>
-            Delete my account
-          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </>

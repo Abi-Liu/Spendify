@@ -18,6 +18,7 @@ import useAccountsContext from "../contexts/AccountsContext";
 import { useEffect, useMemo, useState } from "react";
 import useAssetsContext from "../contexts/AssetsContext";
 import calculateNetworth from "../utils/calculateNetworth";
+import formatTextCapitalization from "../utils/formatText";
 
 const NetWorthAccordion = () => {
   const [value, setValue] = useState<string[]>([]);
@@ -73,7 +74,7 @@ const NetWorthAccordion = () => {
             {Object.values(assets).map((asset) => (
               <Group justify="space-between">
                 <Text size="sm" c="dimmed" fw={500}>
-                  {asset.name}
+                  {formatTextCapitalization(asset.name)}
                 </Text>
                 <Text size="sm" c="dimmed" fw={500}>
                   {formatCurrency(Number(asset.value))}
