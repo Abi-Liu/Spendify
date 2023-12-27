@@ -1,6 +1,15 @@
-import { Stack, Flex, ActionIcon, Title, Text } from "@mantine/core";
+import {
+  Stack,
+  Flex,
+  ActionIcon,
+  Title,
+  Text,
+  Accordion,
+  Group,
+} from "@mantine/core";
 
-import { TbPlus } from "react-icons/tb";
+import { TbPlus, TbPigMoney } from "react-icons/tb";
+import { GiPayMoney } from "react-icons/gi";
 import PlaidLink from "./PlaidLink";
 import formatCurrency from "../utils/formatDollar";
 import useLinkContext from "../contexts/LinkTokenContext";
@@ -9,6 +18,49 @@ import useAccountsContext from "../contexts/AccountsContext";
 import { useEffect, useMemo, useState } from "react";
 import useAssetsContext from "../contexts/AssetsContext";
 import calculateNetworth from "../utils/calculateNetworth";
+
+const NetWorthAccordion = () => {
+  const { accounts } = useAccountsContext();
+  const { assets } = useAssetsContext();
+  // calculate networth
+  const { depository, credit, loan, investment, assetsTotal } = useMemo(() => {
+    const calculateNetWorthAccounts = Object.values(accounts);
+    // include assets
+    const totalAssets = Object.values(assets);
+
+    return calculateNetworth(calculateNetWorthAccounts, totalAssets);
+  }, [accounts, assets]);
+
+  return (
+    <Accordion chevronPosition="right" variant="filled">
+      <Accordion.Item value="assets" px={0} mx={0}>
+        <Accordion.Control icon={<TbPigMoney />}>
+          <Group wrap="nowrap">
+            <div>
+              <Text>Assets</Text>
+              <Text size="sm" c="dimmed" fw={400}>
+                {formatCurrency(depository + investment + assetsTotal)}
+              </Text>
+            </div>
+          </Group>
+        </Accordion.Control>
+      </Accordion.Item>
+
+      <Accordion.Item value="liabilities">
+        <Accordion.Control icon={<GiPayMoney />}>
+          <Group wrap="nowrap">
+            <div>
+              <Text>Liabilities</Text>
+              <Text size="sm" c="dimmed" fw={400}>
+                {formatCurrency(credit + loan)}
+              </Text>
+            </div>
+          </Group>
+        </Accordion.Control>
+      </Accordion.Item>
+    </Accordion>
+  );
+};
 
 const SectionHeader = () => {
   const [link, setLink] = useState("");
@@ -54,7 +106,7 @@ const SectionHeader = () => {
       </Flex>
       {Object.keys(accounts).length > 0 && (
         <>
-          <Stack align="flex-start" style={{ paddingBottom: "1rem" }}>
+          <Stack>
             <Title order={4}>Net Worth</Title>
             <Text size="2rem">
               {formatCurrency(
@@ -62,7 +114,8 @@ const SectionHeader = () => {
               )}
             </Text>
           </Stack>
-          <Flex justify="space-between">
+          <NetWorthAccordion />
+          {/* <Flex justify="space-between">
             <Text size="sm">Assets</Text>
             <Text size="sm">
               {formatCurrency(depository + investment + assetsTotal)}
@@ -71,7 +124,7 @@ const SectionHeader = () => {
           <Flex justify="space-between">
             <Text size="sm">Liabilities</Text>
             <Text size="sm">{formatCurrency(credit + loan)}</Text>
-          </Flex>
+          </Flex> */}
         </>
       )}
     </Stack>

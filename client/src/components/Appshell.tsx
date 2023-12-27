@@ -148,7 +148,7 @@ export default function Appshell({
               </AppShell.Section>
               <Divider style={{ paddingBottom: "1rem" }} />
               <AppShell.Section>
-                <Flex justify="space-between" align="center">
+                <Flex justify="flex-end" align="center">
                   <UserMenu />
                 </Flex>
               </AppShell.Section>
