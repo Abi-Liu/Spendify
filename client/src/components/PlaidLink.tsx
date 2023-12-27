@@ -9,8 +9,6 @@ import api from "../utils/axios";
 import useItemsContext from "../contexts/ItemsContext";
 import { useEffect } from "react";
 import useLinkContext from "../contexts/LinkTokenContext";
-import useAccountsContext from "../contexts/AccountsContext";
-import useInstitutionsContext from "../contexts/InstitutionsContext";
 
 interface Props {
   linkToken: string | null;
