@@ -151,7 +151,7 @@ const SectionHeader = () => {
   }, [accounts, assets]);
 
   return (
-    <Stack align="stretch" gap="xs">
+    <Stack gap="xs">
       {link && <PlaidLink userId={user!.id} linkToken={link} />}
       <Flex justify="flex-end">
         <ActionIcon
@@ -173,16 +173,6 @@ const SectionHeader = () => {
             </Text>
           </Stack>
           <NetWorthAccordion />
-          {/* <Flex justify="space-between">
-            <Text size="sm">Assets</Text>
-            <Text size="sm">
-              {formatCurrency(depository + investment + assetsTotal)}
-            </Text>
-          </Flex>
-          <Flex justify="space-between">
-            <Text size="sm">Liabilities</Text>
-            <Text size="sm">{formatCurrency(credit + loan)}</Text>
-          </Flex> */}
         </>
       )}
     </Stack>
