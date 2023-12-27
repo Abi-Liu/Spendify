@@ -24,7 +24,7 @@ export default function calculateNetworth(
     }
   }
 
-  const assetsTotal = assets.reduce((acc, x) => acc + x.value, 0);
+  const assetsTotal = assets.reduce((acc, x) => acc + Number(x.value), 0);
 
   return { depository, investment, credit, loan, assetsTotal };
 }

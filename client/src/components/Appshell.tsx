@@ -176,7 +176,9 @@ export default function Appshell({
                       <Flex justify="space-between">
                         <Text size="sm">Assets</Text>
                         <Text size="sm">
-                          {formatCurrency(depository + investment)}
+                          {formatCurrency(
+                            depository + investment + assetsTotal
+                          )}
                         </Text>
                       </Flex>
                       <Flex justify="space-between">

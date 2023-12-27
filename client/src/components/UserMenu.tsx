@@ -15,14 +15,27 @@ import {
 import useUserContext from "../contexts/UserContext";
 import { TbBuildingBank, TbLogout, TbTrash } from "react-icons/tb";
 import { useDisclosure } from "@mantine/hooks";
+import useAssetsContext from "../contexts/AssetsContext";
+import { notifications } from "@mantine/notifications";
+import formatCurrency from "../utils/formatDollar";
 
 const AssetsForm = () => {
   const [value, setValue] = useState<number | string>("");
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const { createAsset } = useAssetsContext();
+  const { user } = useUserContext();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    createAsset(user!.id, Number(value), name, description);
+
+    notifications.show({
+      message: `Asset added!`,
+      color: "green",
+    });
+
+    // TODO IMPLEMENT ERROR STATES AND SHOW ERROR NOTIFICATION ON BAD REQUESTS
   }
 
   return (
@@ -59,7 +72,9 @@ const AssetsForm = () => {
 };
 
 const UserMenu = () => {
+  const [showAssetsForm, setShowAssetsForm] = useState(false);
   const { user, logout, deleteAccount } = useUserContext();
+  const { assets } = useAssetsContext();
   const [assetOpened, { open: assetOpen, close: assetClose }] =
     useDisclosure(false);
   const [deleteOpened, { open: deleteOpen, close: deleteClose }] =
@@ -68,7 +83,18 @@ const UserMenu = () => {
   return (
     <>
       <Modal opened={assetOpened} onClose={assetClose} title="Assets" centered>
-        <AssetsForm />
+        <Flex direction="column">
+          {Object.values(assets).map((asset) => (
+            <Group key={asset.id} justify="space-between">
+              <Text>{asset.name}</Text>
+              <Text>{formatCurrency(Number(asset.value))}</Text>
+            </Group>
+          ))}
+          <Button onClick={() => setShowAssetsForm((prev) => !prev)}>
+            Add new asset
+          </Button>
+        </Flex>
+        {showAssetsForm && <AssetsForm />}
       </Modal>
 
       <Modal
