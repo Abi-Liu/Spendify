@@ -6,9 +6,16 @@ import {
   Text,
   Accordion,
   Group,
+  Menu,
 } from "@mantine/core";
 
-import { TbPlus, TbPigMoney } from "react-icons/tb";
+import {
+  TbPlus,
+  TbPigMoney,
+  TbDots,
+  TbTrash,
+  TbPencilCog,
+} from "react-icons/tb";
 import { GiPayMoney } from "react-icons/gi";
 import PlaidLink from "./PlaidLink";
 import formatCurrency from "../utils/formatDollar";
@@ -20,18 +27,25 @@ import useAssetsContext from "../contexts/AssetsContext";
 import calculateNetworth from "../utils/calculateNetworth";
 import formatTextCapitalization from "../utils/formatText";
 
-const NetWorthAccordion = () => {
-  const [value, setValue] = useState<string[]>([]);
-  const { accounts } = useAccountsContext();
-  const { assets } = useAssetsContext();
-  // calculate networth
-  const { depository, credit, loan, investment, assetsTotal } = useMemo(() => {
-    const calculateNetWorthAccounts = Object.values(accounts);
-    // include assets
-    const totalAssets = Object.values(assets);
+interface NetWorthProps {
+  depository: number;
+  credit: number;
+  loan: number;
+  investment: number;
+  assetsTotal: number;
+}
 
-    return calculateNetworth(calculateNetWorthAccounts, totalAssets);
-  }, [accounts, assets]);
+const NetWorthAccordion = ({
+  depository,
+  credit,
+  loan,
+  investment,
+  assetsTotal,
+}: NetWorthProps) => {
+  const [value, setValue] = useState<string[]>([]);
+  const { assets, deleteAsset } = useAssetsContext();
+
+  // TODO: FINISH IMPLEMENTING ASSET EDITING
 
   return (
     <Accordion
@@ -76,9 +90,31 @@ const NetWorthAccordion = () => {
                 <Text size="sm" c="dimmed" fw={500}>
                   {formatTextCapitalization(asset.name)}
                 </Text>
-                <Text size="sm" c="dimmed" fw={500}>
-                  {formatCurrency(Number(asset.value))}
-                </Text>
+                <Group gap={0}>
+                  <Text size="sm" c="dimmed" fw={500}>
+                    {formatCurrency(Number(asset.value))}
+                  </Text>
+                  <Menu>
+                    <Menu.Target>
+                      <ActionIcon size="md" variant="subtle" color="gray">
+                        <TbDots size={16} />
+                      </ActionIcon>
+                    </Menu.Target>
+
+                    <Menu.Dropdown>
+                      <Menu.Item rightSection={<TbPencilCog />} c="dimmed">
+                        Edit
+                      </Menu.Item>
+                      <Menu.Item
+                        onClick={() => deleteAsset(asset.id)}
+                        rightSection={<TbTrash />}
+                        c="dimmed"
+                      >
+                        Delete
+                      </Menu.Item>
+                    </Menu.Dropdown>
+                  </Menu>
+                </Group>
               </Group>
             ))}
           </Stack>
@@ -173,7 +209,13 @@ const SectionHeader = () => {
               )}
             </Text>
           </Stack>
-          <NetWorthAccordion />
+          <NetWorthAccordion
+            credit={credit}
+            depository={depository}
+            investment={investment}
+            loan={loan}
+            assetsTotal={assetsTotal}
+          />
         </>
       )}
     </Stack>

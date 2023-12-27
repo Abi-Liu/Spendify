@@ -92,8 +92,8 @@ export const AssetsProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const deleteAsset = useCallback(async (id: number) => {
-    await api.delete(`/assets/${id}`);
     dispatch({ type: "DELETE", payload: id });
+    await api.delete(`/assets/${id}`);
   }, []);
 
   return (
