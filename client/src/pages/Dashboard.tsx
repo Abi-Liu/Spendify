@@ -9,6 +9,7 @@ import formatLastThreeMonths from "../utils/formatDates";
 import Loading from "../components/Loading";
 import SpendingAnalysis from "../components/SpendingAnalysis";
 import NoAccounts from "../components/NoAccounts";
+import useAssetsContext from "../contexts/AssetsContext";
 
 const Dashboard = () => {
   // change document title
@@ -29,6 +30,7 @@ const Dashboard = () => {
     groupTransactions,
     transactions: transactionsContextState,
   } = useTransactionsContext();
+  const { getUserAssets } = useAssetsContext();
 
   // get all items for the user
   useEffect(() => {
@@ -67,6 +69,11 @@ const Dashboard = () => {
       setTransactions(groupTransactions());
     }
   }, [transactionsContextState, groupTransactions]);
+
+  // get all assets associated with the user
+  useEffect(() => {
+    getUserAssets(user!.id);
+  }, [user, getUserAssets]);
 
   return (
     <Suspense fallback={<Loading />}>

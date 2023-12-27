@@ -14,6 +14,7 @@ import { BrowserRouter } from "react-router-dom";
 import { LinkProvider } from "./contexts/LinkTokenContext.tsx";
 import { Notifications } from "@mantine/notifications";
 import { BudgetsProvider } from "./contexts/BudgetsContext.tsx";
+import { AssetsProvider } from "./contexts/AssetsContext.tsx";
 
 //
 const theme = createTheme({
@@ -42,14 +43,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <TransactionsProvider>
             <InstitutionsProvider>
               <BudgetsProvider>
-                <LinkProvider>
-                  <BrowserRouter>
-                    <MantineProvider theme={theme}>
-                      <Notifications />
-                      <App />
-                    </MantineProvider>
-                  </BrowserRouter>
-                </LinkProvider>
+                <AssetsProvider>
+                  <LinkProvider>
+                    <BrowserRouter>
+                      <MantineProvider theme={theme}>
+                        <Notifications />
+                        <App />
+                      </MantineProvider>
+                    </BrowserRouter>
+                  </LinkProvider>
+                </AssetsProvider>
               </BudgetsProvider>
             </InstitutionsProvider>
           </TransactionsProvider>

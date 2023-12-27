@@ -1,8 +1,12 @@
 import { Account } from "../contexts/AccountsContext";
+import { Asset } from "../contexts/AssetsContext";
 
 // calculates networth across total balances for linked accounts. depository and investment are assets, while credit and loans are liabilities.
 // net worth is calculated with assets-liabilities
-export default function calculateNetworth(accounts: Account[]) {
+export default function calculateNetworth(
+  accounts: Account[],
+  assets: Asset[]
+) {
   let depository = 0;
   let investment = 0;
   let credit = 0;
@@ -20,5 +24,7 @@ export default function calculateNetworth(accounts: Account[]) {
     }
   }
 
-  return { depository, investment, credit, loan };
+  const assetsTotal = assets.reduce((acc, x) => acc + x.value, 0);
+
+  return { depository, investment, credit, loan, assetsTotal };
 }

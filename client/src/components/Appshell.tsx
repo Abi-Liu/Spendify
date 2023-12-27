@@ -29,6 +29,7 @@ import formatCurrency from "../utils/formatDollar";
 import { Outlet, useNavigate } from "react-router-dom";
 import FullLogo from "../assets/FullLogo.png";
 import UserMenu from "./UserMenu";
+import useAssetsContext from "../contexts/AssetsContext";
 
 export default function Appshell({
   children,
@@ -45,6 +46,7 @@ export default function Appshell({
   const { accounts } = useAccountsContext();
   const { generateUserLinkToken, linkTokens } = useLinkContext();
   const { user } = useUserContext();
+  const { assets } = useAssetsContext();
 
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "light" ? "dark" : "light");
@@ -83,13 +85,13 @@ export default function Appshell({
   }, [linkTokens, user]);
 
   // calculate networth
-  const { depository, credit, loan, investment } = useMemo(() => {
+  const { depository, credit, loan, investment, assetsTotal } = useMemo(() => {
     const calculateNetWorthAccounts = Object.values(accounts);
-    if (calculateNetWorthAccounts.length > 0) {
-      return calculateNetworth(calculateNetWorthAccounts);
-    }
-    return { depository: 0, credit: 0, loan: 0, investment: 0 };
-  }, [accounts]);
+    // include assets
+    const totalAssets = Object.values(assets);
+
+    return calculateNetworth(calculateNetWorthAccounts, totalAssets);
+  }, [accounts, assets]);
 
   return (
     <AppShell header={{ height: 70 }} navbar={navbarProps} padding="md">
@@ -163,7 +165,11 @@ export default function Appshell({
                         <Title order={4}>Net Worth</Title>
                         <Text size="2rem">
                           {formatCurrency(
-                            depository + investment - credit - loan
+                            depository +
+                              investment -
+                              credit -
+                              loan +
+                              assetsTotal
                           )}
                         </Text>
                       </Stack>
