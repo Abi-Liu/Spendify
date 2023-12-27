@@ -7,20 +7,21 @@ export async function getAssetsForUser(id: number) {
 }
 
 export async function createAsset(
+  userId: number,
   value: number,
   name: string,
   description: string | null
 ) {
   const query = `
     INSERT INTO assets
-        (value, name, description)
+        (user_id, value, name, description)
     VALUES
-        ($1, $2, $3)
+        ($1, $2, $3, $4)
     RETURNING *
     `;
-  const values = [value, name, description];
+  const values = [userId, value, name, description];
   const { rows } = await connection.query(query, values);
-  return rows[0];
+  return rows;
 }
 
 export async function deleteAsset(id: number) {

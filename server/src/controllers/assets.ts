@@ -15,8 +15,13 @@ export default {
 
   createAsset: async (req: Request, res: Response) => {
     try {
-      const { value, name, description } = req.body;
-      const asset = await createAsset(Number(value), name, description);
+      const { userId, value, name, description } = req.body;
+      const asset = await createAsset(
+        Number(userId),
+        Number(value),
+        name,
+        description
+      );
       res.status(200).json(asset);
     } catch (error) {
       console.error(error);
