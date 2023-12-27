@@ -15,8 +15,9 @@ import {
   Title,
   Group,
   Image,
+  Menu,
 } from "@mantine/core";
-import { TbSunHigh, TbMoon, TbPlus } from "react-icons/tb";
+import { TbSunHigh, TbMoon, TbPlus, TbChevronDown } from "react-icons/tb";
 import useItemsContext from "../contexts/ItemsContext";
 import ItemAccordion from "./ItemAccordion";
 import useLinkContext from "../contexts/LinkTokenContext";
@@ -127,6 +128,29 @@ export default function Appshell({
                 {link.name}
               </Button>
             ))}
+            <Menu shadow="md">
+              <Menu.Target>
+                <ActionIcon
+                  color={computedColorScheme === "light" ? "black" : "gray"}
+                  variant="subtle"
+                  hiddenFrom="sm"
+                >
+                  <TbChevronDown />
+                </ActionIcon>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                {navigationLinks.map((link) => (
+                  <Menu.Item
+                    key={link.name}
+                    onClick={() => navigate(link.link)}
+                  >
+                    {link.name}
+                  </Menu.Item>
+                ))}
+              </Menu.Dropdown>
+            </Menu>
+
             <Button onClick={toggleColorScheme} size="sm" variant="transparent">
               {computedColorScheme === "light" ? (
                 <TbMoon size={24} />
