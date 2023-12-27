@@ -6,10 +6,10 @@ const AccountDetails = ({ account }: { account: Account }) => {
   return (
     <Accordion.Panel>
       <Flex justify="space-between">
-        <Text size="sm" fw={500}>
+        <Text size="sm" fw={400}>
           {account.name}
         </Text>
-        <Text size="sm" fw={500}>
+        <Text size="sm" fw={400}>
           {Number(account.current_balance).toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
@@ -17,7 +17,9 @@ const AccountDetails = ({ account }: { account: Account }) => {
         </Text>
       </Flex>
       <Flex justify="space-between">
-        <Text size="xs">{account.official_name}</Text>
+        <Text size="xs" c="dimmed" fw={500}>
+          {account.official_name}
+        </Text>
       </Flex>
     </Accordion.Panel>
   );
