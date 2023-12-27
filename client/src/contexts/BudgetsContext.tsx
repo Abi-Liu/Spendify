@@ -12,6 +12,8 @@ export interface Budget {
   user_id: number;
   budget_amount: number;
   total_spending: number;
+  created_at: string;
+  updated_at: string;
 }
 
 interface InitialState {
@@ -112,7 +114,7 @@ export default function useBudgetsContext() {
   const context = useContext(BudgetsContext);
 
   if (!context) {
-    throw new Error("useAccountsContext must be used within a BudgetsContext");
+    throw new Error("useBudgetsContext must be used within a BudgetsContext");
   }
   return context;
 }
