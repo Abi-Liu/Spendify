@@ -32,6 +32,7 @@ passport.use(
         if (!user) {
           user = await createUser(
             profile.id,
+            profile.emails[0].value,
             profile.name.givenName,
             profile.name.familyName,
             profile.photos[0].value

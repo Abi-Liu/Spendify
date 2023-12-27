@@ -11,13 +11,14 @@ export async function getUser(id: string) {
 
 export async function createUser(
   id: string,
+  email: string,
   givenName: string,
   familyName: string,
   photos: string
 ) {
   const insert =
-    "INSERT INTO users (google_id, first_name, last_name, avatar_url) VALUES ($1, $2, $3, $4) RETURNING *;";
-  const values = [id, givenName, familyName, photos];
+    "INSERT INTO users (google_id, email, first_name, last_name, avatar_url) VALUES ($1, $2, $3, $4, $5) RETURNING *;";
+  const values = [id, email, givenName, familyName, photos];
   const { rows } = await connection.query(insert, values);
   return rows[0];
 }
