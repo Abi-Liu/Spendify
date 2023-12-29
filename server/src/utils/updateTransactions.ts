@@ -11,7 +11,7 @@ import {
   getItemTransactionsFromDates,
 } from "../database/transactions";
 import { createOrUpdateAccounts } from "../database/accounts";
-import { redis } from "../config/redis";
+import redis from "../config/redis";
 
 async function fetchTransactionUpdates(itemId: string) {
   const { plaid_access_token: accessToken, transactions_cursor: lastCursor } =

@@ -6,7 +6,9 @@ const host = REDIS_HOST!;
 const port = parseInt(REDIS_PORT!);
 
 // Create a Redis client
-export const redis = new Redis({
+const redis = new Redis({
   host: host,
   port: port,
 });
+
+export default redis;
