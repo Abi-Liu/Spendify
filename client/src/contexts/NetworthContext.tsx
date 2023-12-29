@@ -68,7 +68,7 @@ export const NetworthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export default function useAccountsContext() {
+export default function useNetworthContext() {
   const context = useContext(NetworthContext);
 
   if (!context) {

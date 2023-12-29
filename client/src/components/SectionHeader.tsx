@@ -22,11 +22,11 @@ import formatCurrency from "../utils/formatDollar";
 import useLinkContext from "../contexts/LinkTokenContext";
 import useUserContext from "../contexts/UserContext";
 import useAccountsContext from "../contexts/AccountsContext";
+import useNetworthContext from "../contexts/NetworthContext";
 import { useEffect, useMemo, useState } from "react";
 import useAssetsContext from "../contexts/AssetsContext";
 import calculateNetworth from "../utils/calculateNetworth";
 import formatTextCapitalization from "../utils/formatText";
-import TestNetworthRoute from "./TestNetworthRoute";
 
 interface NetWorthProps {
   depository: number;
@@ -165,6 +165,7 @@ const SectionHeader = () => {
   const { user } = useUserContext();
   const { accounts } = useAccountsContext();
   const { assets } = useAssetsContext();
+  const { updateNetworth } = useNetworthContext();
 
   async function initiateLink() {
     // geerate new link token only when user clicks the button
@@ -187,6 +188,11 @@ const SectionHeader = () => {
 
     return calculateNetworth(calculateNetWorthAccounts, totalAssets);
   }, [accounts, assets]);
+
+  useEffect(() => {
+    const networth = depository + investment + assetsTotal - loan - credit;
+    updateNetworth(user!.id, networth);
+  }, [depository, credit, loan, investment, assetsTotal, user, updateNetworth]);
 
   return (
     <Stack gap="xs">
@@ -211,13 +217,6 @@ const SectionHeader = () => {
             </Text>
           </Stack>
           <NetWorthAccordion
-            credit={credit}
-            depository={depository}
-            investment={investment}
-            loan={loan}
-            assetsTotal={assetsTotal}
-          />
-          <TestNetworthRoute
             credit={credit}
             depository={depository}
             investment={investment}
