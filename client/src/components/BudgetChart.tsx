@@ -25,7 +25,7 @@ const BudgetChart = () => {
     } else if (spentPercentage < 50) {
       return "You're doing well! Just stay on track, and you've got this! 🚀";
     } else if (spentPercentage < 75) {
-      return "Things are getting a bit tight! Watch those expenses closely! 💸";
+      return "Over halfway there. Watch your expenses! 💸";
     } else if (spentPercentage < 100) {
       return "You're approaching your budget limit. Let's cut back a bit! ⚠️";
     } else {

@@ -26,6 +26,7 @@ import { useEffect, useMemo, useState } from "react";
 import useAssetsContext from "../contexts/AssetsContext";
 import calculateNetworth from "../utils/calculateNetworth";
 import formatTextCapitalization from "../utils/formatText";
+import TestNetworthRoute from "./TestNetworthRoute";
 
 interface NetWorthProps {
   depository: number;
@@ -210,6 +211,13 @@ const SectionHeader = () => {
             </Text>
           </Stack>
           <NetWorthAccordion
+            credit={credit}
+            depository={depository}
+            investment={investment}
+            loan={loan}
+            assetsTotal={assetsTotal}
+          />
+          <TestNetworthRoute
             credit={credit}
             depository={depository}
             investment={investment}
