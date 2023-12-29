@@ -12,7 +12,7 @@ const { CLIENT_URL } = process.env;
 // only used for development. allows the local server to receive plaid webhooks
 // must be changed to match each new ngrok url
 const WEBHOOK_URL =
-  "https://7b85-2600-1700-a410-90b0-c4e2-f9ad-b078-bccb.ngrok-free.app/webhook/";
+  "https://d2e0-2600-1700-a410-90b0-2950-7c81-a16e-4669.ngrok-free.app/webhook/";
 
 export default {
   // start the link flow by sending client a public token.
