@@ -10,6 +10,7 @@ import Loading from "../components/Loading";
 import SpendingAnalysis from "../components/SpendingAnalysis";
 import NoAccounts from "../components/NoAccounts";
 import useAssetsContext from "../contexts/AssetsContext";
+import { Container } from "@mantine/core";
 
 const Dashboard = () => {
   // change document title
@@ -77,7 +78,7 @@ const Dashboard = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div>
+      <Container size="xl">
         {itemsArray.length > 0 ? (
           <>
             <SpendingAnalysis />
@@ -97,7 +98,7 @@ const Dashboard = () => {
         ) : (
           <NoAccounts />
         )}
-      </div>
+      </Container>
     </Suspense>
   );
 };

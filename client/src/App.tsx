@@ -6,6 +6,7 @@ import BudgetPage from "./pages/BudgetPage";
 import useUserContext from "./contexts/UserContext";
 import TransactionsPage from "./pages/TransactionsPage";
 import Appshell from "./components/Appshell";
+import NetworthPage from "./pages/NetworthPage";
 
 function App() {
   const { user } = useUserContext();
@@ -23,6 +24,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="transactions" element={<TransactionsPage />} />
           <Route path="budget" element={<BudgetPage />} />
+          <Route path="networth" element={<NetworthPage />} />
         </Route>
       </Routes>
     </>
