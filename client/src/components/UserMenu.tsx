@@ -18,7 +18,7 @@ import {
   TbTrash,
   TbChevronRight,
 } from "react-icons/tb";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useHover } from "@mantine/hooks";
 import useAssetsContext from "../contexts/AssetsContext";
 import { notifications } from "@mantine/notifications";
 
@@ -68,12 +68,17 @@ const AssetsForm = () => {
   );
 };
 
-const UserMenu = () => {
+interface UserMenuProps {
+  colorScheme: string;
+}
+
+const UserMenu = ({ colorScheme }: UserMenuProps) => {
   const { user, logout, deleteAccount } = useUserContext();
   const [assetOpened, { open: assetOpen, close: assetClose }] =
     useDisclosure(false);
   const [deleteOpened, { open: deleteOpen, close: deleteClose }] =
     useDisclosure(false);
+  const { hovered, ref } = useHover();
 
   return (
     <>
@@ -111,11 +116,18 @@ const UserMenu = () => {
       <Menu position="top-end" shadow="md">
         <Menu.Target>
           <UnstyledButton
+            component="div"
+            ref={ref}
             style={{
               padding: "var(--mantine-spacing-md)",
               color: "var(--mantine-color-text)",
               borderRadius: "var(--mantine-radius-sm)",
               width: "100%",
+              backgroundColor: hovered
+                ? colorScheme === "dark"
+                  ? "#262626"
+                  : "#e0e0e0"
+                : "",
             }}
           >
             <Group>
@@ -125,7 +137,7 @@ const UserMenu = () => {
                   {user?.first_name} {user?.last_name}
                 </Text>
 
-                <Text c="dimmed" size="xs">
+                <Text c="dimmed" size="xs" fw={500}>
                   {user!.email}
                 </Text>
               </div>

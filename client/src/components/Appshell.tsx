@@ -149,7 +149,7 @@ export default function Appshell({
               <Divider style={{ paddingBottom: "1rem" }} />
               <AppShell.Section>
                 <Flex justify="flex-end" align="center">
-                  <UserMenu />
+                  <UserMenu colorScheme={computedColorScheme} />
                 </Flex>
               </AppShell.Section>
             </>
