@@ -87,7 +87,7 @@ const NetworthChart = () => {
           top: 10,
         }}
       >
-        <XAxis dataKey="name" interval={88} padding={{ left: 45, right: 45 }} />
+        <XAxis dataKey="name" interval={88} padding={{ left: 52, right: 52 }} />
         <Tooltip content={<CustomTooltip data={data} />} />
         <Area type="basis" dataKey="networth" stroke="#8884d8" fill="#8884d8" />
       </AreaChart>
