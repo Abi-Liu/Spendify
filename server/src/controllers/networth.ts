@@ -16,7 +16,7 @@ export default {
         // because the oldest date will always be at the first key in the hash, we can just delete the first key
         await redis.hdel(key, keys[0]);
       }
-      const data = redis.hgetall(key);
+      const data = await redis.hgetall(key);
       res.status(200).json(data);
     } catch (error) {
       console.error(error);
