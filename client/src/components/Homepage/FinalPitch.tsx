@@ -21,6 +21,15 @@ const FinalPitch = () => {
 
   const imageHeight = windowWidth < 1400 ? (windowWidth / 400) * 100 : 400;
 
+  let height;
+  if (isMobile) {
+    height = 200;
+  } else if (isTablet) {
+    height = 350;
+  } else {
+    height = imageHeight;
+  }
+
   return (
     <Group
       py={"10rem"}
@@ -28,17 +37,20 @@ const FinalPitch = () => {
       justify="space-evenly"
       gap={isTablet ? 48 : 8}
     >
-      <Image h={isTablet ? 350 : imageHeight} w="auto" radius="lg" src={Fun} />
+      <Image h={height} w="auto" radius="lg" src={Fun} />
       <Stack w="400px">
-        <Text c="#F75C4E" size="1rem">
+        <Text ta={isMobile ? "center" : "left"} c="#F75C4E" size="1rem">
           SAVE MORE TIME
         </Text>
-        <Text size={isMobile ? "1.75rem" : "2.25rem"}>
+        <Text
+          ta={isMobile ? "center" : "left"}
+          size={isMobile ? "1.75rem" : "2.25rem"}
+        >
           And Boost Productivity
         </Text>
-        <Text c="dimmed" size="1rem">
+        <Text ta={isMobile ? "center" : "left"} c="dimmed" size="1rem">
           Leave the financial headache to us, so you can spend more time doing
-          things you love
+          the things you love
         </Text>
       </Stack>
     </Group>

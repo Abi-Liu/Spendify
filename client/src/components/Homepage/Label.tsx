@@ -9,8 +9,6 @@ export const Label = () => {
   const { user } = useUserContext();
   const navigate = useNavigate();
 
-  console.log(isMobile);
-
   function google() {
     window.open("http://localhost:8000/auth/google", "_self");
   }
@@ -29,6 +27,7 @@ export const Label = () => {
         <Text
           size={isMobile ? "2.45rem" : "3.3rem"}
           fw={700}
+          ta={isTablet && !isMobile ? "center" : "left"}
           style={{ lineHeight: "normal", letterSpacing: 0 }}
         >
           Manage Your Finances

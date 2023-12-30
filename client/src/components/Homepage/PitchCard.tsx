@@ -9,7 +9,7 @@ const PitchCard = () => {
       <Text ta="center" size="1rem" c={"#f75c4e"} fw={700}>
         WORK BETTER
       </Text>
-      <Text size={isMobile ? "1.75rem" : "2.25rem"} fw={700}>
+      <Text size={isMobile ? "1.75rem" : "2.25rem"} ta="center" fw={700}>
         For Your Business
       </Text>
       <Text ta={"center"} c="dimmed">
