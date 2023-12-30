@@ -4,10 +4,12 @@ import useUserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
 export const Label = () => {
-  const isMobile = useMediaQuery(`(max-width: ${em(375)})`);
+  const isMobile = useMediaQuery(`(max-width: ${em(415)})`);
   const isTablet = useMediaQuery(`(max-width: ${em(834)})`);
   const { user } = useUserContext();
   const navigate = useNavigate();
+
+  console.log(isMobile);
 
   function google() {
     window.open("http://localhost:8000/auth/google", "_self");
@@ -25,7 +27,7 @@ export const Label = () => {
     <Stack align={isTablet && !isMobile ? "center" : "flex-start"}>
       <div>
         <Text
-          size="3.3rem"
+          size={isMobile ? "2.45rem" : "3.3rem"}
           fw={700}
           style={{ lineHeight: "normal", letterSpacing: 0 }}
         >

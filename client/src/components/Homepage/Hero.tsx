@@ -20,7 +20,7 @@ const Hero = () => {
 
   const imageHeight = windowWidth < 1400 ? (windowWidth / 400) * 110 : 400;
 
-  const isMobile = useMediaQuery(`(max-width: ${em(375)})`);
+  const isMobile = useMediaQuery(`(max-width: ${em(415)})`);
   const isTablet = useMediaQuery(`(max-width: ${em(834)})`);
 
   let justify;

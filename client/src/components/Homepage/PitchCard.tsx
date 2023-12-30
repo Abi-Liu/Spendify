@@ -2,7 +2,7 @@ import { Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 
 const PitchCard = () => {
-  const isMobile = useMediaQuery(`(max-width: ${em(375)})`);
+  const isMobile = useMediaQuery(`(max-width: ${em(415)})`);
 
   return (
     <Stack w={"23.4rem"} align="center">

@@ -4,7 +4,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import React, { useEffect } from "react";
 
 const FinalPitch = () => {
-  const isMobile = useMediaQuery(`(max-width: ${em(375)})`);
+  const isMobile = useMediaQuery(`(max-width: ${em(415)})`);
   const isTablet = useMediaQuery(`(max-width: ${em(834)})`);
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
 
