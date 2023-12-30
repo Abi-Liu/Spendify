@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Label } from "./Label";
 import { Group, Image, em } from "@mantine/core";
-import Analytics from "./Analytics";
 import LandingImage from "../../assets/Landing.jpg";
 import { useMediaQuery } from "@mantine/hooks";
 
@@ -19,7 +18,7 @@ const Hero = () => {
     };
   }, []);
 
-  const imageHeight = windowWidth < 1200 ? (windowWidth / 400) * 120 : 400;
+  const imageHeight = windowWidth < 1400 ? (windowWidth / 500) * 100 : 400;
 
   const isMobile = useMediaQuery(`(max-width: ${em(375)})`);
   const isTablet = useMediaQuery(`(max-width: ${em(834)})`);
@@ -30,7 +29,7 @@ const Hero = () => {
   } else if (isTablet && !isMobile) {
     justify = "center";
   } else {
-    justify = "space-between";
+    justify = "space-around";
   }
 
   return (
@@ -43,7 +42,6 @@ const Hero = () => {
         src={LandingImage}
         radius="xl"
       />
-      <Analytics />
     </Group>
   );
 };

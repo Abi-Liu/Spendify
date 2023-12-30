@@ -17,37 +17,39 @@ const InfoCards = () => {
 
   return (
     <SimpleGrid cols={cols} pt={"10rem"}>
-      <Flex gap={15}>
+      <Flex gap={15} maw={370}>
         <Avatar src={Money} size={60} />
         <Stack gap={8}>
           <Text fw={600} size="1.25rem">
-            Track Expenses
+            Automatically Track All Transactions
           </Text>
           <Text c="dimmed" size="1rem">
-            Automatically track your transactions throughout all of your bank
-            and credit card accounts
+            Effortlessly monitor and record your financial transactions across
+            multiple bank and credit card accounts
           </Text>
         </Stack>
       </Flex>
-      <Flex gap={15}>
+      <Flex gap={15} maw={370}>
         <Avatar src={PiggyBank} size={60} />
         <Stack gap={8}>
           <Text fw={600} size="1.25rem">
-            Maintain Budget
+            Control Spending with Monthly Budgeting
           </Text>
           <Text c="dimmed" size="1rem">
-            Keep your spending in check with a monthly budgeting system
+            Keep your spending habits in check with an intuitive and
+            user-friendly monthly budgeting system
           </Text>
         </Stack>
       </Flex>
-      <Flex gap={15}>
+      <Flex gap={15} maw={370}>
         <Avatar src={Networth} size={60} />
         <Stack gap={8}>
           <Text fw={600} size="1.25rem">
-            Monitor Networth
+            Monitor Your Financial Growth
           </Text>
           <Text c="dimmed" size="1rem">
-            View changes in your networth
+            Get insights into your financial growth by visualizing and tracking
+            changes in your net worth over time
           </Text>
         </Stack>
       </Flex>
