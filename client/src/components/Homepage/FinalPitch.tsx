@@ -1,4 +1,4 @@
-import { Container, Group, Image, Stack, Text, em } from "@mantine/core";
+import { Group, Image, Stack, Text, em } from "@mantine/core";
 import Fun from "../../assets/Fun.jpg";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useEffect } from "react";
@@ -34,7 +34,7 @@ const FinalPitch = () => {
           SAVE MORE TIME
         </Text>
         <Text size={isMobile ? "1.75rem" : "2.25rem"}>
-          And Boost Productiviy
+          And Boost Productivity
         </Text>
         <Text c="dimmed" size="1rem">
           Leave the financial headache to us, so you can spend more time doing

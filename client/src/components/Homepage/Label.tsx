@@ -7,26 +7,26 @@ export const Label = () => {
 
   return (
     <Stack align={isTablet && !isMobile ? "center" : "flex-start"}>
-      <div style={{ height: isMobile ? "7.125rem" : "10.375rem" }}>
+      <div>
         <Text
-          size="3.438rem"
+          size="3.3rem"
           fw={700}
           style={{ lineHeight: "normal", letterSpacing: 0 }}
         >
-          Manage Payroll
+          Manage Your Finances
           <br />
           Like an Expert
         </Text>
       </div>
-      <div style={{ height: "4rem" }}>
+      <div>
         <Text
           ta={isTablet && !isMobile ? "center" : "left"}
           size="1rem"
           style={{ lineHeight: "2rem" }}
         >
-          Payna is helping you to setting up the payroll without
-          <br />
-          required any finance skills or knowledge before
+          Empowering Your Financial Journey, Simplifying Your Life. BudgetBuddy
+          helps you take control of your finances with ease. Your ultimate
+          partner for a stress-free financial management experience.
         </Text>
       </div>
       <Button radius="lg" style={{ width: "11rem" }}>

@@ -126,6 +126,8 @@ export default function Appshell({
             {!showNav && (
               <Button
                 bg={computedColorScheme === "dark" ? "#25262B" : "#F5F6FB"}
+                c="inherit"
+                fw={400}
                 radius="lg"
                 onClick={google}
               >

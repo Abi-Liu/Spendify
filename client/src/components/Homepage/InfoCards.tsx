@@ -21,7 +21,7 @@ const InfoCards = () => {
         <Avatar src={Money} size={60} />
         <Stack gap={8}>
           <Text fw={600} size="1.25rem">
-            Automatically Track All Transactions
+            Track All Expenses
           </Text>
           <Text c="dimmed" size="1rem">
             Effortlessly monitor and record your financial transactions across
@@ -33,7 +33,7 @@ const InfoCards = () => {
         <Avatar src={PiggyBank} size={60} />
         <Stack gap={8}>
           <Text fw={600} size="1.25rem">
-            Control Spending with Monthly Budgeting
+            Control Spending
           </Text>
           <Text c="dimmed" size="1rem">
             Keep your spending habits in check with an intuitive and
