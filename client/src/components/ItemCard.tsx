@@ -15,6 +15,27 @@ import AccountDetails from "./AccountDetails";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import { TbDots, TbTrash } from "react-icons/tb";
 
+const calculateUpdatedTime = (updatedAt: string): string => {
+  const date = new Date(updatedAt);
+  const currentDate = new Date();
+  const timeDifference = currentDate.getTime() - date.getTime();
+  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+
+  let updatedTime = "";
+  if (hours === 0) {
+    updatedTime = `Updated < 1 hour ago`;
+  } else if (hours === 1) {
+    updatedTime = `Updated 1 hour ago`;
+  } else if (hours > 1 && hours < 24) {
+    updatedTime = `Updated ${hours} hours ago`;
+  } else {
+    const plural = Math.floor(hours / 24) > 1 ? "days" : "day";
+    updatedTime = `Updated ${Math.floor(hours / 24)} ${plural} ago`;
+  }
+
+  return updatedTime;
+};
+
 const ItemCard = ({ item }: { item: Item }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [institution, setInstitution] = useState<Institution>();
@@ -27,7 +48,7 @@ const ItemCard = ({ item }: { item: Item }) => {
   const { getInstitutionById, institutions, formatLogo } =
     useInstitutionsContext();
 
-  const { id, plaid_institution_id } = item;
+  const { id, plaid_institution_id, updated_at } = item;
 
   useEffect(() => {
     const accounts = groupAccountsByItemId();
@@ -42,26 +63,7 @@ const ItemCard = ({ item }: { item: Item }) => {
     setInstitution(institutions.byInstitutionId[plaid_institution_id]);
   }, [institutions, plaid_institution_id]);
 
-  // format the time so we can let the user's know how fresh the data is
-  const date = new Date(item.updated_at);
-
-  const currentDate = new Date();
-  const timeDifference = currentDate.getTime() - date.getTime();
-
-  // Calculate hours from milliseconds
-  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-
-  let updatedTime = "";
-  if (hours === 0) {
-    updatedTime = `Updated < 1 hour ago`;
-  } else if (hours === 1) {
-    updatedTime = `Updated 1 hour ago`;
-  } else if (hours > 1 && hours < 24) {
-    updatedTime = `Updated ${hours} hours ago`;
-  } else {
-    const plural = Math.floor(hours / 24) > 1 ? "days" : "day";
-    updatedTime = `Updated ${Math.floor(hours / 24)} ${plural} ago`;
-  }
+  const updatedTime = calculateUpdatedTime(updated_at);
 
   function handleDelete(itemId: number) {
     deleteItemById(itemId);
