@@ -21,7 +21,7 @@ const InfoCards = () => {
         <Avatar src={Money} size={60} />
         <Stack gap={8}>
           <Text fw={600} size="1.25rem">
-            Track All Expenses
+            Track Expenses
           </Text>
           <Text c="dimmed" size="1rem">
             Effortlessly monitor and record your financial transactions across

@@ -1,9 +1,10 @@
 import Appshell from "../components/Appshell";
-import { Container, Group } from "@mantine/core";
+import { Container, Divider, Group } from "@mantine/core";
 import Hero from "../components/Homepage/Hero";
 import PitchCard from "../components/Homepage/PitchCard";
 import InfoCards from "../components/Homepage/InfoCards";
 import FinalPitch from "../components/Homepage/FinalPitch";
+import Footer from "../components/Homepage/Footer";
 
 const HomePage = () => {
   return (
@@ -15,6 +16,8 @@ const HomePage = () => {
         </Group>
         <InfoCards />
         <FinalPitch />
+        <Divider w="100%" />
+        <Footer />
       </Container>
     </Appshell>
   );
