@@ -11,9 +11,25 @@ import {
   setItemStatus,
 } from "../database/items";
 import SocketRequest from "../interfaces/SocketRequest";
+import { ItemErrorWebhook } from "plaid";
 
 // using for testing purposes
 const accessToken = "access-sandbox-966460a7-f1b2-4668-b5a2-cbfdf6e8036d";
+
+async function itemErrorHandler(plaidItemId: string, error: ItemErrorWebhook) {
+  const { error_code: errorCode } = error;
+  switch (errorCode) {
+    case "ITEM_LOGIN_REQUIRED": {
+      const { id: itemId } = await getItemsByPlaidItemId(plaidItemId);
+      await setItemStatus(itemId, "bad");
+      break;
+    }
+    default:
+      console.log(
+        `WEBHOOK: ITEMS: Plaid item id ${plaidItemId}: unhandled ITEM error`
+      );
+  }
+}
 
 export default {
   handleWebhook: async (req: SocketRequest, res: Response) => {
@@ -22,6 +38,7 @@ export default {
         item_id: plaidItemId,
         webhook_code: webhookCode,
         webhook_type: webhookType,
+        error,
       } = req.body;
       if (webhookType === "TRANSACTIONS") {
         // this is the only webhook code that needs to be handled, all others are irrelevant:
@@ -48,6 +65,12 @@ export default {
           await setItemStatus(id, "bad");
           console.log(`ITEM ${id} NEEDS TO BE REAUTHENTICATED`);
           req.io.emit("PENDING_EXPIRATION", id);
+        } else if (webhookCode === "ERROR") {
+          itemErrorHandler(plaidItemId, error);
+          const { id } = await getItemsByPlaidItemId(plaidItemId);
+
+          console.log(`ERROR: ${error.error_code}: ${error.error_message}`);
+          req.io.emit("ERROR", { id, error });
         }
       } else {
         console.log(
@@ -75,19 +98,5 @@ export default {
     } catch (error) {
       console.error(error);
     }
-  },
-
-  resetLogin: async (req: Request, res: Response) => {
-    const { id: itemId } = req.body;
-    const { access_token: accessToken } = await getItemById(itemId);
-    const response = plaidClient.sandboxItemResetLogin({
-      access_token: accessToken,
-    });
-
-    const ptResponse = await plaidClient.itemCreatePublicToken({
-      access_token: accessToken,
-    });
-    const { public_token: publicToken } = ptResponse.data;
-    console.log("Public Token: ", publicToken);
   },
 };

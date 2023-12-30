@@ -85,4 +85,17 @@ export default {
       res.status(500).send("Exchange Failed");
     }
   },
+
+  testResetLogin: async (req: Request, res: Response) => {
+    const { itemId } = req.body;
+    const { plaid_access_token } = await getItemById(itemId);
+
+    const config = {
+      access_token: plaid_access_token,
+    };
+
+    const { data } = await plaidClient.sandboxItemResetLogin(config);
+    console.log(data);
+    res.status(200);
+  },
 };

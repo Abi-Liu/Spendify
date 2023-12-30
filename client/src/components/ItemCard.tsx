@@ -14,6 +14,10 @@ import {
 import AccountDetails from "./AccountDetails";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import { TbDots, TbTrash } from "react-icons/tb";
+import api from "../utils/axios";
+
+//  CHANGE IN DEVELOPMENT
+const PLAID_ENV = "sandbox";
 
 const calculateUpdatedTime = (updatedAt: string): string => {
   const date = new Date(updatedAt);
@@ -71,6 +75,10 @@ const ItemCard = ({ item }: { item: Item }) => {
     deleteTransactionsByItemId(itemId);
   }
 
+  async function resetItemLogin(itemId: number) {
+    await api.post("/plaid/test-reset-item/", { itemId });
+  }
+
   return (
     <Accordion.Item key={item.id} value={item.plaid_institution_id}>
       <Center>
@@ -97,6 +105,11 @@ const ItemCard = ({ item }: { item: Item }) => {
             >
               Delete
             </Menu.Item>
+            {PLAID_ENV === "sandbox" && (
+              <Menu.Item onClick={() => resetItemLogin(item.id)}>
+                reset login
+              </Menu.Item>
+            )}
           </Menu.Dropdown>
         </Menu>
       </Center>

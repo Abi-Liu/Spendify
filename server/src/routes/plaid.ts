@@ -11,4 +11,7 @@ router.post(
 );
 router.post("/setAccessToken", isAuthenticated, plaidController.setAccessToken);
 
+// ONLY FOR TESTING PURPOSES ONLY IN SANDBOX MODE
+router.post("/test-reset-item", plaidController.testResetLogin);
+
 export default router;
