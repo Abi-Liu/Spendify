@@ -1,9 +1,25 @@
 import { Button, Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import useUserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export const Label = () => {
   const isMobile = useMediaQuery(`(max-width: ${em(375)})`);
   const isTablet = useMediaQuery(`(max-width: ${em(834)})`);
+  const { user } = useUserContext();
+  const navigate = useNavigate();
+
+  function google() {
+    window.open("http://localhost:8000/auth/google", "_self");
+  }
+
+  function handleClick() {
+    if (user) {
+      navigate("/dashboard");
+    } else {
+      google();
+    }
+  }
 
   return (
     <Stack align={isTablet && !isMobile ? "center" : "flex-start"}>
@@ -29,8 +45,8 @@ export const Label = () => {
           partner for a stress-free financial management experience.
         </Text>
       </div>
-      <Button radius="lg" style={{ width: "11rem" }}>
-        Get Started
+      <Button onClick={handleClick} radius="lg" style={{ width: "11rem" }}>
+        {user ? "Dashboard" : "Get Started"}
       </Button>
     </Stack>
   );
