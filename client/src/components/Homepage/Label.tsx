@@ -32,7 +32,15 @@ export const Label = () => {
         >
           Manage Your Finances
           <br />
-          Like an Expert
+          Like an{" "}
+          <Text
+            component="span"
+            fw={750}
+            variant="gradient"
+            gradient={{ from: "cyan", to: "indigo", deg: 45 }}
+          >
+            Expert
+          </Text>
         </Text>
       </div>
       <div>
