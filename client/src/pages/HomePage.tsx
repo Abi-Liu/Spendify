@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Container, Group, Image, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import Hero from "../components/Homepage/Hero";
+import PitchCard from "../components/Homepage/PitchCard";
+import InfoCards from "../components/Homepage/InfoCards";
 
 const HomePage = () => {
   const { login, user } = useUserContext();
@@ -21,6 +23,10 @@ const HomePage = () => {
     <Appshell showNav={!!user}>
       <Container size="xl">
         <Hero />
+        <Group pt="9rem" justify="center">
+          <PitchCard />
+        </Group>
+        <InfoCards />
       </Container>
     </Appshell>
   );

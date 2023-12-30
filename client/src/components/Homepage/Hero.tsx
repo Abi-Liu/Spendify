@@ -32,9 +32,9 @@ const Hero = () => {
   } else {
     justify = "space-between";
   }
-  console.log(justify);
+
   return (
-    <Group w={"100%"} justify={justify} wrap="nowrap">
+    <Group w={"100%"} justify={justify} wrap="nowrap" pt={"5rem"}>
       <Label />
       <Image
         height={imageHeight}
