@@ -1,22 +1,27 @@
 import { Container } from "@mantine/core";
 import NetworthChart from "../components/NetworthChart";
-import useAccountsContext from "../contexts/AccountsContext";
 import NoAccounts from "../components/NoAccounts";
+import useAccountsContext from "../contexts/AccountsContext";
+import AccountsTable from "../components/AccountsTable";
 
 const NetworthPage = () => {
   const { accounts } = useAccountsContext();
-
   const accountsArray = Object.values(accounts);
-
-  if (accountsArray.length === 0) {
-    return <NoAccounts />;
-  }
 
   return (
     <Container size="xl">
-      <Container size="xl" h="350px">
-        <NetworthChart />
-      </Container>
+      {accountsArray.length === 0 ? (
+        <NoAccounts />
+      ) : (
+        <>
+          <Container size="xl" h="350px">
+            <NetworthChart />
+          </Container>
+          <Container size="xl">
+            <AccountsTable accountsArray={accountsArray} />
+          </Container>
+        </>
+      )}
     </Container>
   );
 };
