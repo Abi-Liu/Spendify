@@ -1,4 +1,11 @@
-import { Table, Stack, Text, Divider, Group } from "@mantine/core";
+import {
+  Table,
+  Stack,
+  Text,
+  Divider,
+  Group,
+  useComputedColorScheme,
+} from "@mantine/core";
 import { Account } from "../contexts/AccountsContext";
 import useAssetsContext from "../contexts/AssetsContext";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
@@ -12,6 +19,7 @@ interface AccountsTableProps {
 const AccountsTable = ({ accountsArray }: AccountsTableProps) => {
   const { institutions } = useInstitutionsContext();
   const { assets } = useAssetsContext();
+  const computedColorScheme = useComputedColorScheme("dark");
 
   const assetsArray = Object.values(assets);
 
@@ -43,7 +51,13 @@ const AccountsTable = ({ accountsArray }: AccountsTableProps) => {
           <Table.Tbody>
             {cashArray.length > 0 && (
               <>
-                <Table.Tr fw={500} style={{ background: "#EDEDED" }}>
+                <Table.Tr
+                  fw={500}
+                  style={{
+                    background:
+                      computedColorScheme === "light" ? "#EDEDED" : "#25262B",
+                  }}
+                >
                   <Table.Td>Cash</Table.Td>
                   <Table.Td></Table.Td>
                   <Table.Td ta="right">{formatCurrency(depository)}</Table.Td>
@@ -70,7 +84,13 @@ const AccountsTable = ({ accountsArray }: AccountsTableProps) => {
             )}
             {investmentArray.length > 0 && (
               <>
-                <Table.Tr fw={500} style={{ background: "#EDEDED" }}>
+                <Table.Tr
+                  fw={500}
+                  style={{
+                    background:
+                      computedColorScheme === "light" ? "#EDEDED" : "#25262B",
+                  }}
+                >
                   <Table.Td>Investments</Table.Td>
                   <Table.Td></Table.Td>
                   <Table.Td ta="right">{formatCurrency(investment)}</Table.Td>
@@ -97,7 +117,13 @@ const AccountsTable = ({ accountsArray }: AccountsTableProps) => {
             )}
             {creditArray.length > 0 && (
               <>
-                <Table.Tr fw={500} style={{ background: "#EDEDED" }}>
+                <Table.Tr
+                  fw={500}
+                  style={{
+                    background:
+                      computedColorScheme === "light" ? "#EDEDED" : "#25262B",
+                  }}
+                >
                   <Table.Td>Credit</Table.Td>
                   <Table.Td></Table.Td>
                   <Table.Td ta="right">{formatCurrency(credit)}</Table.Td>
@@ -124,7 +150,13 @@ const AccountsTable = ({ accountsArray }: AccountsTableProps) => {
             )}
             {loanArray.length > 0 && (
               <>
-                <Table.Tr fw={500} style={{ background: "#EDEDED" }}>
+                <Table.Tr
+                  fw={500}
+                  style={{
+                    background:
+                      computedColorScheme === "light" ? "#EDEDED" : "#25262B",
+                  }}
+                >
                   <Table.Td>Loans</Table.Td>
                   <Table.Td></Table.Td>
                   <Table.Td ta="right">{formatCurrency(loan)}</Table.Td>
@@ -151,7 +183,13 @@ const AccountsTable = ({ accountsArray }: AccountsTableProps) => {
             )}
             {assetsArray.length > 0 && (
               <>
-                <Table.Tr fw={500} style={{ background: "#EDEDED" }}>
+                <Table.Tr
+                  fw={500}
+                  style={{
+                    background:
+                      computedColorScheme === "light" ? "#EDEDED" : "#25262B",
+                  }}
+                >
                   <Table.Td>Assets</Table.Td>
                   <Table.Td></Table.Td>
                   <Table.Td ta="right">{formatCurrency(assetsTotal)}</Table.Td>
