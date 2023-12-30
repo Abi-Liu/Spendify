@@ -7,9 +7,14 @@ import useUserContext from "./contexts/UserContext";
 import TransactionsPage from "./pages/TransactionsPage";
 import Appshell from "./components/Appshell";
 import NetworthPage from "./pages/NetworthPage";
+import { useEffect } from "react";
 
 function App() {
-  const { user } = useUserContext();
+  const { user, login } = useUserContext();
+
+  useEffect(() => {
+    login();
+  }, [login]);
 
   return (
     <>

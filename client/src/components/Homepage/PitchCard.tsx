@@ -7,14 +7,15 @@ const PitchCard = () => {
   return (
     <Stack w={"23.4rem"} align="center">
       <Text ta="center" size="1rem" c={"#f75c4e"} fw={700}>
-        WORK BETTER
+        OPTIMIZED SOLUTIONS
       </Text>
       <Text size={isMobile ? "1.75rem" : "2.25rem"} ta="center" fw={700}>
-        For Your Business
+        Tailored to Suit You
       </Text>
       <Text ta={"center"} c="dimmed">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias
-        asdfsd saldkfjsdlk sdaflkjl
+        Streamline your financial journey with tailor-made solutions designed to
+        simplify your life. Discover effective tools and strategies to manage
+        your finances effortlessly.
       </Text>
     </Stack>
   );

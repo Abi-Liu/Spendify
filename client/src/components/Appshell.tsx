@@ -12,6 +12,7 @@ import {
   Group,
   Image,
   Menu,
+  UnstyledButton,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon, TbChevronDown } from "react-icons/tb";
 import { FcGoogle } from "react-icons/fc";
@@ -81,7 +82,9 @@ export default function Appshell({
                 size="sm"
               />
             )}
-            <Image src={FullLogo} fit="contain" h={52} w={140} />
+            <UnstyledButton onClick={() => navigate("/")}>
+              <Image src={FullLogo} fit="contain" h={52} w={140} />
+            </UnstyledButton>
           </Group>
           <Group gap={0}>
             {navigationLinks.map((link) => (
@@ -123,7 +126,7 @@ export default function Appshell({
               </Menu>
             )}
 
-            {!showNav && (
+            {!user && (
               <Button
                 bg={computedColorScheme === "dark" ? "#25262B" : "#F5F6FB"}
                 c="inherit"
