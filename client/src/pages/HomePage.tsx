@@ -3,6 +3,8 @@ import Login from "./Login";
 import useUserContext from "../contexts/UserContext";
 import Appshell from "../components/Appshell";
 import { Link } from "react-router-dom";
+import { Container } from "@mantine/core";
+import { Label } from "../components/Homepage/Label";
 
 const HomePage = () => {
   const { login, user } = useUserContext();
@@ -12,11 +14,10 @@ const HomePage = () => {
   }, [login]);
 
   return (
-    <Appshell showNav={false}>
-      <div>
-        <Login />
-        {user && <Link to="/dashboard">Go to dashboard</Link>}
-      </div>
+    <Appshell showNav={!!user}>
+      <Container size="85%">
+        <Label />
+      </Container>
     </Appshell>
   );
 };

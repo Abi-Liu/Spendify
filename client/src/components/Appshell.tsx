@@ -14,6 +14,7 @@ import {
   Menu,
 } from "@mantine/core";
 import { TbSunHigh, TbMoon, TbChevronDown } from "react-icons/tb";
+import { FcGoogle } from "react-icons/fc";
 import useItemsContext from "../contexts/ItemsContext";
 import ItemAccordion from "./ItemAccordion";
 import useUserContext from "../contexts/UserContext";
@@ -59,6 +60,10 @@ export default function Appshell({
       }
     : undefined;
 
+  function google() {
+    window.open("http://localhost:8000/auth/google", "_self");
+  }
+
   return (
     <AppShell header={{ height: 70 }} navbar={navbarProps} padding="md">
       <AppShell.Header>
@@ -78,7 +83,7 @@ export default function Appshell({
             )}
             <Image src={FullLogo} fit="contain" h={52} w={140} />
           </Group>
-          <Group>
+          <Group gap={0}>
             {navigationLinks.map((link) => (
               <Button
                 key={link.name}
@@ -93,30 +98,45 @@ export default function Appshell({
                 {link.name}
               </Button>
             ))}
-            <Menu shadow="md">
-              <Menu.Target>
-                <ActionIcon
-                  color={computedColorScheme === "light" ? "black" : "gray"}
-                  variant="subtle"
-                  hiddenFrom="sm"
-                >
-                  <TbChevronDown />
-                </ActionIcon>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                {navigationLinks.map((link) => (
-                  <Menu.Item
-                    key={link.name}
-                    onClick={() => navigate(link.link)}
+            {showNav && (
+              <Menu shadow="md">
+                <Menu.Target>
+                  <ActionIcon
+                    color={computedColorScheme === "light" ? "black" : "gray"}
+                    variant="subtle"
+                    hiddenFrom="sm"
                   >
-                    {link.name}
-                  </Menu.Item>
-                ))}
-              </Menu.Dropdown>
-            </Menu>
+                    <TbChevronDown />
+                  </ActionIcon>
+                </Menu.Target>
 
-            <Button onClick={toggleColorScheme} size="sm" variant="transparent">
+                <Menu.Dropdown>
+                  {navigationLinks.map((link) => (
+                    <Menu.Item
+                      key={link.name}
+                      onClick={() => navigate(link.link)}
+                    >
+                      {link.name}
+                    </Menu.Item>
+                  ))}
+                </Menu.Dropdown>
+              </Menu>
+            )}
+
+            {!showNav && (
+              <Button
+                bg={computedColorScheme === "dark" ? "#25262B" : "#F5F6FB"}
+                radius="lg"
+                onClick={google}
+              >
+                <Group gap={5}>
+                  <FcGoogle />
+                  Sign in
+                </Group>
+              </Button>
+            )}
+
+            <Button onClick={toggleColorScheme} size="sm" variant="subtle">
               {computedColorScheme === "light" ? (
                 <TbMoon size={24} />
               ) : (
