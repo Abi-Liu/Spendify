@@ -2,9 +2,9 @@ import { Button, Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 
 export const Label = () => {
-  const isMobile = useMediaQuery(`(max-width: ${em(700)})`);
+  const isMobile = useMediaQuery(`(max-width: ${em(375)})`);
   const isTablet = useMediaQuery(`(max-width: ${em(834)})`);
-  console.log(isTablet);
+
   return (
     <Stack align={isTablet && !isMobile ? "center" : "flex-start"}>
       <div style={{ height: isMobile ? "7.125rem" : "10.375rem" }}>
@@ -18,7 +18,7 @@ export const Label = () => {
           Like an Expert
         </Text>
       </div>
-      <div style={{ height: "4rem", width: "26.25rem" }}>
+      <div style={{ height: "4rem" }}>
         <Text
           ta={isTablet && !isMobile ? "center" : "left"}
           size="1rem"

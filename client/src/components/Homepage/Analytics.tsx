@@ -11,6 +11,8 @@ const Analytics = () => {
         height: "10rem",
         width: "13.3rem",
         display: isTablet ? "none" : "",
+        position: "fixed",
+        left: "45%",
       }}
     >
       <Text size="1rem" style={{ lineHeight: "normal" }}>
