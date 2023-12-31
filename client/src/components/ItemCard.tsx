@@ -145,9 +145,7 @@ const ItemCard = ({ item }: { item: Item }) => {
 
       {accounts &&
         accounts.map((account) => (
-          <>
-            <AccountDetails key={account.id} account={account} />
-          </>
+          <AccountDetails key={account.id} account={account} />
         ))}
       <Accordion.Panel>
         <Text ta="right" size="xs">

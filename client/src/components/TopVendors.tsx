@@ -48,8 +48,8 @@ const TopVendors = ({ names, isMedium }: TopVendorsProps) => {
           direction="column"
           justify="space-between"
         >
-          {topFive.map((vendor: [string, number]) => (
-            <Flex justify="space-between" gap={10}>
+          {topFive.map((vendor: [string, number], i: number) => (
+            <Flex key={i} justify="space-between" gap={10}>
               <Text>{vendor[0]}</Text>
               <Text>{formatCurrency(vendor[1])}</Text>
             </Flex>
