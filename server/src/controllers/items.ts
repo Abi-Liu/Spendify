@@ -3,6 +3,7 @@ import {
   deleteItemByItemId,
   getItemById,
   getItemsByUserId,
+  setItemStatus,
 } from "../database/items";
 import { sanitizeItems } from "../utils/sanitize";
 
@@ -39,6 +40,17 @@ export default {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error fetching items" });
+    }
+  },
+
+  updateItemStatus: async (req: Request, res: Response) => {
+    try {
+      const { status, itemId } = req.body;
+      await setItemStatus(itemId, status);
+      res.status(200);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error updating item status" });
     }
   },
 };

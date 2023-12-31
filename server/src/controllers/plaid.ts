@@ -12,7 +12,7 @@ const { CLIENT_URL } = process.env;
 // only used for development. allows the local server to receive plaid webhooks
 // must be changed to match each new ngrok url
 const WEBHOOK_URL =
-  "https://d2e0-2600-1700-a410-90b0-2950-7c81-a16e-4669.ngrok-free.app/webhook/";
+  "https://951e-2600-1700-a410-90b0-6868-2889-d439-3e05.ngrok-free.app/webhook/";
 
 export default {
   // start the link flow by sending client a public token.
@@ -22,14 +22,13 @@ export default {
     const { id: clientUserId, itemId } = request.body;
 
     let accessToken = null;
-    let products = [Products.Transactions];
+    const products = [Products.Transactions];
 
     // if itemId exists, that means we are initializing link in update mode.
     // include the item access token and do not include any products
     if (itemId) {
       const item = await getItemById(itemId);
-      accessToken = item.access_token;
-      products = [];
+      accessToken = item.plaid_access_token;
     }
 
     // Configuring plaid request
@@ -87,7 +86,8 @@ export default {
   },
 
   testResetLogin: async (req: Request, res: Response) => {
-    const { itemId } = req.body;
+    const { id: itemId } = req.body;
+
     const { plaid_access_token } = await getItemById(itemId);
 
     const config = {

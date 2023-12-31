@@ -7,10 +7,12 @@ import { notifications } from "@mantine/notifications";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
 import useLinkContext from "../contexts/LinkTokenContext";
 import useUserContext from "../contexts/UserContext";
+import useItemsContext from "../contexts/ItemsContext";
 
 const Sockets = () => {
   const { getTransactionsByItemId } = useTransactionsContext();
   const { getAccountsByItemId } = useAccountsContext();
+  const { getItemById } = useItemsContext();
   const { institutions, getInstitutionById } = useInstitutionsContext();
   const { user } = useUserContext();
   const { generateItemLinkToken } = useLinkContext();
@@ -56,8 +58,8 @@ const Sockets = () => {
         "Access consent is expiring soon. Please re-enter credentials to continue receiving your financial updates.",
         id
       );
-
-      generateItemLinkToken(user!.id, id);
+      // item will now be in 'bad' state
+      getItemById(id);
     });
 
     socket.on("ERROR", ({ id, error }) => {
@@ -68,8 +70,8 @@ const Sockets = () => {
         message: `${institutionName}: Item Login Required`,
       });
       console.log(`${institutionName}: Item Login Required`);
-
-      generateItemLinkToken(user!.id, id);
+      // item will now be in 'bad' state
+      getItemById(id);
     });
 
     // close the connection to avoid memory leaks

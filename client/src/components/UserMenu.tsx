@@ -130,14 +130,14 @@ const UserMenu = ({ colorScheme }: UserMenuProps) => {
                 : "",
             }}
           >
-            <Group>
-              <Avatar src={user!.avatar_url} />
+            <Group wrap="nowrap">
+              <Avatar size={38} src={user!.avatar_url} />
               <div style={{ flex: 1 }}>
                 <Text size="sm" fw={500}>
                   {user?.first_name} {user?.last_name}
                 </Text>
 
-                <Text c="dimmed" size="xs" fw={500}>
+                <Text c="dimmed" size="xs" fw={450}>
                   {user!.email}
                 </Text>
               </div>

@@ -10,11 +10,16 @@ import {
   Center,
   Menu,
   Avatar,
+  Tooltip,
+  Group,
 } from "@mantine/core";
 import AccountDetails from "./AccountDetails";
 import useTransactionsContext from "../contexts/TransactionsContext";
-import { TbDots, TbTrash } from "react-icons/tb";
+import { TbDots, TbTrash, TbAlertTriangle } from "react-icons/tb";
 import api from "../utils/axios";
+import useLinkContext from "../contexts/LinkTokenContext";
+import useUserContext from "../contexts/UserContext";
+import PlaidLink from "./PlaidLink";
 
 //  CHANGE IN DEVELOPMENT
 const PLAID_ENV = "sandbox";
@@ -43,7 +48,9 @@ const calculateUpdatedTime = (updatedAt: string): string => {
 const ItemCard = ({ item }: { item: Item }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [institution, setInstitution] = useState<Institution>();
+  const [token, setToken] = useState("");
 
+  const { user } = useUserContext();
   const { deleteItemById } = useItemsContext();
   const { deleteTransactionsByItemId } = useTransactionsContext();
   const { deleteAccountsByItemId, groupAccountsByItemId } =
@@ -51,6 +58,8 @@ const ItemCard = ({ item }: { item: Item }) => {
 
   const { getInstitutionById, institutions, formatLogo } =
     useInstitutionsContext();
+
+  const { generateItemLinkToken, linkTokens } = useLinkContext();
 
   const { id, plaid_institution_id, updated_at } = item;
 
@@ -75,13 +84,38 @@ const ItemCard = ({ item }: { item: Item }) => {
     deleteTransactionsByItemId(itemId);
   }
 
-  async function resetItemLogin(itemId: number) {
-    await api.post("/plaid/test-reset-item/", { itemId });
+  async function resetItemLogin() {
+    await api.post("/plaid/test-reset-item/", { id });
   }
+
+  async function initiateLink() {
+    // geerate new link token only when user clicks the button
+    if (user) {
+      await generateItemLinkToken(user.id, id);
+    }
+  }
+
+  useEffect(() => {
+    setToken(linkTokens.byItem[id]);
+  }, [linkTokens, id]);
 
   return (
     <Accordion.Item key={item.id} value={item.plaid_institution_id}>
+      {token != null && token.length > 0 && (
+        <PlaidLink
+          userId={user!.id}
+          linkToken={linkTokens.byItem[id]}
+          itemId={id}
+        />
+      )}
       <Center>
+        {item.status === "bad" && (
+          <Tooltip label="Update Needed. Click to update login.">
+            <ActionIcon variant="transparent" c={"red"} onClick={initiateLink}>
+              <TbAlertTriangle />
+            </ActionIcon>
+          </Tooltip>
+        )}
         <Accordion.Control
           icon={
             <Avatar
@@ -90,7 +124,9 @@ const ItemCard = ({ item }: { item: Item }) => {
             />
           }
         >
-          {institution?.name}
+          <Group gap={0}>
+            <Text>{institution?.name}</Text>
+          </Group>
         </Accordion.Control>
         <Menu>
           <Menu.Target>
@@ -106,9 +142,7 @@ const ItemCard = ({ item }: { item: Item }) => {
               Delete
             </Menu.Item>
             {PLAID_ENV === "sandbox" && (
-              <Menu.Item onClick={() => resetItemLogin(item.id)}>
-                reset login
-              </Menu.Item>
+              <Menu.Item onClick={resetItemLogin}>reset login</Menu.Item>
             )}
           </Menu.Dropdown>
         </Menu>

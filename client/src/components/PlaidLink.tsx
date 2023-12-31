@@ -12,15 +12,20 @@ import useLinkContext from "../contexts/LinkTokenContext";
 
 interface Props {
   linkToken: string | null;
-  itemId?: number | null;
+  itemId?: number;
   userId: number;
 }
 
 // open plaid link interface
 export default function PlaidLink(props: Props) {
-  const { getItemsByUser } = useItemsContext();
-  const { deleteItemLinkToken, deleteUserLinkToken } = useLinkContext();
-
+  const { getItemsByUser, getItemById } = useItemsContext();
+  const {
+    deleteItemLinkToken,
+    deleteUserLinkToken,
+    generateItemLinkToken,
+    generateUserLinkToken,
+  } = useLinkContext();
+  console.log(props.itemId);
   // define onSuccess, onExit and onEvent functions as configs for Plaid Link creation
   const onSuccess = async (
     publicToken: string,
@@ -35,12 +40,15 @@ export default function PlaidLink(props: Props) {
       // add the new item to the items global state
       await getItemsByUser(props.userId);
       deleteUserLinkToken(props.userId);
+    } else {
+      // we are now in update mode
+      // TODO: initiate update link flow
+      console.log("in update mode");
+      await api.put("/items/", { itemId: props.itemId, status: "good" });
+      deleteItemLinkToken(props.itemId);
+      getItemById(props.itemId);
     }
-    // else {
-    //   // we are now in update mode
-    //   // TODO: initiate update link flow
-    //   deleteItemLinkToken(props.itemId)
-    // }
+    deleteUserLinkToken(props.userId);
   };
 
   const onExit = async (
@@ -48,7 +56,10 @@ export default function PlaidLink(props: Props) {
     metadata: PlaidLinkOnExitMetadata
   ) => {
     if (error !== null && error.error_code === "INVALID_LINK_TOKEN") {
-      console.log("generate new link token");
+      await generateUserLinkToken(props.userId);
+      if (props.itemId) {
+        await generateItemLinkToken(props.userId, props.itemId);
+      }
     }
     console.log(error);
     console.log(metadata);

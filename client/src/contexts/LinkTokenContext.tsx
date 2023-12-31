@@ -105,7 +105,7 @@ export const LinkProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (data.link_token) {
         dispatch({
-          type: "LINK_TOKEN_CREATED",
+          type: "LINK_UPDATE_MODE",
           id: itemId,
           token: data.link_token,
         });

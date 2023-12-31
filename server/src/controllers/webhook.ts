@@ -5,11 +5,7 @@ import {
   WebhookType,
 } from "plaid";
 import { updateTransactions } from "../utils/updateTransactions";
-import {
-  getItemById,
-  getItemsByPlaidItemId,
-  setItemStatus,
-} from "../database/items";
+import { getItemsByPlaidItemId, setItemStatus } from "../database/items";
 import SocketRequest from "../interfaces/SocketRequest";
 import { ItemErrorWebhook } from "plaid";
 
