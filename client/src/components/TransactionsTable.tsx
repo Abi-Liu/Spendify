@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Transactions } from "../contexts/TransactionsContext";
 import {
   Group,
@@ -21,25 +21,28 @@ interface TransactionsTableProps {
 
 const TransactionsTable = (props: TransactionsTableProps) => {
   const { user } = useUserContext();
-
   const [transactions, setTransactions] = useState<Transactions[]>();
-  const [column, setColumn] = useState("user_id");
-  const [columnValue, setColumnValue] = useState(user!.id);
-
   // used for table pagination. Default value of 1
   const [page, setPage] = useState(1);
 
   // used to determine how many transactions to show per page. Default value of 25
   const [limit, setLimit] = useState(25);
 
-  // it will determine if we are querying from all accounts or specific accounts and the id of the row we want to get
-  useEffect(() => {
+  // determine if we are querying from all accounts or specific accounts and the id of the row we want to get
+  // refactored to useMemo instead of state to minimize rerenders
+  const column = useMemo(() => {
     if (typeof props.account === "number") {
-      setColumn("account_id");
-      setColumnValue(props.account);
+      return "account_id";
     } else {
-      setColumn("user_id");
-      setColumnValue(user!.id);
+      return "user_id";
+    }
+  }, [props.account]);
+
+  const columnValue = useMemo(() => {
+    if (typeof props.account === "number") {
+      return props.account;
+    } else {
+      return user!.id;
     }
   }, [props.account, user]);
 
