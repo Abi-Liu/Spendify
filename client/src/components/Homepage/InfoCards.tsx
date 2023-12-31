@@ -16,7 +16,7 @@ const InfoCards = () => {
   }
 
   return (
-    <SimpleGrid cols={cols} pt={"10rem"}>
+    <SimpleGrid cols={cols} pt={"10rem"} verticalSpacing={"3.5rem"}>
       <Flex gap={15} maw={370}>
         <Avatar src={Money} size={60} />
         <Stack gap={8}>
