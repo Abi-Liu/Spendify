@@ -107,6 +107,22 @@ const TransactionsTable = (props: TransactionsTableProps) => {
     </Table.Tr>
   ));
 
+  // const csvData = useMemo(() => {
+  //   if (transactions?.length) {
+  //     const data = [["Date", "Name", "Category", "Payment Channel", "Amount"]];
+  //     for (const transaction of transactions) {
+  //       data.push([
+  //         transaction.date,
+  //         transaction.name,
+  //         transaction.personal_finance_category,
+  //         transaction.payment_channel,
+  //         formatCurrency(transaction.amount),
+  //       ]);
+  //     }
+  //     return data;
+  //   }
+  // }, [transactions]);
+
   if (transactions.length === 0) {
     return <Text size="lg">No Transactions Found</Text>;
   }

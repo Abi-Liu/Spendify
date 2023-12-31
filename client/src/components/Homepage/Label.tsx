@@ -43,13 +43,13 @@ export const Label = () => {
           </Text>
         </Text>
       </div>
-      <div>
+      <div style={{ width: "90%" }}>
         <Text
           ta={isTablet && !isMobile ? "center" : "left"}
           size="1rem"
           style={{ lineHeight: "2rem" }}
         >
-          Empowering Your Financial Journey, Simplifying Your Life. BudgetBuddy
+          Empowering Your Financial Journey. Simplifying Your Life. BudgetBuddy
           helps you take control of your finances with ease. Your ultimate
           partner for a stress-free financial management experience.
         </Text>

@@ -25,7 +25,7 @@ const CustomTooltip = ({
     const currentValue = payload[0].value;
     const previousValue = index > 0 ? data[index - 1].networth : 0;
     const difference = currentValue - previousValue;
-    const sign = difference >= 0 ? "+" : "-";
+    const sign = difference >= 0 ? "+" : "";
     let color;
     if (difference > 0) {
       color = "green";
