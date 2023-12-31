@@ -1,4 +1,4 @@
-import { Container, Flex, Text } from "@mantine/core";
+import { Card, Flex, Text } from "@mantine/core";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 interface PieChartProps {
@@ -33,9 +33,10 @@ const CategoryChart = ({ categories, isMedium }: PieChartProps) => {
   const containerWidth = isMedium ? "100%" : "45%";
 
   return (
-    <Container
+    <Card
+      withBorder
+      shadow="lg"
       style={{
-        border: "1px solid #808080",
         width: containerWidth,
         height: "29rem",
       }}
@@ -72,7 +73,7 @@ const CategoryChart = ({ categories, isMedium }: PieChartProps) => {
           </PieChart>
         </ResponsiveContainer>
       </Flex>
-    </Container>
+    </Card>
   );
 };
 

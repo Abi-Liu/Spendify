@@ -9,11 +9,12 @@ import Loading from "../components/Loading";
 import SpendingAnalysis from "../components/SpendingAnalysis";
 import NoAccounts from "../components/NoAccounts";
 import useAssetsContext from "../contexts/AssetsContext";
-import { Container, Group, Text } from "@mantine/core";
+import { Card, Container, Group, Text, em } from "@mantine/core";
 import NetworthChart from "../components/NetworthChart";
 import { Link } from "react-router-dom";
 import useNetworthContext from "../contexts/NetworthContext";
 import formatCurrency from "../utils/formatDollar";
+import { useMediaQuery } from "@mantine/hooks";
 
 const Dashboard = () => {
   // change document title
@@ -31,6 +32,8 @@ const Dashboard = () => {
   const currentNetworth = formatCurrency(
     Number(networth[new Date().toISOString().split("T")[0]])
   );
+
+  const isMedium = useMediaQuery(`(max-width: ${em(1050)})`);
 
   // get all items for the user
   useEffect(() => {
@@ -66,12 +69,16 @@ const Dashboard = () => {
       {itemsArray.length === 0 ? (
         <NoAccounts />
       ) : (
-        <Container size="xl">
-          <Container
-            size="md"
+        <Container size="xl" mb="4rem">
+          <Card
+            withBorder
+            shadow="lg"
             h={275}
+            w={isMedium ? "95%" : "80%"}
+            mx="auto"
             pb="2.5rem"
-            style={{ border: "1px solid #808080" }}
+            mb="5rem"
+            mt="2rem"
           >
             <Group pt="1rem" justify="space-between" align="center">
               <Text size="1rem">
@@ -87,7 +94,7 @@ const Dashboard = () => {
               </Text>
             </Group>
             <NetworthChart />
-          </Container>
+          </Card>
 
           <SpendingAnalysis />
         </Container>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from "react";
-import { Container, Flex, Title, Text, em } from "@mantine/core";
+import { Container, Flex, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import CategoryChart from "./CategoryChart";
@@ -45,17 +45,13 @@ const SpendingAnalysis = () => {
 
   return (
     <Container>
-      <Title order={1} ta="center" style={{ margin: "1rem 0rem" }}>
-        Monthly Spending
-      </Title>
-      <Text ta="center" size="xl" style={{ marginBottom: "1rem" }}>
-        A breakdown of your monthly spending
+      <Text size="2.5rem" ta="center" fw={600} style={{ margin: "1rem 0rem" }}>
+        Monthly Summary
       </Text>
-      <Flex
-        direction={isMedium ? "column" : "row"}
-        justify="space-between"
-        gap={10}
-      >
+      <Text ta="center" size="xl" c="dimmed" style={{ marginBottom: "1rem" }}>
+        A breakdown of your monthly spending habits
+      </Text>
+      <Flex direction={isMedium ? "column" : "row"} justify="space-around">
         <CategoryChart categories={categories} isMedium={isMedium} />
         <TopVendors names={names} isMedium={isMedium} />
       </Flex>

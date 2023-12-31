@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from "react";
-import { Container, Flex, Text } from "@mantine/core";
+import { Card, Flex, Text } from "@mantine/core";
 import formatCurrency from "../utils/formatDollar";
 
 interface TopVendorsProps {
@@ -23,10 +23,11 @@ const TopVendors = ({ names, isMedium }: TopVendorsProps) => {
   const containerWidth = isMedium ? "100%" : "45%";
 
   return (
-    <Container
+    <Card
+      withBorder
+      shadow="lg"
       style={{
         width: containerWidth,
-        border: "1px solid #808080",
         height: "29rem",
       }}
     >
@@ -55,7 +56,7 @@ const TopVendors = ({ names, isMedium }: TopVendorsProps) => {
           ))}
         </Flex>
       </Flex>
-    </Container>
+    </Card>
   );
 };
 
