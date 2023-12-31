@@ -84,6 +84,7 @@ const Sockets = () => {
     getTransactionsByItemId,
     institutions.byItemId,
     generateItemLinkToken,
+    getItemById,
     user,
   ]);
   return <></>;

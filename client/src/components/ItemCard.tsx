@@ -94,8 +94,6 @@ const ItemCard = ({ item }: { item: Item }) => {
     }
   }
 
-  console.log(linkTokens.byItem);
-
   return (
     <Accordion.Item key={item.id} value={item.plaid_institution_id}>
       {linkTokens.byItem[id] != null && linkTokens.byItem[id].length > 0 && (
