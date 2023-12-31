@@ -14,6 +14,7 @@ import useUserContext from "../contexts/UserContext";
 import Loading from "./Loading";
 import formatCurrency from "../utils/formatDollar";
 import { TbArrowLeft, TbArrowRight } from "react-icons/tb";
+import { CSVLink } from "react-csv";
 
 interface TransactionsTableProps {
   account: string | number;
@@ -93,35 +94,43 @@ const TransactionsTable = (props: TransactionsTableProps) => {
     </Combobox.Option>
   ));
 
+  const { csvData, headers } = useMemo(() => {
+    if (transactions?.length) {
+      const headers = [
+        { label: "Date", key: "date" },
+        { label: "Name", key: "name" },
+        { label: "Category", key: "category" },
+        { label: "Payment Channel", key: "payment_channel" },
+        { label: "Amount", key: "amount" },
+      ];
+      const csvData = [];
+      for (const transaction of transactions) {
+        csvData.push({
+          date: transaction.date,
+          name: transaction.name,
+          category: transaction.personal_finance_category,
+          payment_channel: transaction.payment_channel,
+          amount: formatCurrency(transaction.amount),
+        });
+      }
+      return { csvData, headers };
+    }
+    return { csvData: "" };
+  }, [transactions]);
+
   if (!transactions) {
     return <Loading />;
   }
 
   const rows = transactions.map((transaction) => (
     <Table.Tr key={transaction.id}>
-      <Table.Td>{formatDate(transaction.date)}</Table.Td>
+      <Table.Td>{formatDate(transaction.date.split("T")[0])}</Table.Td>
       <Table.Td>{transaction.name}</Table.Td>
       <Table.Td>{transaction.personal_finance_category}</Table.Td>
       <Table.Td>{transaction.payment_channel}</Table.Td>
       <Table.Td>{formatCurrency(Number(transaction.amount))}</Table.Td>
     </Table.Tr>
   ));
-
-  // const csvData = useMemo(() => {
-  //   if (transactions?.length) {
-  //     const data = [["Date", "Name", "Category", "Payment Channel", "Amount"]];
-  //     for (const transaction of transactions) {
-  //       data.push([
-  //         transaction.date,
-  //         transaction.name,
-  //         transaction.personal_finance_category,
-  //         transaction.payment_channel,
-  //         formatCurrency(transaction.amount),
-  //       ]);
-  //     }
-  //     return data;
-  //   }
-  // }, [transactions]);
 
   if (transactions.length === 0) {
     return <Text size="lg">No Transactions Found</Text>;
@@ -171,6 +180,15 @@ const TransactionsTable = (props: TransactionsTableProps) => {
               <Combobox.Options>{options}</Combobox.Options>
             </Combobox.Dropdown>
           </Combobox>
+          <CSVLink
+            data={csvData}
+            headers={headers}
+            filename="Transactions"
+            target="_blank"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            Export to CSV
+          </CSVLink>
         </Group>
         {/* pagination */}
         <Group>
