@@ -122,6 +122,7 @@ export const LinkProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const deleteItemLinkToken = useCallback((id: number) => {
+    console.log("deleting item link token: ", id);
     dispatch({ type: "DELETE_ITEM_LINK_TOKEN", id });
   }, []);
 

@@ -44,8 +44,13 @@ export default function PlaidLink(props: Props) {
       // we are now in update mode
       // TODO: initiate update link flow
       console.log("in update mode");
-      await api.put("/items/", { itemId: props.itemId, status: "good" });
       deleteItemLinkToken(props.itemId);
+      try {
+        await api.put("/items/", { itemId: props.itemId, status: "good" });
+      } catch (error) {
+        console.log(error);
+      }
+      console.log("running getItemById");
       getItemById(props.itemId);
     }
     deleteUserLinkToken(props.userId);

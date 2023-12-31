@@ -46,7 +46,9 @@ export default {
   updateItemStatus: async (req: Request, res: Response) => {
     try {
       const { status, itemId } = req.body;
-      await setItemStatus(itemId, status);
+      console.log(status, itemId);
+      const data = await setItemStatus(itemId, status);
+      console.log(data);
       res.status(200);
     } catch (error) {
       console.error(error);

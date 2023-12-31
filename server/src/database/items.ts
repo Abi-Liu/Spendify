@@ -41,9 +41,11 @@ export async function getItemById(itemId: string) {
 }
 
 export async function setItemStatus(itemId: number, status: string) {
+  console.log(`query id = ${itemId}, status = ${status}`);
   const query = `UPDATE items SET status = $1 where id = $2`;
   const values = [status, itemId];
-  await connection.query(query, values);
+  const { rows } = await connection.query(query, values);
+  return rows;
 }
 
 export async function getItemsByUserId(userId: string) {

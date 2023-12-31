@@ -48,7 +48,6 @@ const calculateUpdatedTime = (updatedAt: string): string => {
 const ItemCard = ({ item }: { item: Item }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [institution, setInstitution] = useState<Institution>();
-  const [token, setToken] = useState("");
 
   const { user } = useUserContext();
   const { deleteItemById } = useItemsContext();
@@ -95,13 +94,11 @@ const ItemCard = ({ item }: { item: Item }) => {
     }
   }
 
-  useEffect(() => {
-    setToken(linkTokens.byItem[id]);
-  }, [linkTokens, id]);
+  console.log(linkTokens.byItem);
 
   return (
     <Accordion.Item key={item.id} value={item.plaid_institution_id}>
-      {token != null && token.length > 0 && (
+      {linkTokens.byItem[id] != null && linkTokens.byItem[id].length > 0 && (
         <PlaidLink
           userId={user!.id}
           linkToken={linkTokens.byItem[id]}
