@@ -1,16 +1,19 @@
 import { Suspense } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useItemsContext from "../contexts/ItemsContext";
 import useUserContext from "../contexts/UserContext";
-import useAccountsContext, { Account } from "../contexts/AccountsContext";
+import useAccountsContext from "../contexts/AccountsContext";
 import useTransactionsContext from "../contexts/TransactionsContext";
-import { TransactionsGroup } from "../contexts/TransactionsContext";
 import formatLastThreeMonths from "../utils/formatDates";
 import Loading from "../components/Loading";
 import SpendingAnalysis from "../components/SpendingAnalysis";
 import NoAccounts from "../components/NoAccounts";
 import useAssetsContext from "../contexts/AssetsContext";
-import { Container } from "@mantine/core";
+import { Container, Group, Text } from "@mantine/core";
+import NetworthChart from "../components/NetworthChart";
+import { Link } from "react-router-dom";
+import useNetworthContext from "../contexts/NetworthContext";
+import formatCurrency from "../utils/formatDollar";
 
 const Dashboard = () => {
   // change document title
@@ -18,20 +21,16 @@ const Dashboard = () => {
     document.title = "Dashboard | BudgetBuddy";
   }, []);
 
-  const [groupedAccounts, setGroupedAccounts] = useState<{
-    [itemId: string]: Account[];
-  }>({});
-  const [transactions, setTransactions] = useState<TransactionsGroup>();
   const { itemsArray, getItemsByUser } = useItemsContext();
   const { user } = useUserContext();
-  const { groupAccountsByItemId, getAccountsByUser, accounts } =
-    useAccountsContext();
-  const {
-    getTransactionsByUserId,
-    groupTransactions,
-    transactions: transactionsContextState,
-  } = useTransactionsContext();
+  const { getAccountsByUser } = useAccountsContext();
+  const { getTransactionsByUserId } = useTransactionsContext();
   const { getUserAssets } = useAssetsContext();
+  const { networth } = useNetworthContext();
+
+  const currentNetworth = formatCurrency(
+    Number(networth[new Date().toISOString().split("T")[0]])
+  );
 
   // get all items for the user
   useEffect(() => {
@@ -48,13 +47,6 @@ const Dashboard = () => {
     getAccountsByUser(user!.id);
   }, [user, getAccountsByUser]);
 
-  // set accounts state to the grouped accounts by item id
-  useEffect(() => {
-    if (Object.keys(accounts).length !== 0) {
-      setGroupedAccounts(groupAccountsByItemId());
-    }
-  }, [accounts, groupAccountsByItemId]);
-
   // get transactions so we can break down the summary of spending. Only fetch first 3 months of transactions.
   // this will be used for budgeting and spending analysis. also comparing spending to previous month.
   useEffect(() => {
@@ -64,13 +56,6 @@ const Dashboard = () => {
     getTransactionsByUserId(user!.id, startDate, endDate);
   }, [getTransactionsByUserId, user]);
 
-  // set transactions state broken down by account, item, and user
-  useEffect(() => {
-    if (transactionsContextState) {
-      setTransactions(groupTransactions());
-    }
-  }, [transactionsContextState, groupTransactions]);
-
   // get all assets associated with the user
   useEffect(() => {
     getUserAssets(user!.id);
@@ -78,27 +63,35 @@ const Dashboard = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <Container size="xl">
-        {itemsArray.length > 0 ? (
-          <>
-            <SpendingAnalysis />
-            {itemsArray.map((item) => {
-              return (
-                <>
-                  <p>{item.id}</p>
-                  <p>
-                    {Object.keys(groupedAccounts).length > 0 &&
-                      groupedAccounts[item.id] &&
-                      groupedAccounts[item.id][0].current_balance}
-                  </p>
-                </>
-              );
-            })}
-          </>
-        ) : (
-          <NoAccounts />
-        )}
-      </Container>
+      {itemsArray.length === 0 ? (
+        <NoAccounts />
+      ) : (
+        <Container size="xl">
+          <Container
+            size="md"
+            h={275}
+            pb="2.5rem"
+            style={{ border: "1px solid #808080" }}
+          >
+            <Group pt="1rem" justify="space-between" align="center">
+              <Text size="1rem">
+                <Link to="networth" style={{ color: "inherit" }}>
+                  Networth
+                </Link>
+              </Text>
+              <Text
+                size="sm"
+                c={Number(currentNetworth) > 0 ? "inherit" : "red"}
+              >
+                {currentNetworth}
+              </Text>
+            </Group>
+            <NetworthChart />
+          </Container>
+
+          <SpendingAnalysis />
+        </Container>
+      )}
     </Suspense>
   );
 };
