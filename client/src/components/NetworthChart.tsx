@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 import useNetworthContext from "../contexts/NetworthContext";
 import { Card, Stack, Text } from "@mantine/core";
+import formatCurrency from "../utils/formatDollar";
 
 interface CustomTooltipProps {
   active?: boolean;
@@ -38,12 +39,12 @@ const CustomTooltip = ({
       <Card shadow="md" padding="md">
         <Stack gap="xs">
           <Text>{`${label}`}</Text>
-          <Text size="sm">{`Networth: ${currentValue}`}</Text>
+          <Text size="sm">{`Networth: ${formatCurrency(currentValue)}`}</Text>
           <Text size="xs" c={color}>
             <Text size="xs" c="var(--mantine-color-text)" component="span">
               1 day change:{" "}
             </Text>
-            {`${sign}${difference}`}
+            {`${sign}${formatCurrency(difference)}`}
           </Text>
         </Stack>
       </Card>
@@ -89,7 +90,12 @@ const NetworthChart = () => {
       >
         <XAxis dataKey="name" interval={88} padding={{ left: 52, right: 52 }} />
         <Tooltip content={<CustomTooltip data={data} />} />
-        <Area type="basis" dataKey="networth" stroke="#8884d8" fill="#8884d8" />
+        <Area
+          type="monotone"
+          dataKey="networth"
+          stroke="#8884d8"
+          fill="#8884d8"
+        />
       </AreaChart>
     </ResponsiveContainer>
   );
