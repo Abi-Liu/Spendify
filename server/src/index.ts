@@ -63,6 +63,9 @@ app.use("/transactions", transactionsRoutes);
 app.use("/budgets", budgetRoutes);
 app.use("/assets", assetsRoutes);
 app.use("/networth", networthRoutes);
+app.use("/test", (req, res) => {
+  res.send("hello world");
+});
 
 io.on("connection", (socket) => {
   console.log(`Socket connected`);
