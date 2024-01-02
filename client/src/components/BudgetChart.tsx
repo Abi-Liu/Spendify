@@ -19,6 +19,8 @@ const BudgetChart = () => {
   const remainingPercentage =
     100 - spentPercentage < 0 ? 0 : 100 - spentPercentage;
 
+  console.log(budget);
+
   function getMessage() {
     if (spentPercentage < 25) {
       return "Great job managing your budget! Keep up the excellent work! 🌟";

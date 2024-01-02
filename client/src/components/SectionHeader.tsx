@@ -87,7 +87,7 @@ const NetWorthAccordion = ({
               </Text>
             </Group>
             {Object.values(assets).map((asset) => (
-              <Group justify="space-between">
+              <Group key={asset.id} justify="space-between">
                 <Text size="sm" c="dimmed" fw={500}>
                   {formatTextCapitalization(asset.name)}
                 </Text>

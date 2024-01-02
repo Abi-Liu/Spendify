@@ -29,10 +29,7 @@ const Dashboard = () => {
   const { getUserAssets } = useAssetsContext();
   const { networth } = useNetworthContext();
 
-  const currentNetworth = formatCurrency(
-    Number(networth[new Date().toISOString().split("T")[0]])
-  );
-
+  const currentNetworth = networth[new Date().toISOString().split("T")[0]];
   const isMedium = useMediaQuery(`(max-width: ${em(1050)})`);
 
   // get all items for the user
@@ -90,7 +87,7 @@ const Dashboard = () => {
                 size="sm"
                 c={Number(currentNetworth) > 0 ? "inherit" : "red"}
               >
-                {currentNetworth}
+                {formatCurrency(Number(currentNetworth))}
               </Text>
             </Group>
             <NetworthChart />
