@@ -18,7 +18,7 @@ function App() {
 
   return (
     <>
-      <Sockets />
+      {user && <Sockets />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route

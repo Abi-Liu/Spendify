@@ -19,6 +19,14 @@ const Sockets = () => {
 
   useEffect(() => {
     const socket = io("http://localhost:8000");
+
+    // Send userId on socket connection to differentiate connections
+    socket.on("connect", () => {
+      if (user) {
+        socket.emit("user", `${user.id}`);
+      }
+    });
+
     // TRANSACTIONS WEBHOOKS
     socket.on("SYNC_UPDATES_AVAILABLE", ({ id }) => {
       console.log("NEW TRANSACTIONS FOR ITEM: ", id);

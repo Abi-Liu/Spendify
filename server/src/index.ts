@@ -16,6 +16,7 @@ import transactionsRoutes from "./routes/transactions";
 import budgetRoutes from "./routes/budgets";
 import assetsRoutes from "./routes/assets";
 import networthRoutes from "./routes/networth";
+import CustomSocket from "./interfaces/CustomSocket";
 
 const app = express();
 app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
@@ -67,8 +68,12 @@ app.use("/test", (req, res) => {
   res.send("hello world");
 });
 
-io.on("connection", (socket) => {
-  console.log(`Socket connected`);
+io.on("connection", (socket: CustomSocket) => {
+  socket.on("user", (userId: string) => {
+    console.log(`User ${userId} connected`);
+    // associate the socket connection with a specific user
+    socket.userId = userId;
+  });
 
   socket.on("disconnect", () => {
     console.log("Socket disconnected");
