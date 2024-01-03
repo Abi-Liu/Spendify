@@ -45,28 +45,28 @@ export default {
             modifiedLength: modified,
             removedLength: removed,
           } = await updateTransactions(plaidItemId);
-          const { id } = await getItemsByPlaidItemId(plaidItemId);
+          const { id, user_id } = await getItemsByPlaidItemId(plaidItemId);
 
           console.log(
             `ITEM ${id} HAS ${added} NEW TRANSACTIONS, ${modified} MODIFIED TRANSACTIONS, AND ${removed} REMOVED TRANSACTIONS`
           );
 
           // send data to client via socket so client knows to refetch transactions
-          req.io.emit("SYNC_UPDATES_AVAILABLE", { id });
+          req.io.emit(`SYNC_UPDATES_AVAILABLE_${user_id}`, { id });
         }
       } else if (webhookType === "ITEM") {
         if (webhookCode === "PENDING_EXPIRATION") {
-          const { id } = await getItemsByPlaidItemId(plaidItemId);
+          const { id, user_id } = await getItemsByPlaidItemId(plaidItemId);
           // SET ITEM STATUS TO BAD
           await setItemStatus(id, "bad");
           console.log(`ITEM ${id} NEEDS TO BE REAUTHENTICATED`);
-          req.io.emit("PENDING_EXPIRATION", id);
+          req.io.emit(`PENDING_EXPIRATION_${user_id}`, id);
         } else if (webhookCode === "ERROR") {
           itemErrorHandler(plaidItemId, error);
-          const { id } = await getItemsByPlaidItemId(plaidItemId);
+          const { id, user_id } = await getItemsByPlaidItemId(plaidItemId);
 
           console.log(`ERROR: ${error.error_code}: ${error.error_message}`);
-          req.io.emit("ERROR", { id, error });
+          req.io.emit(`ERROR_${user_id}`, { id, error });
         }
       } else {
         console.log(

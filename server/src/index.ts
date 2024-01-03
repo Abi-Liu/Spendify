@@ -69,6 +69,7 @@ app.use("/test", (req, res) => {
 });
 
 io.on("connection", (socket: CustomSocket) => {
+  // on client  connection, server will receive an event containing the userId
   socket.on("user", (userId: string) => {
     console.log(`User ${userId} connected`);
     // associate the socket connection with a specific user
