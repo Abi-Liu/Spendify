@@ -28,7 +28,7 @@ const Sockets = () => {
     });
 
     // TRANSACTIONS WEBHOOKS
-    socket.on("SYNC_UPDATES_AVAILABLE", ({ id }) => {
+    socket.on(`SYNC_UPDATES_AVAILABLE_${user!.id}`, ({ id }) => {
       console.log("NEW TRANSACTIONS FOR ITEM: ", id);
 
       // fetch new transactions data. Only fetching last 3 months.
@@ -45,7 +45,7 @@ const Sockets = () => {
       });
     });
 
-    socket.on("NEW_TRANSACTIONS_DATA", ({ itemId }) => {
+    socket.on(`NEW_TRANSACTIONS_DATA_${user!.id}`, ({ itemId }) => {
       // fetch new transactions data. Only fetching last 3 months.
       const { startDate, endDate } = formatLastThreeMonths();
       getTransactionsByItemId(itemId, startDate, endDate);
@@ -55,12 +55,13 @@ const Sockets = () => {
     });
 
     // ITEMS WEBHOOKS
-    socket.on("PENDING_EXPIRATION", ({ id }) => {
+    socket.on(`PENDING_EXPIRATION_${user!.id}`, ({ id }) => {
       const institutionName = institutions.byItemId[id].name;
       notifications.show({
         title: `${institutionName} Pending Expiration`,
         message:
           "Access consent is expiring soon. Please re-enter credentials to continue receiving your financial updates.",
+        c: "red",
       });
       console.log(
         "Access consent is expiring soon. Please re-enter credentials to continue receiving your financial updates.",
@@ -70,12 +71,13 @@ const Sockets = () => {
       getItemById(id);
     });
 
-    socket.on("ERROR", ({ id, error }) => {
+    socket.on(`ERROR_${user!.id}`, ({ id, error }) => {
       const institutionName = institutions.byItemId[id].name;
       console.log(error);
       notifications.show({
         title: `Login Error`,
         message: `${institutionName}: Item Login Required`,
+        c: "red",
       });
       console.log(`${institutionName}: Item Login Required`);
       // item will now be in 'bad' state
