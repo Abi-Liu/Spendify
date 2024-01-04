@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from "react";
-import { Container, Flex, Text, em } from "@mantine/core";
+import { Card, Container, Flex, Image, Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import useTransactionsContext from "../contexts/TransactionsContext";
 import CategoryChart from "./CategoryChart";
 import TopVendors from "./TopVendors";
+import NoData from "../assets/NoData.png";
 
 const SpendingAnalysis = () => {
   const { transactions } = useTransactionsContext();
@@ -51,9 +52,26 @@ const SpendingAnalysis = () => {
       <Text ta="center" size="xl" c="dimmed" style={{ marginBottom: "1rem" }}>
         A breakdown of your monthly spending habits
       </Text>
-      <Flex direction={isMedium ? "column" : "row"} justify="space-around">
-        <CategoryChart categories={categories} isMedium={isMedium} />
-        <TopVendors names={names} isMedium={isMedium} />
+      <Flex
+        direction={isMedium ? "column" : "row"}
+        justify="space-around"
+        gap={isMedium ? "lg" : "xs"}
+      >
+        {transactionsArray.length > 0 ? (
+          <>
+            <CategoryChart categories={categories} isMedium={isMedium} />
+            <TopVendors names={names} isMedium={isMedium} />
+          </>
+        ) : (
+          <Card withBorder shadow="lg">
+            <Stack align="center" gap="4rem">
+              <Text size="xl" ta="center" pt={"1rem"}>
+                No transactions recorded this month. Check back later!
+              </Text>
+              <Image h={200} w="auto" fit="contain" src={NoData} />
+            </Stack>
+          </Card>
+        )}
       </Flex>
     </Container>
   );
