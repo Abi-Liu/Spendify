@@ -52,14 +52,8 @@ const ItemCard = ({ item }: { item: Item }) => {
   const { user } = useUserContext();
   const { deleteItemById } = useItemsContext();
   const { deleteTransactionsByItemId } = useTransactionsContext();
-  const {
-    getAccountsByItemId,
-    deleteAccountsByItemId,
-    groupAccountsByItemId,
-    accounts: accountsState,
-  } = useAccountsContext();
-
-  console.log(accountsState);
+  const { getAccountsByItemId, deleteAccountsByItemId, groupAccountsByItemId } =
+    useAccountsContext();
 
   const { getInstitutionById, institutions, formatLogo } =
     useInstitutionsContext();

@@ -25,7 +25,6 @@ export default function PlaidLink(props: Props) {
     generateItemLinkToken,
     generateUserLinkToken,
   } = useLinkContext();
-  console.log(props.itemId);
   // define onSuccess, onExit and onEvent functions as configs for Plaid Link creation
   const onSuccess = async (
     publicToken: string,
@@ -49,7 +48,6 @@ export default function PlaidLink(props: Props) {
       } catch (error) {
         console.log(error);
       }
-      console.log("running getItemById");
       getItemById(props.itemId);
     }
     deleteUserLinkToken(props.userId);

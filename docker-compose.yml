@@ -45,8 +45,6 @@ services:
       - ./server:/app/server # Mount the server directory to the container
     env_file:
       - .env
-    # environment:
-    #   - PORT=8000
     networks:
       - loadbalancing
     depends_on:
@@ -63,8 +61,6 @@ services:
       - ./server:/app/server # Mount the server directory to the container
     env_file:
       - .env
-    # environment:
-    #   - PORT=8001
     networks:
       - loadbalancing
     depends_on:
