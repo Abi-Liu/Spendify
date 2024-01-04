@@ -14,6 +14,8 @@ services:
       - ./postgres:/docker-entrypoint-initdb.d
       - ./postgres/postgres.conf:/usr/local/share/postgresql/postgresql.conf
       - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - loadbalancing
 
   redis:
     image: redis:latest
@@ -21,6 +23,8 @@ services:
       - 6379:6379
     volumes:
       - ./redis_data:/data
+    networks:
+      - loadbalancing
 
   client:
     build:
@@ -31,18 +35,53 @@ services:
     volumes:
       - ./client/src:/app/client/src # Mount the client directory to the container
 
-  server:
+  server_1:
     build:
       context: ./server
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000" # Map port 8000 on host to port 8000 in container
+    # ports:
+    #   - "8000:8000" # Map port 8000 on host to port 8000 in container
     volumes:
       - ./server:/app/server # Mount the server directory to the container
     env_file:
       - .env
+    # environment:
+    #   - PORT=8000
+    networks:
+      - loadbalancing
     depends_on:
       - db
       - redis
-# volumes:
-#   - redis_data:
+
+  server_2:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    # ports:
+    #   - "8000:8000" # Map port 8000 on host to port 8000 in container
+    volumes:
+      - ./server:/app/server # Mount the server directory to the container
+    env_file:
+      - .env
+    # environment:
+    #   - PORT=8001
+    networks:
+      - loadbalancing
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - "8000:8000"
+    networks:
+      - loadbalancing
+    depends_on:
+      - server_1
+      - server_2
+
+networks:
+  loadbalancing:

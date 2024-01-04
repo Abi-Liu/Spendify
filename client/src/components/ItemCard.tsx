@@ -52,8 +52,14 @@ const ItemCard = ({ item }: { item: Item }) => {
   const { user } = useUserContext();
   const { deleteItemById } = useItemsContext();
   const { deleteTransactionsByItemId } = useTransactionsContext();
-  const { deleteAccountsByItemId, groupAccountsByItemId } =
-    useAccountsContext();
+  const {
+    getAccountsByItemId,
+    deleteAccountsByItemId,
+    groupAccountsByItemId,
+    accounts: accountsState,
+  } = useAccountsContext();
+
+  console.log(accountsState);
 
   const { getInstitutionById, institutions, formatLogo } =
     useInstitutionsContext();
@@ -61,6 +67,10 @@ const ItemCard = ({ item }: { item: Item }) => {
   const { generateItemLinkToken, linkTokens } = useLinkContext();
 
   const { id, plaid_institution_id, updated_at } = item;
+
+  useEffect(() => {
+    getAccountsByItemId(item.id);
+  }, [getAccountsByItemId, item]);
 
   useEffect(() => {
     const accounts = groupAccountsByItemId();
