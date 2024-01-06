@@ -13,6 +13,8 @@ RUN npm ci
 # Copy the entire server directory to the container
 COPY . .
 
+RUN npm run build
+
 # Expose the port your app runs on
 EXPOSE 8000
 
