@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/index.ts",
-    "lint": "npm eslint ."
+    "lint": "npm eslint .",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
