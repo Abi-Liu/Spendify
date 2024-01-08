@@ -7,7 +7,8 @@
     "test": "jest",
     "start": "node dist/index.js",
     "lint": "npm eslint .",
-    "build": "tsc"
+    "build": "tsc",
+    "postbuild": "cp package*.json dist && cd dist && npm ci --production"
   },
   "keywords": [],
   "author": "",
