@@ -6,9 +6,9 @@
   "scripts": {
     "test": "jest",
     "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
     "lint": "npm eslint .",
-    "build": "tsc",
-    "postbuild": "cp package*.json dist && cd dist && npm ci --production"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
