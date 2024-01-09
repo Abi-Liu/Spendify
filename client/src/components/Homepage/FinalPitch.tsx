@@ -23,7 +23,7 @@ const FinalPitch = () => {
 
   let height;
   if (isMobile) {
-    height = 200;
+    height = 160;
   } else if (isTablet) {
     height = 350;
   } else {
@@ -32,7 +32,7 @@ const FinalPitch = () => {
 
   return (
     <Group
-      py={"10rem"}
+      py={"9rem"}
       align="center"
       justify="space-evenly"
       gap={isTablet ? 48 : 8}
