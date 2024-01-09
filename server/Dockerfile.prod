@@ -29,22 +29,6 @@ COPY --from=builder /app/server/package*.json ./
 # Install only production dependencies
 RUN npm ci --omit=dev
 
-ENV PLAID_SECRET="2d461f8a435ae259211ac89b6d8382"
-ENV PLAID_CLIENT_ID="640a4dd7f37c820013397d64"
-ENV GOOGLE_CLIENT_ID="209801515142-dermm22dhmppm6ep554ado04qh3tgg5c.apps.googleusercontent.com"
-ENV GOOGLE_CLIENT_SECRET="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"
-ENV SESSION_SECRET="supersecretpassword"
-ENV KEY="budgetbuddy"
-ENV CLIENT_URL="https://main.d22z6hda6984t5.amplifyapp.com/"
-ENV PLAID_ENV="sandbox"
-ENV REDIS_HOST="redis"
-ENV REDIS_PORT=6379
-ENV POSTGRES_PASSWORD="budgetbuddy"
-ENV POSTGRES_USER="budgetbuddy"
-ENV DB_PORT=5432
-ENV DB_HOST="db"
-ENV PORT=8000
-
 # Expose the port your app runs on
 EXPOSE 8000
 
