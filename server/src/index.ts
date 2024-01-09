@@ -20,12 +20,21 @@ import CustomSocket from "./interfaces/CustomSocket";
 import redis from "./config/redis";
 
 const app = express();
-app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://main.d22z6hda6984t5.amplifyapp.com",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Use express-session and connect-redis for persistent session store
 const redisStore = new RedisStore({
   client: redis,
+  ttl: 60 * 60 * 24, // 1 day
 });
 
 const { SESSION_SECRET, PORT } = process.env;
@@ -35,9 +44,6 @@ app.use(
     secret: SESSION_SECRET as string, // Set a secret key for session
     resave: false,
     saveUninitialized: false,
-    // cookie: {
-    //   maxAge: 24 * 60 * 60 * 1000, // 1 day
-    // },
   })
 );
 
