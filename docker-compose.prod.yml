@@ -2,9 +2,7 @@ version: "3.8"
 
 services:
   server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile.prod
+    image: abiliu018/prod-budgetbuddy-api:v2.0 # Production ready image for server
     ports:
       - "80:8000" # Map port 80 on host to port 8000 in container
       - "443:8000" # Map port 443 on host to port 8000 in container
