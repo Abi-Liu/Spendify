@@ -7,12 +7,15 @@ import { updateTransactions } from "../utils/updateTransactions";
 import SocketRequest from "../interfaces/SocketRequest";
 // import { updateTransactions } from "../utils/updateTransactions";
 
-const { CLIENT_URL } = process.env;
+const { CLIENT_URL, ENV } = process.env;
 
 // only used for development. allows the local server to receive plaid webhooks
 // must be changed to match each new ngrok url
+// configure production webhook url after hosted.
 const WEBHOOK_URL =
-  "https://951e-2600-1700-a410-90b0-6868-2889-d439-3e05.ngrok-free.app/webhook/";
+  ENV === "dev"
+    ? "https://951e-2600-1700-a410-90b0-6868-2889-d439-3e05.ngrok-free.app/webhook/"
+    : "";
 
 export default {
   // start the link flow by sending client a public token.
