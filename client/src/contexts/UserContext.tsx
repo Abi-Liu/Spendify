@@ -51,6 +51,9 @@ const UserContext = createContext<UserContextShape>(
   initialState as UserContextShape
 );
 
+const { VITE_SERVER_URL, VITE_ENV } = import.meta.env;
+const apiUrl = VITE_ENV === "dev" ? "http://localhost:8000" : VITE_SERVER_URL;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -67,13 +70,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const logout = useCallback(async () => {
-    window.open("http://localhost:8000/auth/logout", "_self");
+    window.open(`${apiUrl}/auth/logout`, "_self");
     dispatch({ type: "LOGOUT" });
   }, []);
 
   const deleteAccount = useCallback(async (id: number) => {
     await api.delete(`/auth/deleteUser/${id}`);
-    window.open("http://localhost:8000/auth/logout", "_self");
+    window.open(`${apiUrl}/auth/logout`, "_self");
     dispatch({ type: "LOGOUT" });
   }, []);
 

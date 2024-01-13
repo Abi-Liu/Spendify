@@ -62,7 +62,11 @@ export default function Appshell({
     : undefined;
 
   function google() {
-    window.open("http://localhost:8000/auth/google", "_self");
+    const { VITE_SERVER_URL, VITE_ENV } = import.meta.env;
+    const apiUrl =
+      VITE_ENV === "dev" ? "http://localhost:8000" : VITE_SERVER_URL;
+
+    window.open(`${apiUrl}/auth/google`, "_self");
   }
 
   return (
