@@ -4,15 +4,22 @@ import passport from "passport";
 import { getUser, createUser } from "../database/users";
 import { User } from "../interfaces/databaseTypes";
 
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, CLIENT_URL } = process.env;
+const {
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  CLIENT_URL,
+  ENV,
+  VITE_SERVER_URL,
+} = process.env;
 
 if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !CLIENT_URL) {
   throw new Error("Google Oauth env vars are not properly loading in");
 }
 
+const apiUrl = ENV === "dev" ? "http://localhost:8000" : VITE_SERVER_URL;
+
 // Passport configuration
-// TODO: fix the callbackURL to be the server env variable not the client
-const callbackURL = `http://localhost:8000/auth/google/callback`;
+const callbackURL = `${apiUrl}/auth/google/callback`;
 
 passport.use(
   new GoogleStrategy(
