@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import passport from "passport";
-import { getUser, createUser } from "../database/users";
+import { getUser, createUser, getUserById } from "../database/users";
 import { User } from "../interfaces/databaseTypes";
 
 const {
@@ -36,6 +36,7 @@ passport.use(
     ) {
       try {
         let user = await getUser(profile.id);
+        console.log("User: ", user);
         if (!user) {
           user = await createUser(
             profile.id,
@@ -44,21 +45,31 @@ passport.use(
             profile.name.familyName,
             profile.photos[0].value
           );
+
+          console.log("inside no user block. Created user: ", user);
         }
         cb(null, user);
       } catch (error) {
-        cb(error);
         console.error(error);
+        cb(error);
       }
     }
   )
 );
 
 passport.serializeUser((user: User, done) => {
-  done(null, user);
+  console.log("serialize user :", user);
+  done(null, user.id);
 });
-passport.deserializeUser((user: User, done) => {
-  done(null, user);
+passport.deserializeUser(async (id: number, done) => {
+  console.log("deserialize user");
+  try {
+    const user = await getUserById(id);
+    done(null, user);
+  } catch (error) {
+    console.error("deserializeUser error: ", error);
+    done(error);
+  }
 });
 
 export default passport;

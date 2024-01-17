@@ -3,9 +3,9 @@ import { deleteUser } from "../database/users";
 
 export default {
   getLoginSuccess: async (req: Request, res: Response) => {
-    console.log("user : ", req.user, " cookies: ", req.cookies);
+    console.log("user : ", req.user);
     if (req.user) {
-      res.status(200).json({ user: req.user, cookies: req.cookies });
+      res.status(200).json({ user: req.user });
     } else {
       res.status(400).json({ message: "req.user is undefined" });
     }

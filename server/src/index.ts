@@ -41,11 +41,6 @@ app.use(
     secret: SESSION_SECRET as string, // Set a secret key for session
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
-      sameSite: "none",
-      secure: true,
-    },
   })
 );
 
@@ -80,6 +75,9 @@ app.use("/assets", assetsRoutes);
 app.use("/networth", networthRoutes);
 app.use("/test", (req, res) => {
   res.send("hello world");
+});
+app.get("/version", (req, res) => {
+  res.send("git commit: 33f68b5");
 });
 
 io.on("connection", (socket: CustomSocket) => {
