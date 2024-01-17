@@ -18,81 +18,85 @@ import assetsRoutes from "./routes/assets";
 import networthRoutes from "./routes/networth";
 import CustomSocket from "./interfaces/CustomSocket";
 import redis from "./config/redis";
+import connection from "./config/db";
 
-const app = express();
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://bbapi.online"],
-    credentials: true,
-  })
-);
-app.use(express.json());
+// waits for connection to db and redis to be established before starting server
+Promise.all([connection.connect()]).then(() => {
+  const app = express();
+  app.use(
+    cors({
+      origin: ["http://localhost:5173", "https://bbapi.online"],
+      credentials: true,
+    })
+  );
+  app.use(express.json());
 
-// Use express-session and connect-redis for persistent session store
-const redisStore = new RedisStore({
-  client: redis,
-  ttl: 60 * 60 * 24, // 1 day
-});
-
-const { SESSION_SECRET, PORT } = process.env;
-app.use(
-  session({
-    store: redisStore,
-    secret: SESSION_SECRET as string, // Set a secret key for session
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-// socket initialization
-const server = http.createServer(app);
-const io = new SocketIoServer(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    credentials: true,
-  },
-});
-
-// middleware to pass the socket to each request
-app.use((req: SocketRequest, res: Response, next: NextFunction) => {
-  req.io = io;
-  next();
-});
-
-// moved routes here so that the routes middlewares are set before we initialize the routes
-app.use("/plaid", plaidRoutes);
-app.use("/auth", authRoutes);
-app.use("/webhook", webhookRoutes);
-app.use("/items", itemsRoutes);
-app.use("/accounts", accountsRoutes);
-app.use("/institutions", institutionsRoutes);
-app.use("/transactions", transactionsRoutes);
-app.use("/budgets", budgetRoutes);
-app.use("/assets", assetsRoutes);
-app.use("/networth", networthRoutes);
-app.use("/test", (req, res) => {
-  res.send("hello world");
-});
-app.get("/version", (req, res) => {
-  res.send("git commit: 33f68b5");
-});
-
-io.on("connection", (socket: CustomSocket) => {
-  // on client  connection, server will receive an event containing the userId
-  socket.on("user", (userId: string) => {
-    console.log(`User ${userId} connected`);
-    // associate the socket connection with a specific user
-    socket.userId = userId;
+  // Use express-session and connect-redis for persistent session store
+  const redisStore = new RedisStore({
+    client: redis,
+    ttl: 60 * 60 * 24, // 1 day
   });
 
-  socket.on("disconnect", () => {
-    console.log("Socket disconnected");
-  });
-});
+  const { SESSION_SECRET, PORT } = process.env;
+  app.use(
+    session({
+      store: redisStore,
+      secret: SESSION_SECRET as string, // Set a secret key for session
+      resave: false,
+      saveUninitialized: false,
+    })
+  );
 
-server.listen(PORT || 8000, () =>
-  console.log(`Server has started on port: ${PORT}`)
-);
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  // socket initialization
+  const server = http.createServer(app);
+  const io = new SocketIoServer(server, {
+    cors: {
+      origin: "http://localhost:5173",
+      credentials: true,
+    },
+  });
+
+  // middleware to pass the socket to each request
+  app.use((req: SocketRequest, res: Response, next: NextFunction) => {
+    req.io = io;
+    next();
+  });
+
+  // moved routes here so that the routes middlewares are set before we initialize the routes
+  app.use("/plaid", plaidRoutes);
+  app.use("/auth", authRoutes);
+  app.use("/webhook", webhookRoutes);
+  app.use("/items", itemsRoutes);
+  app.use("/accounts", accountsRoutes);
+  app.use("/institutions", institutionsRoutes);
+  app.use("/transactions", transactionsRoutes);
+  app.use("/budgets", budgetRoutes);
+  app.use("/assets", assetsRoutes);
+  app.use("/networth", networthRoutes);
+  app.use("/test", (req, res) => {
+    res.send("hello world");
+  });
+  app.get("/version", (req, res) => {
+    res.send("git commit: 123123");
+  });
+
+  io.on("connection", (socket: CustomSocket) => {
+    // on client  connection, server will receive an event containing the userId
+    socket.on("user", (userId: string) => {
+      console.log(`User ${userId} connected`);
+      // associate the socket connection with a specific user
+      socket.userId = userId;
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
+  });
+
+  server.listen(PORT || 8000, () =>
+    console.log(`Server has started on port: ${PORT}`)
+  );
+});

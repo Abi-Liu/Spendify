@@ -3,7 +3,6 @@ import { deleteUser } from "../database/users";
 
 export default {
   getLoginSuccess: async (req: Request, res: Response) => {
-    console.log("user : ", req.user);
     if (req.user) {
       res.status(200).json({ user: req.user });
     } else {
