@@ -9,6 +9,13 @@ export async function getUser(id: string) {
   return rows[0];
 }
 
+export async function getUserById(id: number) {
+  const query = "SELECT * from users WHERE id = $1;";
+  const values = [id];
+  const { rows } = await connection.query(query, values);
+  return rows[0];
+}
+
 export async function createUser(
   id: string,
   email: string,
