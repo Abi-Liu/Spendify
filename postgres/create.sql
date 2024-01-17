@@ -17,7 +17,7 @@ CREATE TABLE users
   google_id text UNIQUE NOT NULL,
   email text NOT NULL,
   first_name text NOT NULL,
-  last_name text NOT NULL,
+  last_name text,
   avatar_url text NOT NULL,
   created_at timestamptz default now(),
   updated_at timestamptz default now()

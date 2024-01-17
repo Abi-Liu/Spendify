@@ -22,10 +22,7 @@ import redis from "./config/redis";
 const app = express();
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://main.d22z6hda6984t5.amplifyapp.com",
-    ],
+    origin: ["http://localhost:5173", "https://www.bbapi.online"],
     credentials: true,
   })
 );
@@ -44,6 +41,11 @@ app.use(
     secret: SESSION_SECRET as string, // Set a secret key for session
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: "none",
+      secure: true,
+    },
   })
 );
 
