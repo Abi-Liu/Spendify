@@ -25,7 +25,11 @@ Promise.all([connection.connect()]).then(() => {
   const app = express();
   app.use(
     cors({
-      origin: ["http://localhost:5173", "https://bbapi.online"],
+      origin: [
+        "http://localhost:5173",
+        "https://www.bbapi.online",
+        "https://bbapi.online",
+      ],
       credentials: true,
     })
   );
