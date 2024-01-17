@@ -22,7 +22,7 @@ import redis from "./config/redis";
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://www.bbapi.online"],
+    origin: ["http://localhost:5173", "https://bbapi.online"],
     credentials: true,
   })
 );
