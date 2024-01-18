@@ -75,8 +75,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const deleteAccount = useCallback(async (id: number) => {
-    await api.delete(`/auth/deleteUser/${id}`);
     window.open(`${apiUrl}/auth/logout`, "_self");
+    await api.delete(`/auth/deleteUser/${id}`);
     dispatch({ type: "LOGOUT" });
   }, []);
 
