@@ -154,7 +154,7 @@ Before you begin, ensure you have the following technologies installed:
 
    Copy the forwarding link, it should look like `https://....ngrok-free.app`. Navigate to `/server/src/controllers/plaid.ts` and change the webhook URL to your new Ngrok forwarding URL. Be sure to keep the `/webhook/` at the end of it.
 
-   It should look something like this: `"https://951e-3100-2410-s210-90b0-6868-2889-d439-3e05.ngrok-free.app/webhook/"
+   It should look something like this: `"https://951e-3100-2410-s210-90b0-6868-2889-d439-3e05.ngrok-free.app/webhook/"`
 
    Now you will be able to receive webhooks on your local server.
    
