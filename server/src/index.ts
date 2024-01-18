@@ -58,7 +58,7 @@ Promise.all([connection.connect()]).then(() => {
   const server = http.createServer(app);
   const io = new SocketIoServer(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: ["http://localhost:5173", "https://www.bbapi.online"],
       credentials: true,
     },
   });
