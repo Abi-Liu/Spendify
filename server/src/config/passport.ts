@@ -36,7 +36,6 @@ passport.use(
     ) {
       try {
         let user = await getUser(profile.id);
-        console.log("User: ", user);
         if (!user) {
           user = await createUser(
             profile.id,
@@ -45,8 +44,6 @@ passport.use(
             profile.name.familyName,
             profile.photos[0].value
           );
-
-          console.log("inside no user block. Created user: ", user);
         }
         cb(null, user);
       } catch (error) {
@@ -58,17 +55,14 @@ passport.use(
 );
 
 passport.serializeUser((user: User, done) => {
-  console.log("serialize user :", user);
   done(null, user.id);
 });
 
 passport.deserializeUser(async (id: number, done) => {
   try {
     const user = await getUserById(id);
-    console.log("deserialize user: ", user);
     done(null, user);
   } catch (error) {
-    console.error("deserializeUser error: ", error);
     done(error);
   }
 });
