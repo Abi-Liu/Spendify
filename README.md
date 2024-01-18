@@ -20,17 +20,14 @@
 -->
 
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/Abi-Liu/Spendify">
-    <img src="client/src/assets/FullLogo.png" alt="Logo" width="80" height="80">
+    <img src="client/src/assets/FullLogo.png" alt="Logo" width="140" height="80">
   </a>
 
 <h3 align="center">Budget Buddy</h3>
@@ -38,10 +35,10 @@
   <p align="center">
     Simplifying Your Finances: Your Ultimate Companion for Seamless Financial Management
     <br />
-    <a href="https://github.com/Abi-Liu/Spendify"><strong>Explore the docs »</strong></a>
+    <a href="#usage"><strong>How to use »</strong></a>
     <br />
     <br />
-    <a href="https://www.bbapi.online">View Demo</a>
+    <a href="https://www.bbapi.online">Live Site</a>
     ·
     <a href="https://github.com/Abi-Liu/Spendify/issues">Report Bug</a>
     ·
@@ -77,18 +74,19 @@
 
 ## About The Project
 
-[![BudgetBuddy][BudgetBuddy]](demo/homepage.png)
+![BudgetBuddy](demo/homepage.png)
 
-This project is a new and improved version of my previous personal finance app, [Finance Me](https://github.com/Abi-Liu/Finance-Me). In this iteration, I'm focusing on creating more features, a better user experience as well as learning to use new technologies, such as Docker, Postgres, Redis, Websockets and AWS.
+This project is a new and improved version of my previous personal finance app, [Finance Me](https://github.com/Abi-Liu/Finance-Me). In this iteration, I'm focusing on creating more features and a better user experience, as well as learning to use new technologies, such as Docker, Postgres, Redis, WebSockets, and AWS.
 
-Users will be able to create an account and link their multiple bank and credit card accounts through Plaid. They will then be able to view a comprehensive summary of the state of their finances, such as their networth, assets and liabilities, transaction details and so on. There is also an option to export transactions to CSV with the export-to-CSV feature. This functionality allows you to conveniently export transaction information, providing you with greater flexibility and control over your financial data. You can also create monthly budgets to keep your expenses in check and all of these features are beautifully displayed through graphs and tables for easy data visualization. I have also added real time notifications for new transaction data via websockets, this way users are always up to date with their latest financial activities.
+Users will be able to create an account and link their multiple bank and credit card accounts through Plaid. They will then be able to view a comprehensive summary of the state of their finances, such as their net worth, assets and liabilities, transaction details, and so on. There is also an option to export transactions to CSV with the export-to-CSV feature. This functionality allows you to conveniently export transaction information, providing you with greater flexibility and control over your financial data. You can also create monthly budgets to keep your expenses in check and all of these features are beautifully displayed through graphs and tables for easy data visualization. I have also added real-time notifications for new transaction data via WebSockets, this way users are always up to date with their latest financial activities.
 
-Another key improvement from my last iteration is the ability to reauthenticate your connected accounts. This way, you won't have to manually delete and readd your financial accounts which was a big headache for users.
+Another key improvement from my last iteration is the ability to reauthenticate your connected accounts. This way, you won't have to manually delete and re-link your financial accounts which was a big headache for users.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
+- [![TypeScript][typescript]][typescript-url]
 - [![React][React.js]][React-url]
 - [![Node][node.js]][node-url]
 - [![Express][express]][express-url]
@@ -105,7 +103,7 @@ Another key improvement from my last iteration is the ability to reauthenticate 
 
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To get a local copy up and running follow the steps below.
 
 ### Prerequisites
 
@@ -120,7 +118,7 @@ Before you begin, ensure you have the following technologies installed:
 
 ### Installation
 
-1. You will need to get a few API keys to get up and running. For more information, check out the `.env.example` file and follow the instructions to get your Plaid and Google API keys and secrets.
+1. You will need to get a few free API keys to get up and running. For more information, check out the `.env.example` file and follow the instructions to get your Plaid and Google API keys and secrets.
 2. Clone the repo
    ```sh
    git clone https://github.com/Abi-Liu/Spendify.git
@@ -143,7 +141,7 @@ Before you begin, ensure you have the following technologies installed:
 4. Create a new `.env` file in the root directory of the project. Copy the contents from the `.env.example` file and add your own Plaid and Google API keys.
    ```md
    PLAID_SECRET="YOUR_PLAID_SECRET"
-   etc..
+   etc...
    ```
 5. You're now ready to spin up your own local containers.
 
@@ -153,7 +151,7 @@ Before you begin, ensure you have the following technologies installed:
 
    This command will start the Docker containers for Nginx, PostgreSQL, Redis, the Node.js server, and the React client.
 
-   It may take some time to orchestrate the containers for the first time, but just sit back and eventually you should see:
+   It may take some time to orchestrate the containers for the first time, but just sit back and eventually, you should see:
 
    ```sh
    server_2-1  | Server has started on port: 8000
@@ -170,7 +168,7 @@ Before you begin, ensure you have the following technologies installed:
 
 Click [here](https://www.loom.com/share/5703cbedc11b47c9a163cb9ad16c3d2d?sid=1dfb840e-bc00-4bf2-9732-ee4549e12e91) to see a full demo video showcasing the features!
 
-During development and for demonstration purposes, this project uses Plaid's sandbox mode. Sandbox mode enables you to test, develop and interact with its functionalities in a controlled environment.
+During development and for demonstration purposes, this project uses Plaid's sandbox mode. Sandbox mode enables you to test, develop, and interact with its functionalities in a controlled environment.
 
 To connect to an institution, you can use the credentials:
 
@@ -180,19 +178,18 @@ password: pass_good
 pin: credential_good (when required)
 ```
 
-To trigger the link flow on desktop, simply click the turqoise `+` sign on the top right of side bar.
+To trigger the link flow on desktop, simply click the turquoise `+` sign on the top right of the sidebar.
 
-<img src="demo/link-account.png" alt="Location of link account button on desktop" width="80" height="120">
+![Location of link account button on desktop](demo/link-account.png)
 
-For mobile screens, there will be a hamburger icon on the far left of the header. Click on that to expand the sidebar and the same `+` will be there trigger the link flow.
+For mobile screens, there will be a hamburger icon on the far left of the header. Click on that to expand the sidebar and the same `+` will be there to trigger the link flow.
 
-<img src="demo/mobile-link.png" alt="Location of link account button on mobile"" width="120" height="80">
+![Location of link account button on mobile](demo/mobile-link.png)
 
-To get a full picture of your financial data, there will also be options to add assets: i.e, cars, properties, investments, etc. To get there, you just need to click on the user menu on the bottom of the sidebar, click on the `Assets` option, and enter in the name and value.
+To get a full picture of your financial data, there will also be options to add assets: i.e. cars, properties, investments, etc. To get there, you just need to click on the user menu at the bottom of the sidebar, click on the `Assets` option, and enter the name and value.
 
-<img src="demo/usermenu.png" alt="User Menu" width="80" height="120">
-<img src="demo/assetmenu.png" alt="Asset Menu" width="120" height="80">
-
+![User Menu](demo/usermenu.png)
+![Asset Menu](demo/assetmenu.png)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
@@ -206,13 +203,11 @@ To get a full picture of your financial data, there will also be options to add 
 
 <!-- See the [open issues](https://github.com/Abi-Liu/Spendify/issues) for a full list of proposed features (and known issues). -->
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- CONTRIBUTING -->
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
@@ -277,3 +272,5 @@ Project Link: [https://github.com/Abi-Liu/Spendify](https://github.com/Abi-Liu/S
 [aws-url]: https://aws.amazon.com/
 [nginx]: https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white
 [nginx-url]: https://www.nginx.com/
+[typescript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
+[typescript-url]: https://www.typescriptlang.org/
