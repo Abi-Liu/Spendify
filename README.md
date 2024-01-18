@@ -110,11 +110,15 @@ To get a local copy up and running follow the steps below.
 Before you begin, ensure you have the following technologies installed:
 
 1. **Node.js and npm:**
-
    - Download and install Node.js and npm from [https://nodejs.org/](https://nodejs.org/)
 
 2. **Docker:**
    - Install Docker by following the instructions on [https://www.docker.com/get-started](https://www.docker.com/get-started)
+  
+3. **Ngrok:**
+   - Ngroks is required to receive Plaid's HTTPS webhooks in localhost for the real-time notifications to function. It creates a tunnel to the internet for our local server. This allows our server to receive and respond to the Plaid webhooks. 
+   - Download Ngrok by following the instructions on [https://ngrok.com/download](https://ngrok.com/download).
+   - Register for a free account. Once you are done, click on the `Your Auth Token` link on the sidebar and follow the configuration steps.
 
 ### Installation
 
@@ -143,7 +147,18 @@ Before you begin, ensure you have the following technologies installed:
    PLAID_SECRET="YOUR_PLAID_SECRET"
    etc...
    ```
-5. You're now ready to spin up your own local containers.
+5. Start up a new Ngrok tunnel by running this command in your command line:
+   ```sh
+   ngrok http http://localhost:8000
+   ```
+
+   Copy the forwarding link, it should look like `https://....ngrok-free.app`. Navigate to `/server/src/controllers/plaid.ts` and change the webhook URL to your new Ngrok forwarding URL. Be sure to keep the `/webhook/` at the end of it.
+
+   It should look something like this: `"https://951e-3100-2410-s210-90b0-6868-2889-d439-3e05.ngrok-free.app/webhook/"
+
+   Now you will be able to receive webhooks on your local server.
+   
+6. You're now ready to spin up your own local containers.
 
    ```sh
    docker-compose up
