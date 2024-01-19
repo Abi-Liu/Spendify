@@ -185,7 +185,7 @@ Click [here](https://www.loom.com/share/5703cbedc11b47c9a163cb9ad16c3d2d?sid=1df
 
 During development and for demonstration purposes, this project uses Plaid's sandbox mode. Sandbox mode enables you to test, develop, and interact with its functionalities in a controlled environment.
 
-To connect to an institution, you can use the credentials:
+To connect to most institutions, you can simply leave all credential fields blank and just select the accounts you wish to connect. If Plaid is requiring you to enter credentials, you can just the ones provided below:
 
 ```md
 username: user_good
