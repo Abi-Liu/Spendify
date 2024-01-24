@@ -38,6 +38,7 @@ jobs:
   deploy-to-ec2:
     runs-on: ubuntu-latest
     needs: build-and-push
+    timeout-minutes: 15 # set timeout explicitly for this job or it fails due to Run Command Timeout error
     steps:
       - name: Deploy to EC2 instance
         uses: appleboy/ssh-action@master
