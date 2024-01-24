@@ -42,10 +42,11 @@ jobs:
       - name: Deploy to EC2 instance
         uses: appleboy/ssh-action@master
         with:
-          host: ${{secrets.EC2_HOST}}
-          username: ${{secrets.EC2_USERNAME}}
-          key: ${{secrets.EC2_PRIVATE_KEY}}
+          host: ${{secrets.EC2_HOST_DNS}}
+          username: ${{secrets.USERNAME}}
+          key: ${{secrets.EC2_SSH_KEY}}
           script: |
+            cd ${{secrets.TARGET_DIR}}
             docker-compose -f docker-compose.prod.yml down || true
             docker rmi $(docker images -q) || true
             docker-compose -f docker-compose.prod up
