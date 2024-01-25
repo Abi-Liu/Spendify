@@ -3,6 +3,8 @@ name: CI/CD Pipeline
 # Trigger deployment on push to main branch
 on:
   push:
+    # only trigger workflow if changes occur in the server directory
+    paths: "/server/**"
     branches:
       - main
 

@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useEffect } from "react";
 import useItemsContext from "../contexts/ItemsContext";
 import useUserContext from "../contexts/UserContext";
@@ -9,12 +9,13 @@ import Loading from "../components/Loading";
 import SpendingAnalysis from "../components/SpendingAnalysis";
 import NoAccounts from "../components/NoAccounts";
 import useAssetsContext from "../contexts/AssetsContext";
-import { Card, Container, Group, Text, em } from "@mantine/core";
+import { Card, Container, Group, Modal, Text, em } from "@mantine/core";
 import NetworthChart from "../components/NetworthChart";
 import { Link } from "react-router-dom";
 import useNetworthContext from "../contexts/NetworthContext";
 import formatCurrency from "../utils/formatDollar";
-import { useMediaQuery } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import CredentialsModule from "../components/CredentialsModule";
 
 const Dashboard = () => {
   // change document title
@@ -22,6 +23,8 @@ const Dashboard = () => {
     document.title = "Dashboard | BudgetBuddy";
   }, []);
 
+  const [showCredentialsModule, setShowCredentialsModule] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
   const { itemsArray, getItemsByUser } = useItemsContext();
   const { user } = useUserContext();
   const { getAccountsByUser } = useAccountsContext();
@@ -61,8 +64,24 @@ const Dashboard = () => {
     getUserAssets(user!.id);
   }, [user, getUserAssets]);
 
+  // informing users on how to connect to an institution when in sandbox mode
+  useEffect(() => {
+    if (import.meta.env.VITE_PLAID_ENV === "sandbox") {
+      if (!localStorage.getItem("acknowledged")) {
+        setShowCredentialsModule(true);
+        localStorage.setItem("acknowledged", "true");
+        open();
+      }
+    }
+  }, [open]);
+
   return (
     <Suspense fallback={<Loading />}>
+      {showCredentialsModule && (
+        <Modal opened={opened} onClose={close} title="Getting started" centered>
+          <CredentialsModule />
+        </Modal>
+      )}
       {itemsArray.length === 0 ? (
         <NoAccounts />
       ) : (
