@@ -22,7 +22,10 @@ import { useDisclosure, useHover } from "@mantine/hooks";
 import useAssetsContext from "../contexts/AssetsContext";
 import { notifications } from "@mantine/notifications";
 
-const AssetsForm = () => {
+interface AssetsFormProps {
+  assetsClose: () => void;
+}
+const AssetsForm = ({ assetsClose }: AssetsFormProps) => {
   const [value, setValue] = useState<number | string>("");
   const [name, setName] = useState<string>("");
   const { createAsset } = useAssetsContext();
@@ -37,6 +40,8 @@ const AssetsForm = () => {
       color: "green",
     });
 
+    // close modal on submit
+    assetsClose();
     // TODO IMPLEMENT ERROR STATES AND SHOW ERROR NOTIFICATION ON BAD REQUESTS
   }
 
@@ -83,7 +88,7 @@ const UserMenu = ({ colorScheme }: UserMenuProps) => {
   return (
     <>
       <Modal opened={assetOpened} onClose={assetClose} title="Assets" centered>
-        <AssetsForm />
+        <AssetsForm assetsClose={assetClose} />
       </Modal>
 
       <Modal
