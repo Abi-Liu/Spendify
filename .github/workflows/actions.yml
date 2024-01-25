@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Github Actions CI/CD Pipeline
 
 # Trigger deployment on push to main branch
 on:
