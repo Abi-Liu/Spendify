@@ -28,7 +28,10 @@ import DailySpendingChart from "../components/DailySpendingChart";
 import formatCurrency from "../utils/formatDollar";
 import { TbPencilCog } from "react-icons/tb";
 
-const CustomForm = () => {
+interface CustomFormProps {
+  close: () => void;
+}
+const CustomForm = ({ close }: CustomFormProps) => {
   const [amount, setAmount] = useState<number | string>("");
 
   const { budgets, createBudget } = useBudgetsContext();
@@ -45,6 +48,9 @@ const CustomForm = () => {
           message: `Budget updated!`,
           color: "green",
         });
+
+        // close modal
+        close();
       } else {
         createBudget(user.id, amount);
         // TODO: have better error handling, do not show success message if an error occurs
@@ -53,6 +59,9 @@ const CustomForm = () => {
           message: `Budget successfully created`,
           color: "green",
         });
+
+        // close modal
+        close();
       }
     } else {
       // user will always be defined so if we get into this block
@@ -158,7 +167,7 @@ const BudgetPage = () => {
       // FINISH STYLING CREATE BUDGET PAGE
       <Container size="xl">
         <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
-          <CustomForm />
+          <CustomForm close={close} />
         </Modal>
         <Text size="1.25rem" pb={"1rem"}>
           No monthly budget
@@ -191,7 +200,7 @@ const BudgetPage = () => {
   return (
     <Container size="xl" style={{ height: "100vh", marginTop: "1rem" }}>
       <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
-        <CustomForm />
+        <CustomForm close={close} />
       </Modal>
       <Group align="flex-end" gap={4}>
         <Title order={2}>Budgeting</Title>
