@@ -2,5 +2,5 @@
 pgdata
 redis_data
 prod.env
-bb-kp-pem.pem
+bb-kp.pem
 Verify Domain ZeroSSL.txt
