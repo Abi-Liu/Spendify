@@ -40,6 +40,8 @@
     <br />
     <a href="https://www.bbapi.online">Live Site</a>
     ·
+    <a href="https://www.loom.com/share/5703cbedc11b47c9a163cb9ad16c3d2d?sid=1dfb840e-bc00-4bf2-9732-ee4549e12e91">View Demo</a>
+    ·
     <a href="https://github.com/Abi-Liu/Spendify/issues">Report Bug</a>
     ·
     <a href="https://github.com/Abi-Liu/Spendify/issues">Request Feature</a>
