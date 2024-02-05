@@ -150,3 +150,13 @@ export async function getPaginatedTransactions(
   const { rows } = await connection.query(query, values);
   return rows;
 }
+
+export async function getTransactionsCount(
+  column: string,
+  columnValue: number | string
+) {
+  const query = `SELECT COUNT(*) FROM transactions WHERE ${column} = $1;`;
+  const values = [columnValue];
+  const { rows } = await connection.query(query, values);
+  return rows[0].count;
+}

@@ -28,6 +28,7 @@ const TransactionsTable = (props: TransactionsTableProps) => {
 
   // used to determine how many transactions to show per page. Default value of 25
   const [limit, setLimit] = useState(25);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   // determine if we are querying from all accounts or specific accounts and the id of the row we want to get
   // refactored to useMemo instead of state to minimize rerenders
@@ -56,7 +57,8 @@ const TransactionsTable = (props: TransactionsTableProps) => {
             (page - 1) * limit
           }`
         );
-        setTransactions(data);
+        setTransactions(data.transactions);
+        setHasNextPage(data.nextPage);
       } catch (error) {
         console.log(error);
       }
@@ -205,7 +207,7 @@ const TransactionsTable = (props: TransactionsTableProps) => {
             variant="transparent"
             color="gray"
             onClick={nextPage}
-            disabled={transactions.length < limit}
+            disabled={!hasNextPage}
           >
             <TbArrowRight />
           </Button>
