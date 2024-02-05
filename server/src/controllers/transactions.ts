@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   getItemTransactionsFromDates,
   getPaginatedTransactions,
+  getTransactionsCount,
   getUserTransactionsFromDates,
 } from "../database/transactions";
 import { sanitizeTransactions } from "../utils/sanitize";
@@ -34,15 +35,33 @@ export default {
   getTransactionsPagination: async (req: Request, res: Response) => {
     try {
       const { column, columnValue, offset, limit } = req.query;
-      // gets the next page of transactions
-      const transactions = await getPaginatedTransactions(
-        column as string,
-        columnValue as string,
-        Number(offset),
-        Number(limit)
-      );
+      if (column && columnValue && offset && limit) {
+        // gets the next page of transactions
+        const transactions = await getPaginatedTransactions(
+          column as string,
+          columnValue as string,
+          Number(offset),
+          Number(limit)
+        );
 
-      res.status(200).json(sanitizeTransactions(transactions));
+        const count = await getTransactionsCount(
+          column as string,
+          columnValue as string
+        );
+
+        let nextPage;
+        if (Number(offset) + Number(limit) < count) {
+          nextPage = true;
+        } else {
+          nextPage = false;
+        }
+
+        res
+          .status(200)
+          .json({ transactions: sanitizeTransactions(transactions), nextPage });
+      } else {
+        res.status(500).json({ message: "Invalid query paramters" });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error fetching transactions" });
