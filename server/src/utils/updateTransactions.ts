@@ -68,36 +68,6 @@ export async function updateTransactions(plaidItemId: string) {
   await deleteTransactions(removed);
   await updateItemCursor(plaidItemId, cursor);
 
-  // update the redis cache ? Is this even necessary? And if so, how would I go about caching the data?
-
-  // cache all transactions for the plaid_item_id
-  // grab the most recent 1 years worth of transactions for the plaid item and cache those transactions
-  // const currentDate = new Date();
-  // const startDate = new Date(
-  //   currentDate.getFullYear() - 1,
-  //   currentDate.getMonth(),
-  //   currentDate.getDate()
-  // );
-  // const formattedStartDate = startDate.toISOString().split("T")[0];
-  // const formattedEndDate = currentDate.toISOString().split("T")[0];
-
-  // retrieve the most recent years worth of transactions for an item from the db
-  // const itemTransactionsToCache = await getItemTransactionsFromDates(
-  //   formattedStartDate,
-  //   formattedEndDate,
-  //   itemId
-  // );
-
-  // cache the data in redis
-  // redis.set(
-  //   `itemTransactions:${itemId}`,
-  //   JSON.stringify(itemTransactionsToCache)
-  // );
-
-  // cache all transactions for the plaid_account_id: unneeded?
-
-  // cache account information, to keep balance up to date. unneeded?
-
   return {
     addedLength: added.length,
     modifiedLength: modified.length,
