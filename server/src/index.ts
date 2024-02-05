@@ -81,7 +81,7 @@ Promise.all([connection.connect()]).then(() => {
   app.use("/budgets", budgetRoutes);
   app.use("/assets", assetsRoutes);
   app.use("/networth", networthRoutes);
-  app.use("users", usersRoutes);
+  app.use("/users", usersRoutes);
   app.use("/test", (req, res) => {
     res.send("hello world");
   });
