@@ -27,9 +27,14 @@ async function fetchTransactionUpdates(itemId: string) {
   } = await getItemsByPlaidItemId(itemId);
   let cursor = lastCursor;
 
+  // Use an object to store added, modified and removed transactions.
+  // This way we can determine how many newly added,modified,removed transactions belong to each account.
   // New transaction updates since "cursor"
-  let added: Array<Transaction> = [];
-  let modified: Array<Transaction> = [];
+  const added: { [id: string]: Transaction[] } = {};
+  const modified: { [id: string]: Transaction[] } = {};
+  // let removed: {[id: string]: RemovedTransaction[]} = {}
+  // let added: Array<Transaction> = [];
+  // let modified: Array<Transaction> = [];
   // Removed transaction ids
   let removed: Array<RemovedTransaction> = [];
   let hasMore = true;
@@ -44,9 +49,34 @@ async function fetchTransactionUpdates(itemId: string) {
       const response = await plaidClient.transactionsSync(request);
       const data = response.data;
 
-      // Add this page of results
-      added = added.concat(data.added);
-      modified = modified.concat(data.modified);
+      // loop through each element inside data.added, data.modifed and data.removed
+      // append the element to the corresponding account id stored in their respective object
+      for (const transaction of data.added) {
+        if (added[transaction.account_id]) {
+          added[transaction.account_id].push(transaction);
+        } else {
+          added[transaction.account_id] = [transaction];
+        }
+      }
+
+      for (const transaction of data.modified) {
+        if (modified[transaction.account_id]) {
+          modified[transaction.account_id].push(transaction);
+        } else {
+          modified[transaction.account_id] = [transaction];
+        }
+      }
+
+      // for(const transaction of data.removed){
+      //   if(added[transaction.account_id]){
+      //     added[transaction.account_id].push(transaction)
+      //   } else {
+      //     added[transaction.account_id] = [transaction]
+      //   }
+      // }
+
+      // added = added.concat(data.added);
+      // modified = modified.concat(data.modified);
       removed = removed.concat(data.removed);
       hasMore = data.has_more;
 

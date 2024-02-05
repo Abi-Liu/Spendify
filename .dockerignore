@@ -1,3 +1,4 @@
 .env
 pgdata
 prod.env
+# redis_data
