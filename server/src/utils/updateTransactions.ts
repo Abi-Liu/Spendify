@@ -104,6 +104,8 @@ export async function updateTransactions(plaidItemId: string) {
 
   // update the db
   // fetch and store the accounts that are associated with the item:
+  // TODO: pass the removed and added objects to this function to directly update the transactions_count column for each account.
+  // the query can be UPDATE accounts SET transactions_count = transactions_count + added.length - removed.length
   await createOrUpdateAccounts(plaidItemId, accounts);
   await createOrUpdateTransactions(added, modified);
   await deleteTransactions(removed);
