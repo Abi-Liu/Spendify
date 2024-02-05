@@ -38,12 +38,9 @@ const reducer = (state: UserState | null, action: UserActions) => {
     case "LOGOUT":
       // set user state to null
       return null;
-    case "UPDATE_TRANSACTIONS_COUNT": {
-      if (state) {
-        return { ...state, transactions_count: action.payload };
-      }
-      return state;
-    }
+    // case "UPDATE_TRANSACTIONS_COUNT": {
+    //   return { ...state, transactions_count: action.payload };
+    // }
     default:
       console.log("unknown action");
       return state;
@@ -54,7 +51,7 @@ interface UserContextShape extends initialStateType {
   dispatch: Dispatch<UserActions>;
   login: () => void;
   logout: () => void;
-  updateUserTransactionsCount: (id: number) => void;
+  // updateUserTransactionsCount: (id: number) => void;
   deleteAccount: (id: number) => void;
 }
 
@@ -91,11 +88,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "LOGOUT" });
   }, []);
 
-  const updateUserTransactionsCount = useCallback(async (id: number) => {
-    const { data } = await api.get(`/users/${id}`);
-    const payload = data.transactionsCount;
-    dispatch({ type: "UPDATE_TRANSACTIONS_COUNT", payload });
-  }, []);
+  // const updateUserTransactionsCount = useCallback(async (id: number) => {
+  //   const { data } = await api.get(`/users/${id}`);
+  //   const payload = data.transactionsCount;
+  //   dispatch({ type: "UPDATE_TRANSACTIONS_COUNT", payload });
+  // }, []);
 
   return (
     <UserContext.Provider
@@ -105,7 +102,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         logout,
         dispatch,
         deleteAccount,
-        updateUserTransactionsCount,
+        // updateUserTransactionsCount,
       }}
     >
       {children}

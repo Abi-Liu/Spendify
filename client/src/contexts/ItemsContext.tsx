@@ -13,6 +13,7 @@ export interface Item {
   user_id: number;
   plaid_institution_id: string;
   status: string;
+  transactions_count: number;
   created_at: string;
   updated_at: string;
 }

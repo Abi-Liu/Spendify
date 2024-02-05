@@ -21,6 +21,7 @@ export interface Account {
   unofficial_currency_code: string;
   type: "investment" | "credit" | "depository" | "loan";
   subtype: string;
+  transaction_count: number;
   created_at: string;
   updated_at: string;
 }
