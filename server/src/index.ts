@@ -16,6 +16,7 @@ import transactionsRoutes from "./routes/transactions";
 import budgetRoutes from "./routes/budgets";
 import assetsRoutes from "./routes/assets";
 import networthRoutes from "./routes/networth";
+import usersRoutes from "./routes/users";
 import CustomSocket from "./interfaces/CustomSocket";
 import redis from "./config/redis";
 import connection from "./config/db";
@@ -80,6 +81,7 @@ Promise.all([connection.connect()]).then(() => {
   app.use("/budgets", budgetRoutes);
   app.use("/assets", assetsRoutes);
   app.use("/networth", networthRoutes);
+  app.use("users", usersRoutes);
   app.use("/test", (req, res) => {
     res.send("hello world");
   });
