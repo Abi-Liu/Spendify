@@ -4,7 +4,7 @@ name: Github Actions CI/CD Pipeline
 on:
   push:
     # only trigger workflow if changes occur in the server directory
-    paths: "/server/**"
+    paths: "server/**"
     branches:
       - main
 

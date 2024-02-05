@@ -147,6 +147,7 @@ export async function getPaginatedTransactions(
     SELECT * FROM Transactions WHERE ${column} = $1 ORDER BY date DESC LIMIT $2 OFFSET $3;
   `;
   const values = [columnValue, limit, offset];
+
   const { rows } = await connection.query(query, values);
   return rows;
 }
