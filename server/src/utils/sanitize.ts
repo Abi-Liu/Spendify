@@ -27,6 +27,7 @@ export function sanitizeAccounts(accounts: AccountBase[]) {
     "unofficial_currency_code",
     "type",
     "subtype",
+    "transactions_count",
     "created_at",
     "updated_at",
   ]);
@@ -39,6 +40,7 @@ export function sanitizeItems(items: any) {
     "user_id",
     "plaid_institution_id",
     "status",
+    "transactions_count",
     "created_at",
     "updated_at",
   ]);

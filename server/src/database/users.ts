@@ -35,3 +35,19 @@ export async function deleteUser(id: number) {
   const values = [id];
   await connection.query(query, values);
 }
+
+export async function updateUserTransactionCount(
+  userId: number,
+  added: number,
+  deleted: number
+) {
+  const query = `SELECT transactions_count FROM users WHERE user_id = $1`;
+  const values = [userId];
+
+  let count = (await connection.query(query, values)).rows[0];
+  count = count + added - deleted;
+
+  const updateQuery = `UPDATE users SET transactions_count = $1 WHERE user_id= $2`;
+  const updateValues = [count, userId];
+  await connection.query(updateQuery, updateValues);
+}

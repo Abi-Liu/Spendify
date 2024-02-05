@@ -99,3 +99,19 @@ export async function deleteAccountsByItemId(itemId: string) {
   const values = [itemId];
   await connection.query(query, values);
 }
+
+export async function updateAccountTransactionCount(
+  itemId: string,
+  added: number,
+  deleted: number
+) {
+  const query = `SELECT transactions_count FROM accounts WHERE plaid_item_id = $1`;
+  const values = [itemId];
+
+  let count = (await connection.query(query, values)).rows[0];
+  count = count + added - deleted;
+
+  const updateQuery = `UPDATE accounts SET transactions_count = $1 WHERE plaid_item_id = $2`;
+  const updateValues = [count, itemId];
+  await connection.query(updateQuery, updateValues);
+}

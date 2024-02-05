@@ -4,6 +4,7 @@ export interface User {
   first_name: string;
   last_name?: string;
   avatar_url?: string;
+  transactions_count: number;
   created_at?: Date;
   updated_at?: Date;
 }
@@ -15,9 +16,10 @@ export interface PlaidItem {
   plaid_item_id: string;
   plaid_institution_id: string;
   status: string;
+  transactions_cursor?: string;
+  transactions_count: number;
   created_at?: Date;
   updated_at?: Date;
-  transactions_cursor?: string;
 }
 
 export interface PlaidAccount {
@@ -33,6 +35,7 @@ export interface PlaidAccount {
   unofficial_currency_code?: string;
   type: string;
   subtype: string;
+  transactions_count: number;
   created_at?: Date;
   updated_at?: Date;
 }

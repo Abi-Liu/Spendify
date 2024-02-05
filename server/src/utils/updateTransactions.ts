@@ -1,4 +1,8 @@
-import { getItemsByPlaidItemId, updateItemCursor } from "../database/items";
+import {
+  getItemsByPlaidItemId,
+  updateItemCursor,
+  updateItemTransactionCount,
+} from "../database/items";
 import { plaidClient } from "../config/plaid";
 import {
   RemovedTransaction,
@@ -9,11 +13,18 @@ import {
   createOrUpdateTransactions,
   deleteTransactions,
 } from "../database/transactions";
-import { createOrUpdateAccounts } from "../database/accounts";
+import {
+  createOrUpdateAccounts,
+  updateAccountTransactionCount,
+} from "../database/accounts";
+import { updateUserTransactionCount } from "../database/users";
 
 async function fetchTransactionUpdates(itemId: string) {
-  const { plaid_access_token: accessToken, transactions_cursor: lastCursor } =
-    await getItemsByPlaidItemId(itemId);
+  const {
+    plaid_access_token: accessToken,
+    transactions_cursor: lastCursor,
+    user_id: userId,
+  } = await getItemsByPlaidItemId(itemId);
   let cursor = lastCursor;
 
   // New transaction updates since "cursor"
@@ -47,12 +58,12 @@ async function fetchTransactionUpdates(itemId: string) {
     console.error(`Error fetching transactions: ${error.message}`);
   }
 
-  return { added, modified, removed, cursor, accessToken };
+  return { added, modified, removed, cursor, accessToken, userId };
 }
 
 export async function updateTransactions(plaidItemId: string) {
   // Fetch new transactions from plaid api.
-  const { added, modified, removed, cursor, accessToken } =
+  const { added, modified, removed, cursor, accessToken, userId } =
     await fetchTransactionUpdates(plaidItemId);
 
   // get accounts here so that the balance is updated everytime we update the transactions via webhooks.
@@ -68,35 +79,14 @@ export async function updateTransactions(plaidItemId: string) {
   await deleteTransactions(removed);
   await updateItemCursor(plaidItemId, cursor);
 
-  // update the redis cache ? Is this even necessary? And if so, how would I go about caching the data?
-
-  // cache all transactions for the plaid_item_id
-  // grab the most recent 1 years worth of transactions for the plaid item and cache those transactions
-  // const currentDate = new Date();
-  // const startDate = new Date(
-  //   currentDate.getFullYear() - 1,
-  //   currentDate.getMonth(),
-  //   currentDate.getDate()
-  // );
-  // const formattedStartDate = startDate.toISOString().split("T")[0];
-  // const formattedEndDate = currentDate.toISOString().split("T")[0];
-
-  // retrieve the most recent years worth of transactions for an item from the db
-  // const itemTransactionsToCache = await getItemTransactionsFromDates(
-  //   formattedStartDate,
-  //   formattedEndDate,
-  //   itemId
-  // );
-
-  // cache the data in redis
-  // redis.set(
-  //   `itemTransactions:${itemId}`,
-  //   JSON.stringify(itemTransactionsToCache)
-  // );
-
-  // cache all transactions for the plaid_account_id: unneeded?
-
-  // cache account information, to keep balance up to date. unneeded?
+  // Now we have to update the transactions_count column for item, account and user tables
+  await updateAccountTransactionCount(
+    plaidItemId,
+    added.length,
+    removed.length
+  );
+  await updateItemTransactionCount(plaidItemId, added.length, removed.length);
+  await updateUserTransactionCount(userId, added.length, removed.length);
 
   return {
     addedLength: added.length,

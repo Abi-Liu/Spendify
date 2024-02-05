@@ -19,6 +19,7 @@ CREATE TABLE users
   first_name text NOT NULL,
   last_name text,
   avatar_url text NOT NULL,
+  transactions_count integer default 0 NOT NULL,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -39,6 +40,7 @@ CREATE TABLE items
   plaid_item_id text UNIQUE NOT NULL,
   plaid_institution_id text NOT NULL,
   status text NOT NULL,
+  transactions_count integer default 0 NOT NULL,
   created_at timestamptz default now(),
   updated_at timestamptz default now(),
   transactions_cursor text
@@ -66,6 +68,7 @@ CREATE TABLE accounts
   unofficial_currency_code text,
   type text NOT NULL,
   subtype text NOT NULL,
+  transactions_count integer default 0 NOT NULL,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
