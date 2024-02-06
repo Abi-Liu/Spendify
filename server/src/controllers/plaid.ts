@@ -14,7 +14,7 @@ const { CLIENT_URL, ENV, VITE_SERVER_URL } = process.env;
 // configure production webhook url after hosted.
 const WEBHOOK_URL =
   ENV === "dev"
-    ? "https://ff84-2600-1700-a410-90b0-853e-2858-8466-b3bd.ngrok-free.app/webhook/"
+    ? "https://3e4b-2600-1700-a410-90b0-99c7-8f4a-407b-cf40.ngrok-free.app/webhook/"
     : `${VITE_SERVER_URL}/webhook/`;
 
 export default {
