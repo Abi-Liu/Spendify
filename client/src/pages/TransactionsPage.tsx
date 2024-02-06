@@ -4,6 +4,11 @@ import { Button, Container, Group, Text, Title } from "@mantine/core";
 import useAccountsContext from "../contexts/AccountsContext";
 import useInstitutionsContext from "../contexts/InstitutionsContext";
 import NoAccounts from "../components/NoAccounts";
+import { usePaginatedTransactions } from "../hooks/useTransactionHooks";
+import useUserContext from "../contexts/UserContext";
+import CSV from "../components/CSV";
+import LimitSelector from "../components/LimitSelector";
+import Pagination from "../components/Pagination";
 
 const TransactionsPage = () => {
   // change document title
@@ -14,8 +19,22 @@ const TransactionsPage = () => {
   const [selectedAccount, setSelectedAccount] = useState<number | string>(
     "all"
   );
+  // used for table pagination. Default value of 1
+  const [page, setPage] = useState(1);
+
+  // used to determine how many transactions to show per page. Default value of 25
+  const [limit, setLimit] = useState(25);
+
   const { accounts } = useAccountsContext();
   const { institutions } = useInstitutionsContext();
+  const { user } = useUserContext();
+  // get paginated transactions
+  const { transactions, hasNextPage } = usePaginatedTransactions(
+    selectedAccount,
+    page,
+    limit,
+    user!.id
+  );
 
   let title;
   let subheading;
@@ -66,7 +85,23 @@ const TransactionsPage = () => {
               </Button>
             ))}
           </Group>
-          <TransactionsTable account={selectedAccount} />
+          <TransactionsTable transactions={transactions} />
+          <Group p="md" justify="space-between">
+            <Group>
+              <Text size="xs">Showing</Text>
+              <LimitSelector
+                limit={limit}
+                setLimit={setLimit}
+                optionsArray={["25", "50", "100"]}
+              />
+              <CSV transactions={transactions} />
+            </Group>
+            <Pagination
+              hasNextPage={hasNextPage}
+              page={page}
+              setPage={setPage}
+            />
+          </Group>
         </>
       ) : (
         <NoAccounts />

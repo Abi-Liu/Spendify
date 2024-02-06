@@ -1,69 +1,22 @@
-import { useCallback, useState } from "react";
-import {
-  Group,
-  Table,
-  Text,
-  Combobox,
-  useCombobox,
-  InputBase,
-  Button,
-} from "@mantine/core";
-import useUserContext from "../contexts/UserContext";
+import { Table, Text } from "@mantine/core";
 import Loading from "./Loading";
 import formatCurrency from "../utils/formatDollar";
-import { TbArrowLeft, TbArrowRight } from "react-icons/tb";
-import { usePaginatedTransactions } from "../hooks/useTransactionHooks";
-import CSV from "./CSV";
+import { Transactions } from "../contexts/TransactionsContext";
 
 interface TransactionsTableProps {
-  account: string | number;
+  transactions: Transactions[];
 }
 
-const TransactionsTable = (props: TransactionsTableProps) => {
-  const { user } = useUserContext();
-  // used for table pagination. Default value of 1
-  const [page, setPage] = useState(1);
-
-  // used to determine how many transactions to show per page. Default value of 25
-  const [limit, setLimit] = useState(25);
-
-  // get paginated transactions
-  const { transactions, hasNextPage } = usePaginatedTransactions(
-    props.account,
-    page,
-    limit,
-    user!.id
-  );
-
-  const formatDate = useCallback((dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  }, []);
-
-  function nextPage() {
-    setPage((prev) => prev + 1);
-  }
-
-  function previousPage() {
-    setPage((prev) => prev - 1);
-  }
-
-  // COMBO BOX
-  const combobox = useCombobox({
-    onDropdownClose: () => combobox.resetSelectedOption(),
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   });
-  const optionsArray = ["25", "50", "100"];
+};
 
-  const options = optionsArray.map((option) => (
-    <Combobox.Option value={option} key={option}>
-      {option}
-    </Combobox.Option>
-  ));
-
+const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
   if (!transactions) {
     return <Loading />;
   }
@@ -98,57 +51,6 @@ const TransactionsTable = (props: TransactionsTableProps) => {
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
       </Table.ScrollContainer>
-
-      <Group p="md" justify="space-between">
-        <Group>
-          <Text size="xs">Showing</Text>
-          <Combobox
-            store={combobox}
-            onOptionSubmit={(val) => {
-              setLimit(Number(val));
-              combobox.closeDropdown();
-            }}
-          >
-            <Combobox.Target>
-              <InputBase
-                component="button"
-                type="button"
-                pointer
-                rightSection={<Combobox.Chevron />}
-                rightSectionPointerEvents="none"
-                onClick={() => combobox.toggleDropdown()}
-              >
-                {limit}
-              </InputBase>
-            </Combobox.Target>
-
-            <Combobox.Dropdown>
-              <Combobox.Options>{options}</Combobox.Options>
-            </Combobox.Dropdown>
-          </Combobox>
-          <CSV transactions={transactions} />
-        </Group>
-        {/* pagination */}
-        <Group>
-          <Button
-            variant="transparent"
-            color="gray"
-            onClick={previousPage}
-            disabled={page === 1}
-          >
-            <TbArrowLeft />
-          </Button>
-          <Text size="sm">{page}</Text>
-          <Button
-            variant="transparent"
-            color="gray"
-            onClick={nextPage}
-            disabled={!hasNextPage}
-          >
-            <TbArrowRight />
-          </Button>
-        </Group>
-      </Group>
     </>
   );
 };
