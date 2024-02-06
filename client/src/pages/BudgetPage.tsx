@@ -27,6 +27,7 @@ import useTransactionsContext, {
 import DailySpendingChart from "../components/DailySpendingChart";
 import formatCurrency from "../utils/formatDollar";
 import { TbPencilCog } from "react-icons/tb";
+import CSV from "../components/CSV";
 
 interface CustomFormProps {
   close: () => void;
@@ -235,6 +236,9 @@ const BudgetPage = () => {
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
       </Table.ScrollContainer>
+      <Group style={{ paddingLeft: ".3rem" }}>
+        <CSV transactions={filteredTransactions} />
+      </Group>
     </Container>
   );
 };
