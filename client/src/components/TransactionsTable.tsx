@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Group,
   Table,
@@ -12,8 +12,8 @@ import useUserContext from "../contexts/UserContext";
 import Loading from "./Loading";
 import formatCurrency from "../utils/formatDollar";
 import { TbArrowLeft, TbArrowRight } from "react-icons/tb";
-import { CSVLink } from "react-csv";
-import { usePaginatedTransactions } from "../hooks/useTransaction";
+import { usePaginatedTransactions } from "../hooks/useTransactionHooks";
+import CSV from "./CSV";
 
 interface TransactionsTableProps {
   account: string | number;
@@ -27,6 +27,7 @@ const TransactionsTable = (props: TransactionsTableProps) => {
   // used to determine how many transactions to show per page. Default value of 25
   const [limit, setLimit] = useState(25);
 
+  // get paginated transactions
   const { transactions, hasNextPage } = usePaginatedTransactions(
     props.account,
     page,
@@ -62,30 +63,6 @@ const TransactionsTable = (props: TransactionsTableProps) => {
       {option}
     </Combobox.Option>
   ));
-
-  const { csvData, headers } = useMemo(() => {
-    if (transactions?.length) {
-      const headers = [
-        { label: "Date", key: "date" },
-        { label: "Name", key: "name" },
-        { label: "Category", key: "category" },
-        { label: "Payment Channel", key: "payment_channel" },
-        { label: "Amount", key: "amount" },
-      ];
-      const csvData = [];
-      for (const transaction of transactions) {
-        csvData.push({
-          date: transaction.date,
-          name: transaction.name,
-          category: transaction.personal_finance_category,
-          payment_channel: transaction.payment_channel,
-          amount: formatCurrency(transaction.amount),
-        });
-      }
-      return { csvData, headers };
-    }
-    return { csvData: "" };
-  }, [transactions]);
 
   if (!transactions) {
     return <Loading />;
@@ -149,15 +126,7 @@ const TransactionsTable = (props: TransactionsTableProps) => {
               <Combobox.Options>{options}</Combobox.Options>
             </Combobox.Dropdown>
           </Combobox>
-          <CSVLink
-            data={csvData}
-            headers={headers}
-            filename="Transactions"
-            target="_blank"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Export to CSV
-          </CSVLink>
+          <CSV transactions={transactions} />
         </Group>
         {/* pagination */}
         <Group>
