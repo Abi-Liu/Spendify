@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Transactions } from "../contexts/TransactionsContext";
+import { useCallback, useMemo, useState } from "react";
 import {
   Group,
   Table,
@@ -9,12 +8,12 @@ import {
   InputBase,
   Button,
 } from "@mantine/core";
-import api from "../utils/axios";
 import useUserContext from "../contexts/UserContext";
 import Loading from "./Loading";
 import formatCurrency from "../utils/formatDollar";
 import { TbArrowLeft, TbArrowRight } from "react-icons/tb";
 import { CSVLink } from "react-csv";
+import { usePaginatedTransactions } from "../hooks/useTransaction";
 
 interface TransactionsTableProps {
   account: string | number;
@@ -22,50 +21,18 @@ interface TransactionsTableProps {
 
 const TransactionsTable = (props: TransactionsTableProps) => {
   const { user } = useUserContext();
-  const [transactions, setTransactions] = useState<Transactions[]>();
   // used for table pagination. Default value of 1
   const [page, setPage] = useState(1);
 
   // used to determine how many transactions to show per page. Default value of 25
   const [limit, setLimit] = useState(25);
-  const [hasNextPage, setHasNextPage] = useState(true);
 
-  // determine if we are querying from all accounts or specific accounts and the id of the row we want to get
-  // refactored to useMemo instead of state to minimize rerenders
-  const column = useMemo(() => {
-    if (typeof props.account === "number") {
-      return "account_id";
-    } else {
-      return "user_id";
-    }
-  }, [props.account]);
-
-  const columnValue = useMemo(() => {
-    if (typeof props.account === "number") {
-      return props.account;
-    } else {
-      return user!.id;
-    }
-  }, [props.account, user]);
-
-  // on render, retrieve the first page of transactions.
-  useEffect(() => {
-    async function fetchPagination() {
-      try {
-        const { data } = await api.get(
-          `/transactions/pagination?column=${column}&columnValue=${columnValue}&limit=${limit}&offset=${
-            (page - 1) * limit
-          }`
-        );
-        setTransactions(data.transactions);
-        setHasNextPage(data.nextPage);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchPagination();
-  }, [limit, page, user, column, columnValue]);
+  const { transactions, hasNextPage } = usePaginatedTransactions(
+    props.account,
+    page,
+    limit,
+    user!.id
+  );
 
   const formatDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
