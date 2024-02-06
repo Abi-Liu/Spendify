@@ -8,7 +8,7 @@ export function usePaginatedTransactions(
   limit: number,
   userId: number
 ) {
-  const [transactions, setTransactions] = useState<Transactions[]>();
+  const [transactions, setTransactions] = useState<Transactions[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
 
   // determine if we are querying from all accounts or specific accounts and the id of the row we want to get
