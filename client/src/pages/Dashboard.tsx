@@ -10,7 +10,7 @@ import SpendingAnalysis from "../components/SpendingAnalysis";
 import NoAccounts from "../components/NoAccounts";
 import useAssetsContext from "../contexts/AssetsContext";
 import { Card, Container, Group, Modal, Text, em } from "@mantine/core";
-import NetworthChart from "../components/NetworthChart";
+import NetworthChart from "../components/graphs/NetworthChart";
 import { Link } from "react-router-dom";
 import useNetworthContext from "../contexts/NetworthContext";
 import formatCurrency from "../utils/formatDollar";
@@ -79,7 +79,9 @@ const Dashboard = () => {
     <Suspense fallback={<Loading />}>
       {showCredentialsModule && (
         <Modal opened={opened} onClose={close} title="Getting started" centered>
-          <CredentialsModule />
+          <CredentialsModule
+            setShowCredentialsModule={setShowCredentialsModule}
+          />
         </Modal>
       )}
       {itemsArray.length === 0 ? (

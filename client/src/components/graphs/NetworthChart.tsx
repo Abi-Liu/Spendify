@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from "react";
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
-import useNetworthContext from "../contexts/NetworthContext";
+import useNetworthContext from "../../contexts/NetworthContext";
 import { Card, Stack, Text } from "@mantine/core";
-import formatCurrency from "../utils/formatDollar";
+import formatCurrency from "../../utils/formatDollar";
 
 interface CustomTooltipProps {
   active?: boolean;

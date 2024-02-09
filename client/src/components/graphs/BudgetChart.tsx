@@ -6,8 +6,8 @@ import {
   Legend,
   Label,
 } from "recharts";
-import useBudgetsContext, { Budget } from "../contexts/BudgetsContext";
-import formatCurrency from "../utils/formatDollar";
+import useBudgetsContext, { Budget } from "../../contexts/BudgetsContext";
+import formatCurrency from "../../utils/formatDollar";
 
 const BudgetChart = () => {
   const { budgets } = useBudgetsContext();

@@ -1,5 +1,5 @@
 import { Container, Title } from "@mantine/core";
-import NetworthChart from "../components/NetworthChart";
+import NetworthChart from "../components/graphs/NetworthChart";
 import NoAccounts from "../components/NoAccounts";
 import useAccountsContext from "../contexts/AccountsContext";
 import AccountsTable from "../components/AccountsTable";

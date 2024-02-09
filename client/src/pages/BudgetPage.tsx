@@ -19,11 +19,11 @@ import {
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import useUserContext from "../contexts/UserContext";
 import { notifications } from "@mantine/notifications";
-import BudgetChart from "../components/BudgetChart";
+import BudgetChart from "../components/graphs/BudgetChart";
 import useTransactionsContext, {
   Transactions,
 } from "../contexts/TransactionsContext";
-import DailySpendingChart from "../components/DailySpendingChart";
+import DailySpendingChart from "../components/graphs/DailySpendingChart";
 import { TbPencilCog } from "react-icons/tb";
 import CSV from "../components/CSV";
 import TransactionsTable from "../components/TransactionsTable";

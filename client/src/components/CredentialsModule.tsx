@@ -1,6 +1,13 @@
-import { Code, Stack, Text } from "@mantine/core";
+import { Button, Code, Stack, Text } from "@mantine/core";
+import { Dispatch, SetStateAction } from "react";
 
-const CredentialsModule = () => {
+interface CredentialsModuleProps {
+  setShowCredentialsModule: Dispatch<SetStateAction<boolean>>;
+}
+
+const CredentialsModule = ({
+  setShowCredentialsModule,
+}: CredentialsModuleProps) => {
   return (
     <Stack>
       <Text size="sm">
@@ -25,6 +32,9 @@ const CredentialsModule = () => {
         password: pass_good <br />
         pin: credential_good (when required)
       </Code>
+      <Button my={10} onClick={() => setShowCredentialsModule((prev) => !prev)}>
+        Close
+      </Button>
     </Stack>
   );
 };

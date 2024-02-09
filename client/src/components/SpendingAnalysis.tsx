@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Card, Container, Flex, Image, Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import useTransactionsContext from "../contexts/TransactionsContext";
-import CategoryChart from "./CategoryChart";
+import CategoryChart from "./graphs/CategoryChart";
 import TopVendors from "./TopVendors";
 import NoData from "../assets/NoData.png";
 
