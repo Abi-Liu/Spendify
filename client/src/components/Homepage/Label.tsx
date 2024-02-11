@@ -3,7 +3,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import useUserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
-export const Label = () => {
+const Label = () => {
   const isMobile = useMediaQuery(`(max-width: ${em(415)})`);
   const isTablet = useMediaQuery(`(max-width: ${em(834)})`);
   const { user } = useUserContext();
@@ -64,3 +64,5 @@ export const Label = () => {
     </Stack>
   );
 };
+
+export default Label;

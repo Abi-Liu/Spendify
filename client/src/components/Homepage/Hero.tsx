@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Label } from "./Label";
+import Label from "./Label";
 import { Group, Image, em } from "@mantine/core";
 import LandingImage from "../../assets/Landing.jpg";
 import { useMediaQuery } from "@mantine/hooks";

@@ -27,13 +27,9 @@ import DailySpendingChart from "../components/graphs/DailySpendingChart";
 import { TbPencilCog } from "react-icons/tb";
 import CSV from "../components/CSV";
 import TransactionsTable from "../components/TransactionsTable";
+import { Helmet } from "react-helmet";
 
 const BudgetPage = () => {
-  // change document title
-  useEffect(() => {
-    document.title = "Budgeting | BudgetBuddy";
-  }, []);
-
   const [opened, { open, close }] = useDisclosure(false);
   const { budgets, getBudgetByUser } = useBudgetsContext();
   const { itemsArray } = useItemsContext();
@@ -85,57 +81,74 @@ const BudgetPage = () => {
     }
   }, [user, getBudgetByUser]);
 
-  if (itemsArray.length === 0) {
-    return <NoAccounts />;
-  } else if (Object.keys(budgets).length === 0) {
-    return (
-      <Container size="xl">
-        <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
-          <CustomForm close={close} />
-        </Modal>
-        <Text size="1.25rem" pb={"1rem"}>
-          No monthly budget
-        </Text>
-        <Text size="1rem">
-          Create a monthly budget to keep your track of your spending.
-        </Text>
-        <Button my="1rem" onClick={open}>
-          Create Budget
-        </Button>
-      </Container>
-    );
-  }
-
   return (
-    <Container size="xl" style={{ height: "100vh", marginTop: "1rem" }}>
-      <Modal opened={opened} onClose={close} title="Monthly Budget" centered>
-        <CustomForm close={close} />
-      </Modal>
-      <Group align="flex-end" gap={4}>
-        <Title order={2}>Budgeting</Title>
-        <Tooltip label="Edit budget">
-          <ActionIcon variant="subtle" c="inherit" onClick={open}>
-            <TbPencilCog />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-      <Flex
-        direction={breakpoint ? "column" : "row"}
-        justify="space-between"
-        style={{ height: breakpoint ? "700px" : "350px" }}
-      >
-        <BudgetChart />
-        <DailySpendingChart spendingPerDay={spendingPerDay} />
-      </Flex>
+    <>
+      <Helmet>
+        <title>Budgets | BudgetBuddy</title>
+        <meta
+          name="description"
+          content="Take charge of your financial goals with our budgeting page. Easily create and manage your monthly budget, set spending limits, and achieve financial success. Our intuitive interface makes budgeting a breeze, empowering you to make informed financial decisions. Start budgeting smarter today."
+        />
+      </Helmet>
+      {itemsArray.length === 0 ? (
+        <NoAccounts />
+      ) : Object.keys(budgets).length === 0 ? (
+        <Container size="xl">
+          <Modal
+            opened={opened}
+            onClose={close}
+            title="Monthly Budget"
+            centered
+          >
+            <CustomForm close={close} />
+          </Modal>
+          <Text size="1.25rem" pb={"1rem"}>
+            No monthly budget
+          </Text>
+          <Text size="1rem">
+            Create a monthly budget to keep your track of your spending.
+          </Text>
+          <Button my="1rem" onClick={open}>
+            Create Budget
+          </Button>
+        </Container>
+      ) : (
+        <Container size="xl" style={{ height: "100vh", marginTop: "1rem" }}>
+          <Modal
+            opened={opened}
+            onClose={close}
+            title="Monthly Budget"
+            centered
+          >
+            <CustomForm close={close} />
+          </Modal>
+          <Group align="flex-end" gap={4}>
+            <Title order={2}>Budgeting</Title>
+            <Tooltip label="Edit budget">
+              <ActionIcon variant="subtle" c="inherit" onClick={open}>
+                <TbPencilCog />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+          <Flex
+            direction={breakpoint ? "column" : "row"}
+            justify="space-between"
+            style={{ height: breakpoint ? "700px" : "350px" }}
+          >
+            <BudgetChart />
+            <DailySpendingChart spendingPerDay={spendingPerDay} />
+          </Flex>
 
-      <Divider mt={"1.25rem"} mb={"2rem"} />
+          <Divider mt={"1.25rem"} mb={"2rem"} />
 
-      <TransactionsTable transactions={filteredTransactions} />
+          <TransactionsTable transactions={filteredTransactions} />
 
-      <Group style={{ paddingLeft: ".3rem" }}>
-        <CSV transactions={filteredTransactions} />
-      </Group>
-    </Container>
+          <Group style={{ paddingLeft: ".3rem" }}>
+            <CSV transactions={filteredTransactions} />
+          </Group>
+        </Container>
+      )}
+    </>
   );
 };
 
